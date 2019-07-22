@@ -14,7 +14,7 @@ description: A comic reader application developed by Flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -23,7 +23,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  fish_redux: ^0.2.4
+  # Network
+  dio: ^2.1.13
+  cached_network_image: ^1.1.0
+  # en/decryption
+  crypto: ^2.0.6
+  # Date format
+  intl: ^0.15.8
+  flutter_bloc: ^0.19.1
 
 dev_dependencies:
   flutter_test:

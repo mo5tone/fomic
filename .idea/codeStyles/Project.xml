@@ -1,0 +1,8 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <codeStyleSettings language="Dart">
+      <option name="RIGHT_MARGIN" value="160" />
+      <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="false" />
+    </codeStyleSettings>
+  </code_scheme>
+</component>
