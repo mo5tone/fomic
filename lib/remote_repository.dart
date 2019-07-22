@@ -7,9 +7,8 @@ class RemoteRepository {
   RemoteRepository(this.sources);
 
   Future<List<Comic>> fetchComics() {
-    return Future.wait(
-            sources.map((source) => source.fetchComics()))
-        .then((comics) =>
+    return Future.wait(sources.map((source) => source.fetchComics())).then(
+        (comics) =>
             comics.reduce((value, element) => [...?value, ...?element]));
   }
 

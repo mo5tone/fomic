@@ -68,8 +68,9 @@ abstract class Fetcher<Output> {
     return client
         .request(requestOptions.path, options: requestOptions)
         .then(onSuccess)
-        .catchError(onFailure, test: (err) => (err is DioError) || toCatch(err));
+        .catchError(onFailure,
+            test: (err) => (err is DioError) || toCatch(err));
   }
 
-  bool toCatch(Object error) => true;
+  bool toCatch(Object error) => false;
 }

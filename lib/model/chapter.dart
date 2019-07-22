@@ -1,17 +1,18 @@
-
 import 'cloneable.dart';
 
 class Chapter implements Cloneable {
   String name;
-  num dateUpload;
+  DateTime dateUpload;
   String url;
+  num chapterNumber;
 
   @override
   String toString() {
     return '''
     Chapter {
       name: $name,
-      dateUpload: ${DateTime.fromMillisecondsSinceEpoch(dateUpload)},
+      dateUpload: $dateUpload,
+      chapterNumber: $chapterNumber,
       url: $url,
     }
     ''';

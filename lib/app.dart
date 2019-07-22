@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/source/dmzj/dmzj.dart';
 import 'package:fomic/source/manhuaren/manhuaren.dart';
 
 import 'remote_repository.dart';
@@ -8,10 +7,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var sources = [
-      Dmzj(),
-//      Manhuaren(),
+//      Dmzj(),
+      Manhuaren(),
     ];
-    print(DateTime.now().millisecondsSinceEpoch);
     var repository = RemoteRepository(sources);
     repository
         .fetchComics()
@@ -20,7 +18,11 @@ class App extends StatelessWidget {
       Future.wait(comics)
           .then((comics) => comics.where((comic) => comic != null).first)
           .then((comic) async => await comic.source.fetchChapters(comic))
-          .then((chapters) => print(chapters));
+          .then((chapters) =>
+              Manhuaren().fetchPages(chapters.first).then((pages) {
+                print(pages.length);
+                print(pages.last.index);
+              }));
     });
     return MaterialApp(
       title: 'Fomic',

@@ -41,7 +41,8 @@ class Manhuaren extends ApiSource {
             queryParameters.addAll({
               'gsm': 'md5',
               'gft': 'json',
-              'gts': utils.format(DateTime.now(), 'yyyy-MM-dd+HH:mm:ss'),
+              'gts':
+                  utils.dateTime2String(DateTime.now(), 'yyyy-MM-dd+HH:mm:ss'),
               'gak': 'android_manhuaren2',
               'gat': '',
               'gaui': '191909801',
@@ -49,7 +50,9 @@ class Manhuaren extends ApiSource {
               'gut': '0',
             });
             queryParameters.addAll({'gsn': _gsnHash(queryParameters)});
-            queryParameters.remove('mangaId');
+            var keysToRemove = ['mangaId', 'mangaSectionId'];
+            queryParameters
+                .removeWhere((key, value) => keysToRemove.contains(key));
             requestOptions.queryParameters = queryParameters;
             return requestOptions;
           },
@@ -225,19 +228,30 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
-    // TODO: implement onFailure
-    return null;
+    return [];
   }
 
   @override
   List<Chapter> onSuccess(Response response) {
-    // TODO: implement onSuccess
-    return null;
+    Map obj = response.data['response'];
+    var chapters = <Chapter>[];
+    ['mangaEpisode', 'mangaWords', 'mangaRolls'].forEach((type) {
+      List array = obj[type];
+      if (array != null) {
+        chapters.addAll(array.map((item) => Chapter()
+          ..name =
+              '${type == 'mangaEpisode' ? '【番外】' : ''}${item['sectionName']}${item['sectionTitle'] == '' ? '' : '：${item['sectionTitle']}'}'
+          ..dateUpload =
+              utils.string2DateTime(item['releaseTime'], 'yyyy-MM-dd')
+          ..chapterNumber = item['sectionSort']
+          ..url = '/v1/manga/getRead?mangaSectionId=${item["sectionId"]}'));
+      }
+    });
+    return chapters;
   }
 
   @override
-  // TODO: implement requestOptions
-  RequestOptions get requestOptions => null;
+  RequestOptions get requestOptions => RequestOptions(path: comic.url);
 }
 
 class _PagesFetcher extends Fetcher<List<Page>> {
@@ -248,17 +262,24 @@ class _PagesFetcher extends Fetcher<List<Page>> {
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
-    // TODO: implement onFailure
-    return null;
+    return [];
   }
 
   @override
   List<Page> onSuccess(Response response) {
-    // TODO: implement onSuccess
-    return null;
+    Map obj = response.data['response'];
+    String host = obj['hostList'][0];
+    List array = obj['mangaSectionImages'];
+    String query = obj['query'];
+    var index = 0;
+    return array
+        .map((item) =>
+            Page(index++, '$host$item$query', imageUrl: '$host$item$query'))
+        .toList();
   }
 
   @override
-  // TODO: implement requestOptions
-  RequestOptions get requestOptions => null;
+  RequestOptions get requestOptions => RequestOptions(
+      path: chapter.url,
+      queryParameters: {'netType': '4', 'loadreal': '1', 'imageQuality': '2'});
 }

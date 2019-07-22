@@ -193,6 +193,12 @@ class _ComicFetcher extends Fetcher<Comic> {
 
   @override
   Comic onSuccess(Response response) {
+    if (response.data is String) {
+      throw DioError(
+          request: response.request,
+          response: response,
+          message: response.data);
+    }
     Map obj = response.data;
     ComicStatus status;
     switch (obj['status'][0]['tag_id'] as int) {
@@ -243,7 +249,8 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       for (var item1 in data) {
         chapters.add(Chapter()
           ..name = '$prefix: ${item1['chapter_title']}'
-          ..dateUpload = item1['updatetime'] * 1000
+          ..dateUpload =
+              DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000)
           ..url = '/chapter/$id/${item1["chapter_id"]}.json');
       }
     }
@@ -263,17 +270,16 @@ class _PagesFetcher extends Fetcher<List<Page>> {
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
-    // TODO: implement onFailure
-    return null;
+    return [];
   }
 
   @override
   List<Page> onSuccess(Response response) {
-    // TODO: implement onSuccess
-    return null;
+    List array = response.data['page_url'];
+    var index = 0;
+    return array.map((obj) => Page(index++, '', imageUrl: obj)).toList();
   }
 
   @override
-  // TODO: implement requestOptions
-  RequestOptions get requestOptions => null;
+  RequestOptions get requestOptions => RequestOptions(path: chapter.url);
 }
