@@ -20,8 +20,7 @@ class App extends StatelessWidget {
           .then((comic) async => await comic.source.fetchChapters(comic))
           .then((chapters) =>
               Manhuaren().fetchPages(chapters.first).then((pages) {
-                print(pages.length);
-                print(pages.last.index);
+                print(pages);
               }));
     });
     return MaterialApp(

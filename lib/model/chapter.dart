@@ -23,6 +23,7 @@ class Chapter implements Cloneable {
     return Chapter()
       ..name = name
       ..dateUpload = dateUpload
-      ..url = url;
+      ..url = url
+      ..chapterNumber = chapterNumber;
   }
 }
