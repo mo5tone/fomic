@@ -1,6 +1,5 @@
+import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/source/base/remote_source.dart';
-
-import 'cloneable.dart';
 
 enum ComicStatus {
   unknown,

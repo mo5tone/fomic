@@ -1,8 +1,8 @@
-import 'cloneable.dart';
+import 'package:fomic/common/helper/cloneable.dart';
 
 class Chapter implements Cloneable {
   String name;
-  DateTime dateUpload;
+  DateTime updateAt;
   String url;
   num chapterNumber;
 
@@ -11,7 +11,7 @@ class Chapter implements Cloneable {
     return '''
     Chapter {
       name: $name,
-      dateUpload: $dateUpload,
+      updateAt: $updateAt,
       chapterNumber: $chapterNumber,
       url: $url,
     }
@@ -22,7 +22,7 @@ class Chapter implements Cloneable {
   clone() {
     return Chapter()
       ..name = name
-      ..dateUpload = dateUpload
+      ..updateAt = updateAt
       ..url = url
       ..chapterNumber = chapterNumber;
   }

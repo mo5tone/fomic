@@ -20,9 +20,6 @@ class Dmzj extends ApiSource {
   String get baseUrl => 'http://v2.api.dmzj.com';
 
   @override
-  ResponseType get responseType => ResponseType.plain;
-
-  @override
   BaseOptions get baseOptions => super.baseOptions.merge(
         headers: {
           'User-Agent': [
@@ -193,12 +190,6 @@ class _ComicFetcher extends Fetcher<Comic> {
 
   @override
   Comic onSuccess(Response response) {
-    if (response.data is String) {
-      throw DioError(
-          request: response.request,
-          response: response,
-          message: response.data);
-    }
     Map obj = response.data;
     ComicStatus status;
     switch (obj['status'][0]['tag_id'] as int) {
@@ -249,7 +240,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       for (var item1 in data) {
         chapters.add(Chapter()
           ..name = '$prefix: ${item1['chapter_title']}'
-          ..dateUpload =
+          ..updateAt =
               DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000)
           ..url = '/chapter/$id/${item1["chapter_id"]}.json');
       }

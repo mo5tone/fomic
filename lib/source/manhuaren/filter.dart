@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:fomic/common/helper/pair.dart';
+import 'package:fomic/common/helper/triplet.dart';
 import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/pair.dart';
-import 'package:fomic/model/triplet.dart';
 
 class SortFilter extends Filter<int, String> {
   SortFilter(int key) : super(key);

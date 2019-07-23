@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/pair.dart';
 
 class GenreFilter extends Filter<int, String> {
   GenreFilter(int key) : super(key);

@@ -241,8 +241,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
         chapters.addAll(array.map((item) => Chapter()
           ..name =
               '${type == 'mangaEpisode' ? '【番外】' : ''}${item['sectionName']}${item['sectionTitle'] == '' ? '' : '：${item['sectionTitle']}'}'
-          ..dateUpload =
-              utils.string2DateTime(item['releaseTime'], 'yyyy-MM-dd')
+          ..updateAt = utils.string2DateTime(item['releaseTime'], 'yyyy-MM-dd')
           ..chapterNumber = item['sectionSort']
           ..url = '/v1/manga/getRead?mangaSectionId=${item["sectionId"]}'));
       }

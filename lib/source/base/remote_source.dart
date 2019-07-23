@@ -25,14 +25,40 @@ abstract class RemoteSource extends BaseSource {
 
   List<InterceptorsWrapper> get interceptors => [];
 
-  Dio get client {
-    var dio = Dio(baseOptions);
-    dio.interceptors.addAll([
+  Dio get client => Dio(baseOptions)
+    ..interceptors.addAll([
+      InterceptorsWrapper(
+        onResponse: (response) {
+          dynamic data = response.data;
+          bool shouldReject = false;
+          switch (response.request.responseType) {
+            case ResponseType.json:
+              shouldReject = (data is! Map) && (data is! List);
+              break;
+            case ResponseType.stream:
+              shouldReject = (data is! ResponseBody);
+              break;
+            case ResponseType.plain:
+              shouldReject = (data is! String);
+              break;
+            case ResponseType.bytes:
+              shouldReject = (data is! List<int>);
+              break;
+          }
+          if (shouldReject) {
+            return DioError(
+              request: response.request,
+              response: response,
+              message:
+                  'Expect ${response.request.responseType}, but get ${data.runtimeType}, data: $data',
+            );
+          }
+          return response;
+        },
+      ),
       ...interceptors,
       LogInterceptor(responseBody: true),
     ]);
-    return dio;
-  }
 
   Future<List<Comic>> fetchComics(
       {int page = 0, String query = '', List<Filter> filters = const []});
@@ -45,7 +71,7 @@ abstract class RemoteSource extends BaseSource {
 
   @override
   void close() {
-    // do something to clean before closing.
+    // Todo: do something to clean before closing.
   }
 }
 

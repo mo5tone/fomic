@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'pair.dart';
+import 'package:fomic/common/helper/pair.dart';
 
 abstract class Filter<K, V> {
   String get name;
