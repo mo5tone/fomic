@@ -57,7 +57,7 @@ abstract class RemoteSource extends BaseSource {
         },
       ),
       ...interceptors,
-      LogInterceptor(responseBody: true),
+      LogInterceptor(),
     ]);
 
   Future<List<Comic>> fetchComics(
@@ -71,7 +71,7 @@ abstract class RemoteSource extends BaseSource {
 
   @override
   void close() {
-    // Todo: do something to clean before closing.
+    // todo: do something to clean before closing.
   }
 }
 

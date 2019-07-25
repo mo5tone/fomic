@@ -142,7 +142,8 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
           ..source = Manhuaren()
           ..url = '/v1/manga/getDetail?mangaId=${obj['mangaId']}'
           ..title = obj['mangaName']
-          ..author = obj['mangaAuthor'])
+          ..author = obj['mangaAuthor']
+          ..thumbnailUrl = obj['mangaCoverimageUrl'])
         .toList();
   }
 
