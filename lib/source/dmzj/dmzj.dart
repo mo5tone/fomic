@@ -104,7 +104,7 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
         ..title = obj['name']
         ..author = obj['authors']
         ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..status = status
+        ..comicStatus = status
         ..description = obj['description'];
     }).toList();
   }
@@ -139,7 +139,7 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
         ..title = obj['title']
         ..author = obj['authors']
         ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..status = status
+        ..comicStatus = status
         ..description = obj['description'];
     }).toList();
   }
@@ -208,7 +208,7 @@ class _ComicFetcher extends Fetcher<Comic> {
       ..thumbnailUrl = obj['cover']
       ..author = obj['authors'].map((sub) => sub['tag_name']).join(', ')
       ..genre = obj['types'].map((sub) => sub['tag_name']).join(', ')
-      ..status = status
+      ..comicStatus = status
       ..description = obj['description'];
   }
 

@@ -143,6 +143,11 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
           ..url = '/v1/manga/getDetail?mangaId=${obj['mangaId']}'
           ..title = obj['mangaName']
           ..author = obj['mangaAuthor']
+          ..comicStatus = obj['mangaIsOver'] == 0
+              ? ComicStatus.ongoing
+              : (obj['mangaIsOver'] == 1
+                  ? ComicStatus.completed
+                  : ComicStatus.unknown)
           ..thumbnailUrl = obj['mangaCoverimageUrl'])
         .toList();
   }
@@ -213,7 +218,7 @@ class _ComicFetcher extends Fetcher<Comic> {
       ..thumbnailUrl = thumbnailUrl
       ..author = obj['mangaAuthors'].join(', ')
       ..genre = obj['mangaTheme'].replaceAll(' ', ', ')
-      ..status = status
+      ..comicStatus = status
       ..description = obj['mangaIntro'];
   }
 

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:fomic/model/comic.dart';
 
-import 'event.dart';
-import 'repository.dart';
-import 'state.dart';
+import 'package:fomic/comics/bloc/event.dart';
+import 'package:fomic/comics/repository/repository.dart';
+import 'package:fomic/comics/bloc/state.dart';
 
 class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
   final ComicsRepository repository;

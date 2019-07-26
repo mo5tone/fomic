@@ -16,8 +16,21 @@ class Comic implements Cloneable<Comic> {
   String author;
   String description;
   String genre;
-  ComicStatus status = ComicStatus.unknown;
+  ComicStatus comicStatus = ComicStatus.unknown;
   String thumbnailUrl;
+
+  String get status {
+    switch (comicStatus) {
+      case ComicStatus.ongoing:
+        return '连载';
+      case ComicStatus.completed:
+        return '完结';
+      case ComicStatus.licensed:
+        return '未授权';
+      default:
+        return '未知';
+    }
+  }
 
   @override
   String toString() {
@@ -46,6 +59,7 @@ class Comic implements Cloneable<Comic> {
       ..author = author
       ..description = description
       ..genre = genre
+      ..comicStatus = comicStatus
       ..thumbnailUrl = thumbnailUrl;
   }
 }
