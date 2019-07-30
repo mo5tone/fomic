@@ -19,11 +19,16 @@ class Chapter implements Cloneable {
   }
 
   @override
-  clone() {
+  clone({
+    String name,
+    DateTime updateAt,
+    String url,
+    num chapterNumber,
+  }) {
     return Chapter()
-      ..name = name
-      ..updateAt = updateAt
-      ..url = url
-      ..chapterNumber = chapterNumber;
+      ..name = name ?? this.name
+      ..updateAt = updateAt ?? this.updateAt
+      ..url = url ?? this.url
+      ..chapterNumber = chapterNumber ?? this.chapterNumber;
   }
 }

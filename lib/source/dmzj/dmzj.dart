@@ -203,13 +203,14 @@ class _ComicFetcher extends Fetcher<Comic> {
         status = ComicStatus.unknown;
         break;
     }
-    return comic.clone()
-      ..title = obj['title']
-      ..thumbnailUrl = obj['cover']
-      ..author = obj['authors'].map((sub) => sub['tag_name']).join(', ')
-      ..genre = obj['types'].map((sub) => sub['tag_name']).join(', ')
-      ..comicStatus = status
-      ..description = obj['description'];
+    return comic.clone(
+      title: obj['title'],
+      thumbnailUrl: obj['cover'],
+      author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
+      genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
+      comicStatus: status,
+      description: obj['description'],
+    );
   }
 
   @override
@@ -225,7 +226,6 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
-    print('error: $error, stackTrace: $stackTrace');
     return [];
   }
 

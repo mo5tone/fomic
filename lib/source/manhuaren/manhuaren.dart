@@ -213,13 +213,14 @@ class _ComicFetcher extends Fetcher<Comic> {
         status = ComicStatus.unknown;
         break;
     }
-    return comic.clone()
-      ..title = obj['mangaName']
-      ..thumbnailUrl = thumbnailUrl
-      ..author = obj['mangaAuthors'].join(', ')
-      ..genre = obj['mangaTheme'].replaceAll(' ', ', ')
-      ..comicStatus = status
-      ..description = obj['mangaIntro'];
+    return comic.clone(
+      title: obj['mangaName'],
+      thumbnailUrl: thumbnailUrl,
+      author: obj['mangaAuthors'].join(', '),
+      genre: obj['mangaTheme'].replaceAll(' ', ', '),
+      comicStatus: status,
+      description: obj['mangaIntro'],
+    );
   }
 
   @override
