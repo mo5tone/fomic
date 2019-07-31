@@ -8,13 +8,17 @@ import 'state.dart';
 
 class ComicBloc extends Bloc<ComicEvent, ComicState> {
   final Comic comic;
+
   RemoteSource get _source => comic.source;
   List<Chapter> _chapters = [];
 
   ComicBloc(this.comic);
 
   @override
-  ComicState get initialState => ComicState(ComicStateType.fetchSuccess, comic: comic);
+  ComicState get initialState => ComicState(
+        ComicStateType.fetchSuccess,
+        comic: comic,
+      );
 
   @override
   Stream<ComicState> mapEventToState(ComicEvent event) async* {

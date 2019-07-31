@@ -2,24 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:fomic/comics/event.dart';
 import 'package:fomic/comics/repository.dart';
 import 'package:fomic/comics/state.dart';
-import 'package:fomic/model/comic.dart';
 
 class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
   final ComicsRepository repository = ComicsRepository();
   var _page = 0;
-  var _comics = <Comic>[];
 
-  ComicsBloc._();
-
-  static final ComicsBloc _instance = ComicsBloc._();
-
-  factory ComicsBloc() => _instance;
+//  var _comics = <Comic>[];
 
   @override
-  ComicsState get initialState => ComicsState(
-        ComicsStateType.fetchSuccess,
-        comics: _comics,
-      );
+  ComicsState get initialState => ComicsState(ComicsStateType.fetchSuccess);
 
   @override
   Stream<ComicsState> mapEventToState(ComicsEvent event) async* {
@@ -49,18 +40,17 @@ class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
       );
       try {
         var comics = [
-          if (_page > 0) ..._comics,
+          if (_page > 0) ...currentState.comics,
           ...await repository.fetchComics(
             page: _page,
             query: event.query,
             filters: event.filters,
           ),
         ];
-        _comics =
-            comics.where((comic) => comic != null).toList(growable: false);
         yield currentState.clone(
           type: ComicsStateType.fetchSuccess,
-          comics: _comics,
+          comics:
+              comics.where((comic) => comic != null).toList(growable: false),
         );
       } catch (error) {
         yield currentState.clone(

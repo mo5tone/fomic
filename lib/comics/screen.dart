@@ -90,7 +90,11 @@ class _ComicsPage extends StatelessWidget {
                 }
               });
               return Container(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(
+                  top: 8,
+                  right: 8,
+                  left: 8,
+                ),
                 child: RefreshIndicator(
                   child: GridView.builder(
                     controller: scrollController,
@@ -99,7 +103,7 @@ class _ComicsPage extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,
-                      childAspectRatio: 1 / 1.3,
+                      childAspectRatio: 10 / 13,
                     ),
                     itemBuilder: (context, index) => ComicWidget(
                       comic: comics[index],

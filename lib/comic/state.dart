@@ -19,9 +19,9 @@ class ComicState implements Cloneable {
     var list = List.of(chapters)
       ..sort((left, right) => left.updateAt.compareTo(right.updateAt));
     try {
-    return list.last.updateAt;
+      return list.last.updateAt;
     } catch (_) {
-     return DateTime.fromMillisecondsSinceEpoch(0);
+      return DateTime.fromMillisecondsSinceEpoch(0);
     }
   }
 
