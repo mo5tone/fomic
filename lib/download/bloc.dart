@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-
-import 'event.dart';
-import 'state.dart';
+import 'package:fomic/download/event.dart';
+import 'package:fomic/download/state.dart';
 
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   @override

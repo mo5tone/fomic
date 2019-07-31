@@ -1,16 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:fomic/model/chapter.dart';
+import 'package:fomic/comic/event.dart';
+import 'package:fomic/comic/state.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/source/base/remote_source.dart';
-
-import 'event.dart';
-import 'state.dart';
 
 class ComicBloc extends Bloc<ComicEvent, ComicState> {
   final Comic comic;
 
   RemoteSource get _source => comic.source;
-  List<Chapter> _chapters = [];
 
   ComicBloc(this.comic);
 

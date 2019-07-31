@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-
-import 'event.dart';
-import 'state.dart';
+import 'package:fomic/favorite/event.dart';
+import 'package:fomic/favorite/state.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   @override

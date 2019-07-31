@@ -7,14 +7,16 @@ import 'package:fomic/comics/bloc.dart';
 import 'package:fomic/comics/event.dart';
 import 'package:fomic/comics/state.dart';
 import 'package:fomic/comics/widget/comic_widget.dart';
+import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/model/comic.dart';
+import 'package:fomic/model/filter.dart';
 
 class ComicsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        var bloc = ComicsBloc();
+        final bloc = ComicsBloc();
         if (bloc.currentState.comics.isEmpty) {
           bloc.dispatch(ComicsEvent(ComicsEventType.refresh));
         }
@@ -28,7 +30,7 @@ class ComicsScreen extends StatelessWidget {
 class _ComicsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<ComicsBloc>(context);
+    final bloc = BlocProvider.of<ComicsBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Comics'),
@@ -37,38 +39,36 @@ class _ComicsPage extends StatelessWidget {
         child: BlocListener<ComicsBloc, ComicsState>(
           listener: (context, state) {
             if (state.type == ComicsStateType.pushToComicScreen) {
-              Navigator.of(context, rootNavigator: true)
-                  .push<void>(MaterialPageRoute(
+              final route = MaterialPageRoute<void>(
                 builder: (context) => ComicScreen(
                   comic: state.comic,
                 ),
-              ));
-            } else if (state.type == ComicsStateType.pushToSearchScreen) {
-              Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                      appBar: AppBar(
-                        title: Text('Search'),
-                      ),
-                      body: Container(),
-                    ),
-                  )).then(
-                (query) => bloc.dispatch(ComicsEvent(
-                  ComicsEventType.refresh,
-                  query: query ?? '',
-                )),
               );
+              Navigator.of(context, rootNavigator: true).push(route);
+            } else if (state.type == ComicsStateType.pushToSearchScreen) {
+              final route = MaterialPageRoute<Pair<String, List<Filter>>>(
+                builder: (context) => Scaffold(
+                  appBar: AppBar(
+                    title: Text('Search'),
+                  ),
+                  body: Container(),
+                ),
+              );
+              Navigator.of(context, rootNavigator: true)
+                  .push(route)
+                  .then((pair) => bloc.dispatch(ComicsEvent(
+                        ComicsEventType.refresh,
+                        query: pair.first ?? '',
+                        filters: pair.second ?? [],
+                      )));
             }
           },
           child: BlocBuilder<ComicsBloc, ComicsState>(
-            condition: (previous, current) {
-              return [
-                ComicsStateType.fetching,
-                ComicsStateType.fetchSuccess,
-                ComicsStateType.fetchFailure,
-              ].contains(current.type);
-            },
+            condition: (previous, current) => [
+              ComicsStateType.fetching,
+              ComicsStateType.fetchSuccess,
+              ComicsStateType.fetchFailure,
+            ].contains(current.type),
             builder: (context, state) {
               List<Comic> comics = state.comics;
               if (comics.isEmpty) {

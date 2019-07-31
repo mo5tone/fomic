@@ -5,10 +5,9 @@ import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/source/base/api_source.dart';
 import 'package:fomic/source/base/remote_source.dart';
-
-import '../base/api_source.dart';
-import 'filter.dart';
+import 'package:fomic/source/manhuaren/filter.dart';
 
 class Manhuaren extends ApiSource {
   @override

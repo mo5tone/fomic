@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-
-import 'event.dart';
-import 'state.dart';
+import 'package:fomic/home/event.dart';
+import 'package:fomic/home/state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override

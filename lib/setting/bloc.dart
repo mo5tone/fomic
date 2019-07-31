@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-
-import 'event.dart';
-import 'state.dart';
+import 'package:fomic/setting/event.dart';
+import 'package:fomic/setting/state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   @override

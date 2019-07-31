@@ -7,8 +7,6 @@ class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
   final ComicsRepository repository = ComicsRepository();
   var _page = 0;
 
-//  var _comics = <Comic>[];
-
   @override
   ComicsState get initialState => ComicsState(ComicsStateType.fetchSuccess);
 

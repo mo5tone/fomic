@@ -3,8 +3,7 @@ import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
-
-import 'base_source.dart';
+import 'package:fomic/source/base/base_source.dart';
 
 abstract class RemoteSource extends BaseSource {
   @override

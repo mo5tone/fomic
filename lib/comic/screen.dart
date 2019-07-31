@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fomic/comic/bloc.dart';
 import 'package:fomic/comic/event.dart';
+import 'package:fomic/comic/state.dart';
 import 'package:fomic/common/util/utils.dart' as utils;
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
-
-import 'bloc.dart';
-import 'state.dart';
 
 class ComicScreen extends StatelessWidget {
   final Comic comic;
@@ -28,124 +27,109 @@ class ComicScreen extends StatelessWidget {
 }
 
 class _ComicPage extends StatelessWidget {
-  PreferredSizeWidget appBarWidget(BuildContext context, ComicState state) {
-    var bloc = BlocProvider.of<ComicBloc>(context);
-    return AppBar(
-      title: Text('Comic'),
-      actions: <Widget>[
-        IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => bloc.dispatch(ComicEvent(ComicEventType.refresh))),
-      ],
-    );
-  }
-
-  Widget headerWidget(BuildContext context, ComicState state) {
-    Widget coverWidget(BuildContext context, ComicState state) {
-      return Hero(
-        tag: 'comic_cover_${state.comic.source.id}_${state.comic.url}',
-        child: AspectRatio(
-          aspectRatio: 8.0 / 9.0,
-          child: CachedNetworkImage(
-            imageUrl: state.comic.thumbnailUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    }
-
-    Widget infoWidget(BuildContext context, ComicState state) {
-      return Container(
-        margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-        child: SingleChildScrollView(
-          child: RichText(
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1,
-              children: [
-                TextSpan(
-                  text: '${state.comic.title}',
-                  style: Theme.of(context).textTheme.title,
-                ),
-                TextSpan(
-                  text: '\n\n',
-                ),
-                TextSpan(
-                  text: '${state.comic.author}',
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-                TextSpan(
-                  text: '\n\n',
-                ),
-                TextSpan(
-                  text: '${state.comic.genre}',
-                ),
-                TextSpan(
-                  text: '\n\n',
-                ),
-                TextSpan(
-                  text: '${state.comic.description}',
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    return AspectRatio(
-      aspectRatio: 16.0 / 9.0,
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            coverWidget(context, state),
-            Expanded(
-              child: infoWidget(context, state),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget statusWidget(BuildContext context, ComicState state) {
-    var updateAt = utils.dateTime2String(state.latestUpdateAt, 'yyyy-MM-dd');
-    return Container(
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.all(8),
-      child: Row(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text('${state.comic.status}'),
-          ),
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerRight,
-              child: Text(updateAt),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<ComicBloc>(context);
-    return BlocBuilder(
-      builder: (context, ComicState state) {
+    return BlocBuilder<ComicBloc, ComicState>(
+      builder: (context, state) {
         return Scaffold(
-          appBar: appBarWidget(context, state),
+          appBar: AppBar(
+            title: Text('Comic'),
+            elevation: 0,
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () =>
+                      bloc.dispatch(ComicEvent(ComicEventType.refresh))),
+            ],
+          ),
           body: SafeArea(
             child: Stack(
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    headerWidget(context, state),
-                    statusWidget(context, state),
+                    AspectRatio(
+                      aspectRatio: 16.0 / 9.0,
+                      child: Container(
+                        color: Theme.of(context).primaryColor,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Hero(
+                              tag:
+                                  'comic_cover_${state.comic.source.id}_${state.comic.url}',
+                              child: AspectRatio(
+                                aspectRatio: 8.0 / 9.0,
+                                child: CachedNetworkImage(
+                                  imageUrl: state.comic.thumbnailUrl,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                                child: SingleChildScrollView(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.body1,
+                                      children: [
+                                        TextSpan(
+                                          text: '${state.comic.title}',
+                                          style:
+                                              Theme.of(context).textTheme.title,
+                                        ),
+                                        TextSpan(
+                                          text: '\n\n',
+                                        ),
+                                        TextSpan(
+                                          text: '${state.comic.author}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle,
+                                        ),
+                                        TextSpan(
+                                          text: '\n\n',
+                                        ),
+                                        TextSpan(
+                                          text: '${state.comic.genre}',
+                                        ),
+                                        TextSpan(
+                                          text: '\n\n',
+                                        ),
+                                        TextSpan(
+                                          text: '${state.comic.description}',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: Theme.of(context).primaryColor,
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text('${state.comic.status}'),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(utils.dateTime2String(
+                                  state.latestUpdateAt, 'yyyy-MM-dd')),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.all(8),
