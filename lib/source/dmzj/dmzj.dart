@@ -238,6 +238,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       List data = item0['data'];
       for (var item1 in data) {
         chapters.add(Chapter()
+          ..source = Dmzj()
           ..name = '$prefix: ${item1['chapter_title']}'
           ..updateAt =
               DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000)

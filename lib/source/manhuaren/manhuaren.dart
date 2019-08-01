@@ -245,6 +245,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       List array = obj[type];
       if (array != null) {
         chapters.addAll(array.map((item) => Chapter()
+          ..source = Manhuaren()
           ..name =
               '${type == 'mangaEpisode' ? '【番外】' : ''}${item['sectionName']}${item['sectionTitle'] == '' ? '' : '：${item['sectionTitle']}'}'
           ..updateAt = utils.string2DateTime(item['releaseTime'], 'yyyy-MM-dd')

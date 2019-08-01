@@ -19,8 +19,9 @@ class ComicBloc extends Bloc<ComicEvent, ComicState> {
 
   @override
   Stream<ComicState> mapEventToState(ComicEvent event) async* {
-    if (currentState.type == ComicStateType.fetchSuccess ||
-        currentState.type == ComicStateType.fetchFailure) {
+    if (event.type == ComicEventType.fetch &&
+        (currentState.type == ComicStateType.fetchSuccess ||
+            currentState.type == ComicStateType.fetchFailure)) {
       yield currentState.clone(
         type: ComicStateType.fetching,
       );
@@ -38,6 +39,11 @@ class ComicBloc extends Bloc<ComicEvent, ComicState> {
           error: error,
         );
       }
+    } else if (event.type == ComicEventType.pushToChapterScreen) {
+      yield currentState.clone(
+        type: ComicStateType.pushToChapterScreen,
+        chapter: event.chapter,
+      );
     }
   }
 }

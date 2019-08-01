@@ -51,7 +51,6 @@ class Comic implements Cloneable<Comic> {
 
   @override
   Comic clone({
-    RemoteSource source,
     String url,
     String title,
     String artist,
@@ -62,7 +61,7 @@ class Comic implements Cloneable<Comic> {
     String thumbnailUrl,
   }) {
     return Comic()
-      ..source = source ?? this.source
+      ..source = this.source
       ..url = url ?? this.url
       ..title = title ?? this.title
       ..artist = artist ?? this.artist
