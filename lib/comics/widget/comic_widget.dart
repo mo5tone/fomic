@@ -82,7 +82,7 @@ class _ComicCoverWidget extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: 'comic_cover_${comic.source.id}_${comic.url}',
+          tag: '${comic.id.index}${comic.url}',
           child: CachedNetworkImage(
             imageUrl: comic.thumbnailUrl ?? '',
             placeholder: (context, url) => Center(
@@ -104,7 +104,7 @@ class _ComicCoverWidget extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: Theme.of(context).primaryColor,
                 child: Text(
-                  '${comic.source.name}',
+                  '${comic.id.name}',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ),

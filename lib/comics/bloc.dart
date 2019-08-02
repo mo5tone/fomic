@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fomic/comics/event.dart';
-import 'package:fomic/comics/repository.dart';
 import 'package:fomic/comics/state.dart';
+import 'package:fomic/repository/comics_repository.dart';
 
 class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
   final ComicsRepository repository = ComicsRepository();
@@ -12,45 +12,32 @@ class ComicsBloc extends Bloc<ComicsEvent, ComicsState> {
 
   @override
   Stream<ComicsState> mapEventToState(ComicsEvent event) async* {
-    switch (event.type) {
-      case ComicsEventType.refresh:
+    if ((event.type == ComicsEventType.refresh ||
+            event.type == ComicsEventType.loadMore) &&
+        currentState.type != ComicsStateType.fetching) {
+      if (event.type == ComicsEventType.refresh) {
         _page = 0;
-        break;
-      case ComicsEventType.loadMore:
+      } else if (event.type == ComicsEventType.loadMore) {
         _page++;
-        break;
-      case ComicsEventType.pushToComicScreen:
-        yield currentState.clone(
-          type: ComicsStateType.pushToComicScreen,
-          comic: event.comic,
-        );
-        break;
-      case ComicsEventType.pushToSearchScreen:
-        yield currentState.clone(
-          type: ComicsStateType.pushToSearchScreen,
-        );
-        break;
-    }
-    if (currentState.type == ComicsStateType.fetchSuccess ||
-        currentState.type == ComicsStateType.fetchFailure) {
+      }
       yield currentState.clone(
         type: ComicsStateType.fetching,
       );
       try {
-        var comics = [
+        final comics = [
           if (_page > 0) ...currentState.comics,
           ...await repository.fetchComics(
             page: _page,
             query: event.query,
             filters: event.filters,
           ),
-        ];
+        ].where((comic) => comic != null).toList(growable: false);
         yield currentState.clone(
           type: ComicsStateType.fetchSuccess,
-          comics:
-              comics.where((comic) => comic != null).toList(growable: false),
+          comics: comics,
         );
       } catch (error) {
+        _page--;
         yield currentState.clone(
           type: ComicsStateType.fetchFailure,
           error: error,

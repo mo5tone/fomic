@@ -6,14 +6,12 @@ enum ComicStateType {
   fetching,
   fetchSuccess,
   fetchFailure,
-  pushToChapterScreen,
 }
 
 class ComicState implements Cloneable {
   final ComicStateType type;
   final Comic comic;
   final List<Chapter> chapters;
-  final Chapter chapter;
   final bool isFavorite;
   final Object error;
   final StackTrace stackTrace;
@@ -32,7 +30,6 @@ class ComicState implements Cloneable {
     this.type, {
     this.comic,
     this.chapters = const [],
-    this.chapter,
     this.isFavorite = false,
     this.error,
     this.stackTrace,
@@ -44,7 +41,6 @@ class ComicState implements Cloneable {
     ComicStateType type,
     Comic comic,
     List<Chapter> chapters,
-    Chapter chapter,
     bool isFavorite,
     Object error,
     StackTrace stackTrace,
@@ -53,7 +49,6 @@ class ComicState implements Cloneable {
       type ?? this.type,
       comic: comic ?? this.comic,
       chapters: chapters ?? this.chapters,
-      chapter: chapter ?? this.chapter,
       isFavorite: isFavorite ?? this.isFavorite,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,

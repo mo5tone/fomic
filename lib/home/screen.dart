@@ -48,7 +48,8 @@ class _HomePage extends StatelessWidget {
             children: _bodies,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: const [
+            type: BottomNavigationBarType.fixed,
+            items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.photo_library),
                 title: Text('Comics'),

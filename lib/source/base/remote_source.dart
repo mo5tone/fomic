@@ -4,11 +4,11 @@ import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/source/base/base_source.dart';
+import 'package:fomic/source/dmzj/dmzj.dart';
+import 'package:fomic/source/manhuaren/manhuaren.dart';
+import 'package:fomic/source/source_id.dart';
 
 abstract class RemoteSource extends BaseSource {
-  @override
-  String get id => '$name[$baseUrl]';
-
   String get baseUrl;
 
   BaseOptions get baseOptions => BaseOptions(
@@ -59,8 +59,24 @@ abstract class RemoteSource extends BaseSource {
       LogInterceptor(),
     ]);
 
-  Future<List<Comic>> fetchComics(
-      {int page = 0, String query = '', List<Filter> filters = const []});
+  RemoteSource();
+
+  factory RemoteSource.of(SourceID id) {
+    switch (id) {
+      case SourceID.dmzj:
+        return Dmzj();
+      case SourceID.manhuaren:
+        return Manhuaren();
+      default:
+        return null;
+    }
+  }
+
+  Future<List<Comic>> fetchComics({
+    int page = 0,
+    String query = '',
+    List<Filter> filters = const [],
+  });
 
   Future<Comic> fetchComic(Comic comic);
 
@@ -71,6 +87,7 @@ abstract class RemoteSource extends BaseSource {
   @override
   void close() {
     // todo: do something to clean before closing.
+    client.clear();
   }
 }
 
@@ -82,20 +99,18 @@ abstract class Fetcher<Output> {
   Output onFailure(Object error, StackTrace stackTrace);
 
   final Dio client;
-  final List<Type> errorTypes;
 
-  Fetcher(
-    this.client, {
-    this.errorTypes = const [],
-  });
+  Fetcher(this.client);
+
+  bool toCatch(Object error) => false;
 
   Future<Output> fetch() {
     return client
         .request(requestOptions.path, options: requestOptions)
         .then(onSuccess)
-        .catchError(onFailure,
-            test: (err) => (err is DioError) || toCatch(err));
+        .catchError(
+          onFailure,
+          test: (err) => (err is DioError) || toCatch(err),
+        );
   }
-
-  bool toCatch(Object error) => false;
 }

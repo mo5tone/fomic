@@ -1,7 +1,7 @@
-abstract class BaseSource {
-  String get id;
+import 'package:fomic/source/source_id.dart';
 
-  String get name;
+abstract class BaseSource {
+  SourceID get id;
 
   void close();
 }

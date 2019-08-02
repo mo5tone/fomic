@@ -39,6 +39,7 @@ class _ChapterPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
+        bottom: false,
         child: BlocBuilder<ChapterBloc, ChapterState>(
           builder: (context, state) {
             final pages = state.pages;
@@ -50,11 +51,8 @@ class _ChapterPage extends StatelessWidget {
               return PageView.builder(
                 controller: PageController(),
                 itemCount: pages.length,
-                onPageChanged: (index) {
-                  // todo: add an indicator
-                },
                 itemBuilder: (context, index) => CachedNetworkImage(
-                  fit: BoxFit.fitHeight,
+                  httpHeaders: pages[index].headers,
                   imageUrl: pages[index].imageUrl,
                   imageBuilder: (context, provider) => PhotoView(
                     imageProvider: provider,

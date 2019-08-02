@@ -5,26 +5,31 @@ import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
-import 'package:fomic/source/base/api_source.dart';
+import 'package:fomic/source/base/remote/api_source.dart';
 import 'package:fomic/source/base/remote_source.dart';
 import 'package:fomic/source/manhuaren/filter.dart';
+import 'package:fomic/source/source_id.dart';
 
 class Manhuaren extends ApiSource {
   @override
-  String get name => '漫画人';
+  SourceID get id => SourceID.manhuaren;
 
   @override
   String get baseUrl => 'http://mangaapi.manhuaren.com';
 
   @override
   BaseOptions get baseOptions => super.baseOptions.merge(
-        headers: {
-          'X-Yq-Yqci': '{\"le\": \"zh\"}',
-          'User-Agent': 'okhttp/3.11.0',
-          'Referer': 'http://www.dm5.com/dm5api/',
-          'clubReferer': 'http://mangaapi.manhuaren.com/',
-        },
+        headers: headers,
       );
+
+  static const pageSize = 20;
+
+  static const headers = {
+    'X-Yq-Yqci': '{\"le\": \"zh\"}',
+    'User-Agent': 'okhttp/3.11.0',
+    'Referer': 'http://www.dm5.com/dm5api/',
+    'clubReferer': 'http://mangaapi.manhuaren.com/',
+  };
 
   Manhuaren._();
 
@@ -65,7 +70,6 @@ class Manhuaren extends ApiSource {
           },
         ),
       ];
-  static const pageSize = 20;
 
   String _gsnHash(Map<String, dynamic> queryParameters) {
     String cipher = '4e0a48e1c0b54041bce9c8f0e036124d';
@@ -91,30 +95,29 @@ class Manhuaren extends ApiSource {
   }
 
   @override
-  Future<List<Comic>> fetchComics(
-      {int page = 0, String query = '', List<Filter> filters = const []}) {
-    var fetcher =
-        _ComicsFetcher(client, page: page, query: query, filters: filters);
-    return fetcher.fetch();
-  }
+  Future<List<Comic>> fetchComics({
+    int page = 0,
+    String query = '',
+    List<Filter> filters = const [],
+  }) =>
+      _ComicsFetcher(
+        client,
+        page: page,
+        query: query,
+        filters: filters,
+      ).fetch();
 
   @override
-  Future<Comic> fetchComic(Comic comic) {
-    var fetcher = _ComicFetcher(client, comic: comic);
-    return fetcher.fetch();
-  }
+  Future<Comic> fetchComic(Comic comic) =>
+      _ComicFetcher(client, comic: comic).fetch();
 
   @override
-  Future<List<Chapter>> fetchChapters(Comic comic) {
-    var fetcher = _ChaptersFetcher(client, comic: comic);
-    return fetcher.fetch();
-  }
+  Future<List<Chapter>> fetchChapters(Comic comic) =>
+      _ChaptersFetcher(client, comic: comic).fetch();
 
   @override
-  Future<List<Page>> fetchPages(Chapter chapter) {
-    var fetcher = _PagesFetcher(client, chapter: chapter);
-    return fetcher.fetch();
-  }
+  Future<List<Page>> fetchPages(Chapter chapter) =>
+      _PagesFetcher(client, chapter: chapter).fetch();
 }
 
 class _ComicsFetcher extends Fetcher<List<Comic>> {
@@ -122,9 +125,12 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
   final String query;
   final List<Filter> filters;
 
-  _ComicsFetcher(Dio client,
-      {this.page, this.query, this.filters, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ComicsFetcher(
+    Dio client, {
+    this.page = 0,
+    this.query = '',
+    this.filters = const [],
+  }) : super(client);
 
   @override
   List<Comic> onFailure(Object error, StackTrace stackTrace) {
@@ -138,11 +144,11 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
     List array = (obj['result'] ?? obj['mangas']);
     return array
         .map((obj) => Comic()
-          ..source = Manhuaren()
+          ..id = SourceID.manhuaren
           ..url = '/v1/manga/getDetail?mangaId=${obj['mangaId']}'
           ..title = obj['mangaName']
           ..author = obj['mangaAuthor']
-          ..comicStatus = obj['mangaIsOver'] == 0
+          ..status = obj['mangaIsOver'] == 0
               ? ComicStatus.ongoing
               : (obj['mangaIsOver'] == 1
                   ? ComicStatus.completed
@@ -182,8 +188,11 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
 class _ComicFetcher extends Fetcher<Comic> {
   final Comic comic;
 
-  _ComicFetcher(Dio client, {@required this.comic, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ComicFetcher(
+    Dio client, {
+    @required this.comic,
+  })  : assert(comic != null),
+        super(client);
 
   @override
   Comic onFailure(Object error, StackTrace stackTrace) {
@@ -217,8 +226,9 @@ class _ComicFetcher extends Fetcher<Comic> {
       thumbnailUrl: thumbnailUrl,
       author: obj['mangaAuthors'].join(', '),
       genre: obj['mangaTheme'].replaceAll(' ', ', '),
-      comicStatus: status,
+      status: status,
       description: obj['mangaIntro'],
+      chapters: _ChaptersFetcher(client, comic: comic).onSuccess(response),
     );
   }
 
@@ -229,8 +239,11 @@ class _ComicFetcher extends Fetcher<Comic> {
 class _ChaptersFetcher extends Fetcher<List<Chapter>> {
   final Comic comic;
 
-  _ChaptersFetcher(Dio client, {@required this.comic, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ChaptersFetcher(
+    Dio client, {
+    @required this.comic,
+  })  : assert(comic != null),
+        super(client);
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
@@ -245,7 +258,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       List array = obj[type];
       if (array != null) {
         chapters.addAll(array.map((item) => Chapter()
-          ..source = Manhuaren()
+          ..id = SourceID.dmzj
           ..name =
               '${type == 'mangaEpisode' ? '【番外】' : ''}${item['sectionName']}${item['sectionTitle'] == '' ? '' : '：${item['sectionTitle']}'}'
           ..updateAt = utils.string2DateTime(item['releaseTime'], 'yyyy-MM-dd')
@@ -263,8 +276,11 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 class _PagesFetcher extends Fetcher<List<Page>> {
   final Chapter chapter;
 
-  _PagesFetcher(Dio client, {@required this.chapter, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _PagesFetcher(
+    Dio client, {
+    @required this.chapter,
+  })  : assert(chapter != null),
+        super(client);
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
@@ -279,8 +295,12 @@ class _PagesFetcher extends Fetcher<List<Page>> {
     String query = obj['query'];
     var index = 0;
     return array
-        .map((item) =>
-            Page(index++, '$host$item$query', imageUrl: '$host$item$query'))
+        .map((item) => Page()
+          ..id = SourceID.manhuaren
+          ..index = index++
+          ..url = '$host$item$query'
+          ..imageUrl = '$host$item$query'
+          ..headers = Manhuaren.headers)
         .toList();
   }
 

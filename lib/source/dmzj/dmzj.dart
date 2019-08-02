@@ -7,13 +7,14 @@ import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
-import 'package:fomic/source/base/api_source.dart';
+import 'package:fomic/source/base/remote/api_source.dart';
 import 'package:fomic/source/base/remote_source.dart';
 import 'package:fomic/source/dmzj/filter.dart';
+import 'package:fomic/source/source_id.dart';
 
 class Dmzj extends ApiSource {
   @override
-  String get name => '动漫之家';
+  SourceID get id => SourceID.dmzj;
 
   @override
   String get baseUrl => 'http://v2.api.dmzj.com';
@@ -38,30 +39,29 @@ class Dmzj extends ApiSource {
   factory Dmzj() => _instance;
 
   @override
-  Future<List<Comic>> fetchComics(
-      {int page = 0, String query = '', List<Filter> filters = const []}) {
-    var fetcher =
-        _ComicsFetcher(client, page: page, query: query, filters: filters);
-    return fetcher.fetch();
-  }
+  Future<List<Comic>> fetchComics({
+    int page = 0,
+    String query = '',
+    List<Filter> filters = const [],
+  }) =>
+      _ComicsFetcher(
+        client,
+        page: page,
+        query: query,
+        filters: filters,
+      ).fetch();
 
   @override
-  Future<Comic> fetchComic(Comic comic) {
-    var fetcher = _ComicFetcher(client, comic: comic);
-    return fetcher.fetch();
-  }
+  Future<Comic> fetchComic(Comic comic) =>
+      _ComicFetcher(client, comic: comic).fetch();
 
   @override
-  Future<List<Chapter>> fetchChapters(Comic comic) {
-    var fetcher = _ChaptersFetcher(client, comic: comic);
-    return fetcher.fetch();
-  }
+  Future<List<Chapter>> fetchChapters(Comic comic) =>
+      _ChaptersFetcher(client, comic: comic).fetch();
 
   @override
-  Future<List<Page>> fetchPages(Chapter chapter) {
-    var fetcher = _PagesFetcher(client, chapter: chapter);
-    return fetcher.fetch();
-  }
+  Future<List<Page>> fetchPages(Chapter chapter) =>
+      _PagesFetcher(client, chapter: chapter).fetch();
 }
 
 class _ComicsFetcher extends Fetcher<List<Comic>> {
@@ -69,12 +69,12 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
   final String query;
   final List<Filter> filters;
 
-  _ComicsFetcher(Dio client,
-      {this.page = 0,
-      this.query = '',
-      this.filters = const [],
-      List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ComicsFetcher(
+    Dio client, {
+    this.page = 0,
+    this.query = '',
+    this.filters = const [],
+  }) : super(client);
 
   List<Comic> _onSearchSuccess(Response response) {
     String data = response.data;
@@ -98,12 +98,12 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
           break;
       }
       return Comic()
-        ..source = Dmzj()
+        ..id = SourceID.dmzj
         ..url = '/comic/${obj['id']}.json'
         ..title = obj['name']
         ..author = obj['authors']
         ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..comicStatus = status
+        ..status = status
         ..description = obj['description'];
     }).toList();
   }
@@ -133,12 +133,12 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
           break;
       }
       return Comic()
-        ..source = Dmzj()
+        ..id = SourceID.dmzj
         ..url = '/comic/${obj['id']}.json'
         ..title = obj['title']
         ..author = obj['authors']
         ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..comicStatus = status
+        ..status = status
         ..description = obj['description'];
     }).toList();
   }
@@ -179,8 +179,11 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
 class _ComicFetcher extends Fetcher<Comic> {
   final Comic comic;
 
-  _ComicFetcher(Dio client, {@required this.comic, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ComicFetcher(
+    Dio client, {
+    @required this.comic,
+  })  : assert(comic != null),
+        super(client);
 
   @override
   Comic onFailure(Object error, StackTrace stackTrace) {
@@ -207,8 +210,9 @@ class _ComicFetcher extends Fetcher<Comic> {
       thumbnailUrl: obj['cover'],
       author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-      comicStatus: status,
+      status: status,
       description: obj['description'],
+      chapters: _ChaptersFetcher(client, comic: comic).onSuccess(response),
     );
   }
 
@@ -220,8 +224,11 @@ class _ComicFetcher extends Fetcher<Comic> {
 class _ChaptersFetcher extends Fetcher<List<Chapter>> {
   final Comic comic;
 
-  _ChaptersFetcher(Dio client, {@required this.comic, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _ChaptersFetcher(
+    Dio client, {
+    @required this.comic,
+  })  : assert(comic != null),
+        super(client);
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
@@ -230,15 +237,15 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 
   @override
   List<Chapter> onSuccess(Response response) {
-    var obj = response.data;
-    var id = obj['id'];
+    Map obj = response.data;
+    final id = obj['id'];
     var chapters = <Chapter>[];
-    for (var item0 in obj['chapters']) {
+    for (final item0 in obj['chapters']) {
       String prefix = item0['title'];
       List data = item0['data'];
-      for (var item1 in data) {
+      for (final item1 in data) {
         chapters.add(Chapter()
-          ..source = Dmzj()
+          ..id = SourceID.dmzj
           ..name = '$prefix: ${item1['chapter_title']}'
           ..updateAt =
               DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000)
@@ -256,8 +263,11 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 class _PagesFetcher extends Fetcher<List<Page>> {
   final Chapter chapter;
 
-  _PagesFetcher(Dio client, {@required this.chapter, List<Type> errorTypes})
-      : super(client, errorTypes: errorTypes);
+  _PagesFetcher(
+    Dio client, {
+    @required this.chapter,
+  })  : assert(chapter != null),
+        super(client);
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
@@ -268,7 +278,14 @@ class _PagesFetcher extends Fetcher<List<Page>> {
   List<Page> onSuccess(Response response) {
     List array = response.data['page_url'];
     var index = 0;
-    return array.map((obj) => Page(index++, '', imageUrl: obj)).toList();
+
+    return array
+        .map((obj) => Page()
+          ..id = SourceID.dmzj
+          ..index = index++
+          ..url = ''
+          ..imageUrl = obj)
+        .toList();
   }
 
   @override

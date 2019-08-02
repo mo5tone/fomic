@@ -1,17 +1,21 @@
-class Page {
-  final int index;
-  final String url;
-  String imageUrl;
+import 'package:fomic/source/source_id.dart';
 
-  Page(this.index, this.url, {this.imageUrl});
+class Page {
+  SourceID id;
+  int index;
+  String url;
+  String imageUrl;
+  Map<String, String> headers = {};
 
   @override
   String toString() {
     return '''
-    Page{
+    {
+      id: ${id.index},
       index: $index,
       url: $url,
       imageUrl: $imageUrl,
+      headers: $headers,
     }
     ''';
   }

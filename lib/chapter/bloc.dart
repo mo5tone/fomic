@@ -7,7 +7,7 @@ import 'package:fomic/source/base/remote_source.dart';
 class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
   final Chapter chapter;
 
-  RemoteSource get _source => chapter.source;
+  RemoteSource get _source => RemoteSource.of(chapter.id);
 
   ChapterBloc(this.chapter);
 
@@ -17,8 +17,7 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
   @override
   Stream<ChapterState> mapEventToState(ChapterEvent event) async* {
     if (event.type == ChapterEventType.fetch &&
-        (currentState.type == ChapterStateType.fetchSuccess ||
-            currentState.type == ChapterStateType.fetchFailure)) {
+        currentState.type != ChapterStateType.fetching) {
       yield currentState.clone(type: ChapterStateType.fetching);
       try {
         final pages = await _source.fetchPages(chapter);

@@ -1,38 +1,43 @@
 import 'package:fomic/common/helper/cloneable.dart';
-import 'package:fomic/source/base/remote_source.dart';
+import 'package:fomic/model/page.dart';
+import 'package:fomic/source/source_id.dart';
 
 class Chapter implements Cloneable {
-  RemoteSource source;
+  SourceID id;
+  String url;
   String name;
   DateTime updateAt;
-  String url;
   num chapterNumber;
+  List<Page> pages = [];
 
   @override
   String toString() {
     return '''
-    Chapter {
-      source: ${source.runtimeType},
+    {
+      id: ${id.index},
+      url: $url,
       name: $name,
       updateAt: $updateAt,
       chapterNumber: $chapterNumber,
-      url: $url,
+      pages: $pages,
     }
     ''';
   }
 
   @override
   clone({
+    String url,
     String name,
     DateTime updateAt,
-    String url,
     num chapterNumber,
+    List<Page> pages,
   }) {
     return Chapter()
-      ..source = this.source
+      ..id = this.id
+      ..url = url ?? this.url
       ..name = name ?? this.name
       ..updateAt = updateAt ?? this.updateAt
-      ..url = url ?? this.url
-      ..chapterNumber = chapterNumber ?? this.chapterNumber;
+      ..chapterNumber = chapterNumber ?? this.chapterNumber
+      ..pages = pages ?? this.pages;
   }
 }

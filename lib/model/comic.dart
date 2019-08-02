@@ -1,50 +1,44 @@
 import 'package:fomic/common/helper/cloneable.dart';
-import 'package:fomic/source/base/remote_source.dart';
+import 'package:fomic/model/chapter.dart';
+import 'package:fomic/source/source_id.dart';
 
-enum ComicStatus {
-  unknown,
-  ongoing,
-  completed,
-  licensed,
+class ComicStatus {
+  static const unknown = ComicStatus._('未知');
+  static const ongoing = ComicStatus._('连载');
+  static const completed = ComicStatus._('完结');
+  static const licensed = ComicStatus._('未授权');
+
+  final String name;
+
+  const ComicStatus._(this.name);
 }
 
 class Comic implements Cloneable<Comic> {
-  RemoteSource source;
+  SourceID id;
   String url;
+  String thumbnailUrl;
   String title;
   String artist;
   String author;
-  String description;
   String genre;
-  ComicStatus comicStatus = ComicStatus.unknown;
-  String thumbnailUrl;
-
-  String get status {
-    switch (comicStatus) {
-      case ComicStatus.ongoing:
-        return '连载';
-      case ComicStatus.completed:
-        return '完结';
-      case ComicStatus.licensed:
-        return '未授权';
-      default:
-        return '未知';
-    }
-  }
+  String description;
+  ComicStatus status = ComicStatus.unknown;
+  List<Chapter> chapters = [];
 
   @override
   String toString() {
     return '''
-    Comic{
-      source: ${source.runtimeType},
+    {
+      id: ${id.index},
       url: $url,
+      thumbnailUrl: $thumbnailUrl,
       title: $title,
       artist: $artist, 
       author: $author,
-      description: $description,
       genre: $genre,
-      thumbnailUrl: $thumbnailUrl,
+      description: $description,
       status: $status,
+      chapters: $chapters,
     }
     ''';
   }
@@ -52,23 +46,25 @@ class Comic implements Cloneable<Comic> {
   @override
   Comic clone({
     String url,
+    String thumbnailUrl,
     String title,
     String artist,
     String author,
-    String description,
     String genre,
-    ComicStatus comicStatus = ComicStatus.unknown,
-    String thumbnailUrl,
+    String description,
+    ComicStatus status,
+    List<Chapter> chapters,
   }) {
     return Comic()
-      ..source = this.source
+      ..id = this.id
       ..url = url ?? this.url
+      ..thumbnailUrl = thumbnailUrl ?? this.thumbnailUrl
       ..title = title ?? this.title
       ..artist = artist ?? this.artist
       ..author = author ?? this.author
-      ..description = description ?? this.description
       ..genre = genre ?? this.genre
-      ..comicStatus = comicStatus ?? this.comicStatus
-      ..thumbnailUrl = thumbnailUrl ?? this.thumbnailUrl;
+      ..description = description ?? this.description
+      ..status = status ?? this.status
+      ..chapters = chapters ?? this.chapters;
   }
 }
