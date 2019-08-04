@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fomic/app/app.dart';
+import 'package:fomic/views/screens/fomic/fomic.dart';
 
 
 void main() {

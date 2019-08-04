@@ -1,6 +1,6 @@
 import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/model/chapter.dart';
-import 'package:fomic/source/source_id.dart';
+import 'package:fomic/sources/base/source.dart';
 
 class ComicStatus {
   static const unknown = ComicStatus._('未知');
@@ -14,7 +14,7 @@ class ComicStatus {
 }
 
 class Comic implements Cloneable<Comic> {
-  SourceID id;
+  Source source;
   String url;
   String thumbnailUrl;
   String title;
@@ -29,7 +29,7 @@ class Comic implements Cloneable<Comic> {
   String toString() {
     return '''
     {
-      id: ${id.index},
+      source: ${source.runtimeType},
       url: $url,
       thumbnailUrl: $thumbnailUrl,
       title: $title,
@@ -56,7 +56,7 @@ class Comic implements Cloneable<Comic> {
     List<Chapter> chapters,
   }) {
     return Comic()
-      ..id = this.id
+      ..source = this.source
       ..url = url ?? this.url
       ..thumbnailUrl = thumbnailUrl ?? this.thumbnailUrl
       ..title = title ?? this.title

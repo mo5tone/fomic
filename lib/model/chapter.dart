@@ -1,9 +1,9 @@
 import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/model/page.dart';
-import 'package:fomic/source/source_id.dart';
+import 'package:fomic/sources/base/source.dart';
 
 class Chapter implements Cloneable {
-  SourceID id;
+  Source source;
   String url;
   String name;
   DateTime updateAt;
@@ -14,7 +14,7 @@ class Chapter implements Cloneable {
   String toString() {
     return '''
     {
-      id: ${id.index},
+      source: ${source.runtimeType},
       url: $url,
       name: $name,
       updateAt: $updateAt,
@@ -33,7 +33,7 @@ class Chapter implements Cloneable {
     List<Page> pages,
   }) {
     return Chapter()
-      ..id = this.id
+      ..source = this.source
       ..url = url ?? this.url
       ..name = name ?? this.name
       ..updateAt = updateAt ?? this.updateAt

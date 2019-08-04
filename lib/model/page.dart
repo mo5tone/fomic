@@ -1,7 +1,7 @@
-import 'package:fomic/source/source_id.dart';
+import 'package:fomic/sources/base/source.dart';
 
 class Page {
-  SourceID id;
+  Source source;
   int index;
   String url;
   String imageUrl;
@@ -11,7 +11,7 @@ class Page {
   String toString() {
     return '''
     {
-      id: ${id.index},
+      source: ${source.runtimeType},
       index: $index,
       url: $url,
       imageUrl: $imageUrl,

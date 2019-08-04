@@ -1,30 +1,26 @@
-import 'dart:math';
+abstract class Filter<State> {
+  final String name;
+  State state;
 
-import 'package:fomic/common/helper/pair.dart';
+  Filter(this.name, {this.state})
+      : assert(name != null && name.isNotEmpty),
+        assert(state != null);
 
-abstract class Filter<K, V> {
-  String get name;
-
-  List get options;
-
-  final K key;
-
-  V get value;
-
-  String get description;
-
-  Filter(this.key);
+  get value => null;
 }
 
-abstract class F<Q> {
-  String get name;
+abstract class SwitchableFilter extends Filter<bool> {
+  SwitchableFilter(String name, {bool state = false})
+      : super(name, state: state);
+}
 
-  List<Pair<String, Q>> get options;
+abstract class SelectableFilter<E> extends Filter<int> {
+  final List<E> options;
 
-  Pair<String, Q> find({int index, String alias}) {
-    var i = index ?? 0;
-    i = min(max(i, 0), options.length - 1);
-    return options.firstWhere((pair) => pair.first == alias,
-        orElse: () => options[i]);
-  }
+  SelectableFilter(String name, this.options, {int state = 0})
+      : assert(options != null && options.isNotEmpty),
+        super(name, state: state);
+
+  @override
+  get value => options[state];
 }
