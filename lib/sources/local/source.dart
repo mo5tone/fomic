@@ -19,4 +19,10 @@ class LocalSource extends Source {
           Pair('时间', '3'),
         ]),
       ];
+
+  LocalSource._();
+
+  static final LocalSource _instance = LocalSource._();
+
+  factory LocalSource() => _instance;
 }

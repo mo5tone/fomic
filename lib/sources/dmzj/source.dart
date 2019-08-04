@@ -119,13 +119,18 @@ class Dmzj extends ApiSource {
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
-  }) =>
-      _ComicsFetcher(
+  }) {
+    if (available) {
+      return _ComicsFetcher(
         client,
         page: page,
         query: query,
         filters: filters,
       ).fetch();
+    } else {
+      return Future.value([]);
+    }
+  }
 
   @override
   Future<Comic> fetchComic(Comic comic) =>

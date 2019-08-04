@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fomic/generated/i18n.dart';
+import 'package:fomic/views/pages/home/home_page.dart';
 
 class Fomic extends StatelessWidget {
   @override
@@ -16,7 +17,7 @@ class Fomic extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ],
       supportedLocales: S.delegate.supportedLocales,
-      home: Container(),
+      home: HomePage(),
     );
   }
 }

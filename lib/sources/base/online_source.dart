@@ -4,8 +4,6 @@ import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/sources/base/source.dart';
-import 'package:fomic/sources/dmzj/source.dart';
-import 'package:fomic/sources/manhuaren/source.dart';
 
 abstract class OnlineSource extends Source {
   String get baseUrl;
@@ -57,19 +55,6 @@ abstract class OnlineSource extends Source {
       ...interceptors,
       LogInterceptor(),
     ]);
-
-  OnlineSource();
-
-  factory OnlineSource.of(SourceId id) {
-    switch (id) {
-      case SourceId.dmzj:
-        return Dmzj();
-      case SourceId.manhuaren:
-        return Manhuaren();
-      default:
-        return null;
-    }
-  }
 
   Future<List<Comic>> fetchComics({
     int page = 0,
