@@ -7,7 +7,7 @@ enum HomeStateType {
   settingsPage,
 }
 
-class HomeState extends base.State {
+class HomeState extends base.State<HomeStateType> {
   HomeState(HomeStateType type) : super(type);
 
   @override

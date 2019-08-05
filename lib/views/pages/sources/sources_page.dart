@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/sources/bloc.dart';
 import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
+import 'package:fomic/views/pages/source/source_page.dart';
 
 class SourcesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (ctx) =>
-          SourcesBloc()..dispatch(SourcesEvent(SourcesEventType.init)),
+          SourcesBloc()..dispatch(SourcesEvent(SourcesEventType.initSources)),
       child: _SourcesPage(),
     );
   }
@@ -24,14 +25,6 @@ class _SourcesPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('Sources'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  // todo
-                },
-              ),
-            ],
           ),
           body: SafeArea(
             child: ListView.builder(
@@ -42,12 +35,19 @@ class _SourcesPage extends StatelessWidget {
                   value: state.sources[index].available,
                   onChanged: (value) {
                     final event = SourcesEvent(
-                      SourcesEventType.switchSource,
+                      SourcesEventType.switchSourceState,
                       sourceId: state.sources[index].id,
                     );
                     bloc.dispatch(event);
                   },
                 ),
+                onTap: () {
+                  final route = MaterialPageRoute<void>(builder: (ctx) {
+                    final source = state.sources[index];
+                    return SourcePage(source: source);
+                  });
+                  Navigator.of(ctx).push(route);
+                },
               ),
             ),
           ),

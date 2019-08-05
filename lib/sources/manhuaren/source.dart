@@ -20,7 +20,7 @@ class Manhuaren extends ApiSource {
   String get name => '漫画人';
 
   @override
-  List<Filter> get availableFilters => [
+  List<Filter> get filters => [
         SortFilter('状态', [
           Pair('热门', '0'),
           Pair('更新', '1'),

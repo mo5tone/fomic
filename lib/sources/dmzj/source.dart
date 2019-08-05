@@ -21,7 +21,7 @@ class Dmzj extends ApiSource {
   String get name => '动漫之家';
 
   @override
-  List<Filter> get availableFilters => [
+  List<Filter> get filters => [
         GenreFilter('分类', [
           Pair('全部', ''),
           Pair('冒险', '4'),
@@ -234,6 +234,7 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
     } else {
       var params = filters
           .where((filter) => filter is! SortFilter)
+          .map((filter) => filter as SelectableFilter)
           .map((filter) => filter.value)
           .join('-');
       if (params.isEmpty) {
@@ -241,6 +242,7 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
       }
       var order = filters
           .where((filter) => filter is SortFilter)
+          .map((filter) => filter as SelectableFilter)
           .map((filter) => filter.value)
           .join();
       if (order.isEmpty) {

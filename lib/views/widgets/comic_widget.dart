@@ -144,7 +144,7 @@ class _ComicInfoWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              Text('${comic.status}'),
+              Text('${comic.status.name}'),
             ],
           )
         ],

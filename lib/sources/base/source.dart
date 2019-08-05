@@ -18,7 +18,7 @@ abstract class Source {
 
   bool get available => _available;
 
-  List<Filter> get availableFilters;
+  List<Filter> get filters;
 
   Source();
 

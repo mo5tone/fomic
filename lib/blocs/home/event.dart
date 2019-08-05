@@ -1,3 +1,5 @@
+import 'package:fomic/blocs/base/event.dart' as base;
+
 enum HomeEventType {
   showComicsPage,
   showSourcesPage,
@@ -5,8 +7,6 @@ enum HomeEventType {
   showSettingsPage,
 }
 
-class HomeEvent {
-  final HomeEventType type;
-
-  HomeEvent(this.type) : assert(type != null);
+class HomeEvent extends base.Event<HomeEventType> {
+  HomeEvent(HomeEventType type) : super(type);
 }

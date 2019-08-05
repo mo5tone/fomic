@@ -6,7 +6,7 @@ abstract class Filter<State> {
       : assert(name != null && name.isNotEmpty),
         assert(state != null);
 
-  get value => null;
+  get option => null;
 }
 
 abstract class SwitchableFilter extends Filter<bool> {
@@ -22,5 +22,11 @@ abstract class SelectableFilter<E> extends Filter<int> {
         super(name, state: state);
 
   @override
-  get value => options[state];
+  E get option => options[state];
+
+  get key;
+
+  get value;
+
+  List<String> get keys;
 }

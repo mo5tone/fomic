@@ -6,7 +6,14 @@ class GenreFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  String get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }
 
 class StatusFilter extends SelectableFilter<Pair<String, String>> {
@@ -14,7 +21,14 @@ class StatusFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  String get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }
 
 class TypeFilter extends SelectableFilter<Pair<String, String>> {
@@ -22,7 +36,14 @@ class TypeFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }
 
 class SortFilter extends SelectableFilter<Pair<String, String>> {
@@ -30,7 +51,14 @@ class SortFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  String get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }
 
 class ReaderFilter extends SelectableFilter<Pair<String, String>> {
@@ -38,5 +66,12 @@ class ReaderFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  String get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }

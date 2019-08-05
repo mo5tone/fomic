@@ -11,7 +11,7 @@ class LocalSource extends Source {
   String get name => '本地';
 
   @override
-  List<Filter> get availableFilters => [
+  List<Filter> get filters => [
         SortFilter('排序', [
           Pair('名称', '0'),
           Pair('大小', '1'),

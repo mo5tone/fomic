@@ -1,21 +1,13 @@
+import 'package:fomic/blocs/base/event.dart' as base;
 import 'package:fomic/sources/base/source.dart';
 
 enum SourcesEventType {
-  init,
-  switchSource,
-  getAbleToSearch,
-  getUnableToSearch,
-  search,
+  initSources,
+  switchSourceState,
 }
 
-class SourcesEvent {
-  final SourcesEventType type;
+class SourcesEvent extends base.Event<SourcesEventType> {
   final SourceId sourceId;
-  final String query;
 
-  SourcesEvent(
-    this.type, {
-    this.sourceId,
-    this.query,
-  }) : assert(type != null);
+  SourcesEvent(SourcesEventType type, {this.sourceId}) : super(type);
 }

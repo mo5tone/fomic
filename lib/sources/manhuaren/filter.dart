@@ -7,14 +7,31 @@ class SortFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get value => options[state].second;
+  String get key => option.first;
+
+  @override
+  String get value => option.second;
+
+  @override
+  List<String> get keys =>
+      options.map((pair) => pair.first).toList(growable: false);
 }
 
 class CategoryFilter extends SelectableFilter<Triplet<String, String, String>> {
   CategoryFilter(String name, List<Triplet<String, String, String>> options)
       : super(name, options);
 
+  @override
+  get key => option.first;
+
+  @override
+  Triplet<String, String, String> get value => option;
+
   String get type => value.second;
 
   String get id => value.third;
+
+  @override
+  List<String> get keys =>
+      options.map((triplet) => triplet.first).toList(growable: false);
 }

@@ -10,8 +10,11 @@ class Fomic extends StatelessWidget {
       title: 'Fomic',
       theme: ThemeData(
         primaryColor: Colors.blue,
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.transparent,
+        ),
       ),
-      localizationsDelegates: const [
+      localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
