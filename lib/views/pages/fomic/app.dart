@@ -9,7 +9,7 @@ class Fomic extends StatelessWidget {
     return MaterialApp(
       title: 'Fomic',
       theme: ThemeData(
-        primaryColor: Colors.blue,
+        brightness: Brightness.dark,
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Colors.transparent,
         ),

@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/source/bloc.dart';
 import 'package:fomic/blocs/source/event.dart';
 import 'package:fomic/blocs/source/state.dart';
-import 'package:fomic/model/filter.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/views/widgets/comic_widget.dart';
 import 'package:fomic/views/widgets/filters_widget.dart';
-import 'package:fomic/views/widgets/selectable_filter_widget.dart';
 
 class SourcePage extends StatelessWidget {
   final Source source;
@@ -33,30 +31,47 @@ class _SourcePage extends StatelessWidget {
       builder: (ctx, state) {
         return Scaffold(
           appBar: AppBar(
-            centerTitle: true,
+            centerTitle: Theme.of(ctx).platform == TargetPlatform.iOS,
             title: state.isSearching
                 ? TextField(
+                    autofocus: true,
                     controller: textEditingController,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          bloc.dispatch(
+                              SourceEvent(SourceEventType.setQuery, query: ''));
+                          bloc.dispatch(
+                              SourceEvent(SourceEventType.endSearching));
+                        },
+                      ),
                       hintText: 'Keyword',
                       border: InputBorder.none,
                     ),
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (query) {
+                      print(query);
+                    },
                   )
                 : Text('${state.source.name}'),
             actions: [
-              IconButton(
-                icon: Icon(state.isSearching ? Icons.close : Icons.search),
-                onPressed: () {
-                  bloc.dispatch(
-                      SourceEvent(SourceEventType.setQuery, query: ''));
-                  if (state.isSearching) {
-                    bloc.dispatch(SourceEvent(SourceEventType.endSearching));
-                  } else {
+              if (!state.isSearching)
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    bloc.dispatch(
+                        SourceEvent(SourceEventType.setQuery, query: ''));
                     bloc.dispatch(SourceEvent(SourceEventType.startSearching));
-                  }
-                },
-              ),
+                  },
+                ),
               IconButton(
                 icon: Icon(Icons.filter_list),
                 onPressed: () {

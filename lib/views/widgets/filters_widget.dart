@@ -59,6 +59,7 @@ class _SwitchableFilterWidget extends StatelessWidget {
   final SwitchableFilter filter;
 
   const _SwitchableFilterWidget({Key key, this.filter}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
