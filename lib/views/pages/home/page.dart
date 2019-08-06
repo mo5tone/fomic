@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/home/bloc.dart';
 import 'package:fomic/blocs/home/event.dart';
 import 'package:fomic/blocs/home/state.dart';
-import 'package:fomic/views/pages/comics/comics_page.dart';
-import 'package:fomic/views/pages/downloads/downloads_page.dart';
-import 'package:fomic/views/pages/settings/settings_page.dart';
-import 'package:fomic/views/pages/sources/sources_page.dart';
+import 'package:fomic/views/pages/comics/page.dart';
+import 'package:fomic/views/pages/downloads/page.dart';
+import 'package:fomic/views/pages/settings/page.dart';
+import 'package:fomic/views/pages/sources/page.dart';
 
 class HomePage extends StatelessWidget {
   @override

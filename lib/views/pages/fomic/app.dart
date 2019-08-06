@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fomic/generated/i18n.dart';
-import 'package:fomic/views/pages/home/home_page.dart';
+import 'package:fomic/views/pages/home/page.dart';
 
 class Fomic extends StatelessWidget {
   @override

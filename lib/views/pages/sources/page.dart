@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/sources/bloc.dart';
 import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
-import 'package:fomic/views/pages/source/source_page.dart';
+import 'package:fomic/views/pages/source/page.dart';
 
 class SourcesPage extends StatelessWidget {
   @override

@@ -24,9 +24,9 @@ abstract class SelectableFilter<E> extends Filter<int> {
   @override
   E get option => options[state];
 
-  get key;
+  get alias;
 
   get value;
 
-  List<String> get keys;
+  List<String> get aliases;
 }

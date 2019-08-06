@@ -6,12 +6,12 @@ class SortFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get key => option.first;
+  String get alias => option.first;
 
   @override
   String get value => option.second;
 
   @override
-  List<String> get keys =>
+  List<String> get aliases =>
       options.map((pair) => pair.first).toList(growable: false);
 }
