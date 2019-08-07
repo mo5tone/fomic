@@ -10,7 +10,8 @@ enum SourcesStateType {
 }
 
 class SourcesState extends base.State<SourcesStateType> {
-  final Source source;
+  final SourceId sourceId;
+  final int page;
   final String query;
   final List<Filter> filters;
   final List<Comic> comics;
@@ -19,13 +20,14 @@ class SourcesState extends base.State<SourcesStateType> {
 
   SourcesState(
     SourcesStateType type, {
+    this.sourceId,
+    this.page = 0,
     this.query = '',
     this.filters = const [],
-    this.source,
     this.comics = const [],
     this.error,
     this.stackTrace,
-  })  : assert(source != null),
+  })  : assert(sourceId != null),
         super(type);
 
   List<Source> get sources => SourceId.values
@@ -36,7 +38,8 @@ class SourcesState extends base.State<SourcesStateType> {
   @override
   clone({
     SourcesStateType type,
-    Source source,
+    SourceId sourceId,
+    int page,
     String query,
     List<Filter> filters,
     List<Comic> comics,
@@ -45,7 +48,8 @@ class SourcesState extends base.State<SourcesStateType> {
   }) {
     return SourcesState(
       type ?? this.type,
-      source: source ?? this.source,
+      sourceId: sourceId ?? this.sourceId,
+      page: page ?? this.page,
       query: query ?? this.query,
       filters: filters ?? this.filters,
       comics: comics ?? this.comics,

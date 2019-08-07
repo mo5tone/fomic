@@ -149,7 +149,11 @@ class Manhuaren extends ApiSource {
   }
 
   @override
-  Future<List<Comic>> fetchComics({int page = 0, String query = ''}) {
+  Future<List<Comic>> fetchComics({
+    int page = 0,
+    String query = '',
+    List<Filter> filters = const [],
+  }) {
     return _ComicsFetcher(
       client,
       page: page,

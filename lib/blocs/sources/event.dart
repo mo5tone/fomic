@@ -3,7 +3,11 @@ import 'package:fomic/sources/base/source.dart';
 
 enum SourcesEventType {
   init,
-  enableSource, disableSource, fetch, resetFilters,
+  enableSource,
+  disableSource,
+  displaySource,
+  fetch,
+  clearFilters,
 }
 
 class SourcesEvent extends base.Event<SourcesEventType> {
