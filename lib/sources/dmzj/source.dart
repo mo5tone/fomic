@@ -115,21 +115,13 @@ class Dmzj extends ApiSource {
   factory Dmzj() => _instance;
 
   @override
-  Future<List<Comic>> fetchComics({
-    int page = 0,
-    String query = '',
-    List<Filter> filters = const [],
-  }) {
-    if (available) {
-      return _ComicsFetcher(
-        client,
-        page: page,
-        query: query,
-        filters: filters,
-      ).fetch();
-    } else {
-      return Future.value([]);
-    }
+  Future<List<Comic>> fetchComics({int page = 0, String query = ''}) {
+    return _ComicsFetcher(
+      client,
+      page: page,
+      query: query,
+      filters: filters,
+    ).fetch();
   }
 
   @override

@@ -18,44 +18,47 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _HomePage extends StatelessWidget {
-  final List<Widget> _bodies = List.filled(4, Container());
+class _HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<_HomePage> {
+  HomeBloc bloc;
+  List<Widget> _bodies;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<HomeBloc>(context);
+    _bodies = List.filled(4, Container());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<HomeBloc>(context);
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (ctx, state) {
-        var index = 0;
-        switch (state.type) {
-          case HomeStateType.sourcesPage:
-            index = 1;
-            if (_bodies[index] is! SourcesPage) {
-              _bodies[index] = SourcesPage();
-            }
-            break;
-          case HomeStateType.downloadsPage:
-            index = 2;
-            if (_bodies[index] is! DownloadsPage) {
-              _bodies[index] = DownloadsPage();
-            }
-            break;
-          case HomeStateType.settingsPage:
-            index = 3;
-            if (_bodies[index] is! SettingsPage) {
-              _bodies[index] = SettingsPage();
-            }
-            break;
-          default:
-            index = 0;
-            if (_bodies[index] is! ComicsPage) {
-              _bodies[index] = ComicsPage();
-            }
-            break;
+        if (_bodies[state.index] is Container) {
+          switch (state.index) {
+            case 0:
+              _bodies[state.index] = ComicsPage();
+              break;
+            case 1:
+              _bodies[state.index] = SourcesPage();
+              break;
+            case 2:
+              _bodies[state.index] = DownloadsPage();
+              break;
+            case 3:
+              _bodies[state.index] = SettingsPage();
+              break;
+            default:
+              break;
+          }
         }
         return Scaffold(
           body: IndexedStack(
-            index: index,
+            index: state.index,
             children: _bodies,
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -78,22 +81,9 @@ class _HomePage extends StatelessWidget {
                 title: Text('Settings'),
               ),
             ],
-            currentIndex: index,
+            currentIndex: state.index,
             onTap: (index) {
-              switch (index) {
-                case 1:
-                  bloc.dispatch(HomeEvent(HomeEventType.showSourcesPage));
-                  break;
-                case 2:
-                  bloc.dispatch(HomeEvent(HomeEventType.showDownloadsPage));
-                  break;
-                case 3:
-                  bloc.dispatch(HomeEvent(HomeEventType.showSettingsPage));
-                  break;
-                default:
-                  bloc.dispatch(HomeEvent(HomeEventType.showComicsPage));
-                  break;
-              }
+              bloc.dispatch(HomeEvent(HomeEventType.display, index: index));
             },
           ),
         );

@@ -2,8 +2,8 @@ import 'package:fomic/blocs/base/event.dart' as base;
 import 'package:fomic/sources/base/source.dart';
 
 enum SourcesEventType {
-  initSources,
-  switchSourceState,
+  init,
+  enableSource, disableSource, fetch, resetFilters,
 }
 
 class SourcesEvent extends base.Event<SourcesEventType> {

@@ -15,108 +15,135 @@ class SourcePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      builder: (ctx) =>
-          SourceBloc(source)..dispatch(SourceEvent(SourceEventType.fetch)),
+      builder: (context) {
+        return SourceBloc(source)..dispatch(SourceEvent(SourceEventType.fetch));
+      },
       child: _SourcePage(),
     );
   }
 }
 
-class _SourcePage extends StatelessWidget {
+class _SourcePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SourceBloc>(context);
-    final textEditingController = TextEditingController();
-    return BlocBuilder<SourceBloc, SourceState>(
-      builder: (ctx, state) {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: Theme.of(ctx).platform == TargetPlatform.iOS,
-            title: state.isSearching
-                ? TextField(
-                    autofocus: true,
-                    controller: textEditingController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          bloc.dispatch(
-                              SourceEvent(SourceEventType.setQuery, query: ''));
-                          bloc.dispatch(
-                              SourceEvent(SourceEventType.endSearching));
-                        },
-                      ),
-                      hintText: 'Keyword',
-                      border: InputBorder.none,
-                    ),
-                    textInputAction: TextInputAction.search,
-                    onSubmitted: (query) {
-                      print(query);
-                    },
-                  )
-                : Text('${state.source.name}'),
-            actions: [
-              if (!state.isSearching)
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    bloc.dispatch(
-                        SourceEvent(SourceEventType.setQuery, query: ''));
-                    bloc.dispatch(SourceEvent(SourceEventType.startSearching));
-                  },
-                ),
-              IconButton(
-                icon: Icon(Icons.filter_list),
-                onPressed: () {
-                  // todo
-                  showModalBottomSheet(
-                    context: ctx,
-                    builder: (ctx) {
-                      return SafeArea(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            child: Container(
-                              color: Theme.of(ctx).cardColor,
-                              child: FiltersWidget(
-                                filters: state.source.filters,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-          body: SafeArea(
-            child: Container(
-              child: GridView.builder(
-                padding: EdgeInsets.all(8),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 10 / 13,
-                ),
-                itemCount: state.comics.length,
-                itemBuilder: (ctx, index) =>
-                    ComicWidget(comic: state.comics[index]),
-              ),
+  __SourcePageState createState() => __SourcePageState();
+}
+
+class __SourcePageState extends State<_SourcePage> {
+  SourceBloc bloc;
+  TextEditingController textEditingController;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
+  Widget filtersBottomSheet(BuildContext context, SourceState state) {
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 8,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          child: Container(
+            color: Theme.of(context).cardColor,
+            child: FiltersWidget(
+              filters: state.source.filters,
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget appBar(BuildContext context, SourceState state) {
+    if (state.isSearching) {
+      return AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            bloc.dispatch(SourceEvent(SourceEventType.endSearching));
+          },
+        ),
+        title: TextField(
+          controller: textEditingController,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Keyword',
+          ),
+          onSubmitted: (query) {
+            bloc.dispatch(SourceEvent(
+              SourceEventType.fetch,
+              query: query ?? '',
+            ));
+          },
+        ),
+      );
+    } else {
+      return AppBar(
+        centerTitle: Theme.of(context).platform == TargetPlatform.iOS,
+        title: Text('${state.source.name}'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              bloc.dispatch(SourceEvent(SourceEventType.startSearching));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              // todo: show endDrawer.
+              _scaffoldKey.currentState.openEndDrawer();
+            },
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget body(BuildContext context, SourceState state) {
+    return SafeArea(
+      child: Container(
+        child: GridView.builder(
+          padding: EdgeInsets.all(8),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 10 / 13,
+          ),
+          itemCount: state.comics.length,
+          itemBuilder: (context, index) => ComicWidget(
+            comic: state.comics[index],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<SourceBloc>(context);
+    textEditingController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SourceBloc, SourceState>(
+      builder: (context, state) {
+        return Scaffold(
+          key: _scaffoldKey,
+          appBar: appBar(context, state),
+          endDrawer: Drawer(
+            child: FiltersWidget(
+              filters: state.source.filters,
+            ),
+          ),
+          body: body(context, state),
         );
       },
     );

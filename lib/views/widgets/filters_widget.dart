@@ -3,8 +3,15 @@ import 'package:fomic/model/filter.dart';
 
 class FiltersWidget extends StatelessWidget {
   final List<Filter> filters;
+  final void Function() onReset;
+  final void Function() onFilter;
 
-  const FiltersWidget({Key key, this.filters}) : super(key: key);
+  const FiltersWidget({
+    Key key,
+    this.filters,
+    this.onReset,
+    this.onFilter,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +78,9 @@ class _SwitchableFilterWidget extends StatelessWidget {
           ),
           Switch(
             value: filter.state,
-            onChanged: (value) {},
+            onChanged: (value) {
+              filter.state = value;
+            },
           ),
         ],
       ),
@@ -94,9 +103,9 @@ class _SelectableFilterWidget extends StatelessWidget {
           Expanded(
             child: Text(filter.name),
           ),
-          Spacer(),
+//          Spacer(),
           Expanded(
-            flex: 10,
+            flex: 5,
             child: Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -104,7 +113,22 @@ class _SelectableFilterWidget extends StatelessWidget {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(key),
+                    Flexible(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 8,
+                          ),
+                          color: Theme.of(context).colorScheme.background,
+                          child: Text(
+                            key,
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 );
               }).toList(growable: false),

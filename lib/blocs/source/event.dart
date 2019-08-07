@@ -6,8 +6,6 @@ enum SourceEventType {
   more,
   startSearching,
   endSearching,
-  setQuery,
-  setFilters,
 }
 
 class SourceEvent extends base.Event<SourceEventType> {

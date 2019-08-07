@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^0.20.0
   # key/value store
   shared_preferences: ^0.5.3+4
+  # route
+  fluro: "^1.5.1"
 
 dev_dependencies:
   flutter_test:

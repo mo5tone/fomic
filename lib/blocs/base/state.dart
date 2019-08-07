@@ -11,4 +11,9 @@ abstract class State<Type> implements Comparable, Cloneable {
   /// 0x10: void listener(ctx, state)
   @override
   int compareTo(other) => 0x11;
+
+  @override
+  String toString() {
+    return '$type';
+  }
 }

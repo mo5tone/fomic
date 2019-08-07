@@ -1,10 +1,32 @@
 import 'package:fomic/blocs/base/state.dart' as base;
+import 'package:fomic/model/comic.dart';
+import 'package:fomic/model/filter.dart';
 import 'package:fomic/sources/base/source.dart';
 
-enum SourcesStateType { stateSwitched }
+enum SourcesStateType {
+  fetching,
+  successful,
+  failed,
+}
 
 class SourcesState extends base.State<SourcesStateType> {
-  SourcesState(SourcesStateType type) : super(type);
+  final Source source;
+  final String query;
+  final List<Filter> filters;
+  final List<Comic> comics;
+  final Object error;
+  final StackTrace stackTrace;
+
+  SourcesState(
+    SourcesStateType type, {
+    this.query = '',
+    this.filters = const [],
+    this.source,
+    this.comics = const [],
+    this.error,
+    this.stackTrace,
+  })  : assert(source != null),
+        super(type);
 
   List<Source> get sources => SourceId.values
       .map((id) => Source.of(id))
@@ -12,9 +34,23 @@ class SourcesState extends base.State<SourcesStateType> {
       .toList(growable: false);
 
   @override
-  clone({SourcesStateType type}) {
+  clone({
+    SourcesStateType type,
+    Source source,
+    String query,
+    List<Filter> filters,
+    List<Comic> comics,
+    Object error,
+    StackTrace stackTrace,
+  }) {
     return SourcesState(
       type ?? this.type,
+      source: source ?? this.source,
+      query: query ?? this.query,
+      filters: filters ?? this.filters,
+      comics: comics ?? this.comics,
+      error: error ?? this.error,
+      stackTrace: stackTrace ?? this.stackTrace,
     );
   }
 }

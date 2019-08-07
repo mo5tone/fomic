@@ -38,6 +38,16 @@ abstract class Source {
     return source;
   }
 
+  void resetFilter() {
+    filters.forEach((filter) {
+      if (filter.state is int) {
+        filter.state = 0;
+      } else if (filter.state is bool) {
+        filter.state = false;
+      }
+    });
+  }
+
   void enable() {
     if (_available != true) {
       _available = true;

@@ -28,18 +28,21 @@ class SourceBloc extends Bloc<SourceEvent, SourceState> {
             yield currentState.clone(type: SourceStateType.fetching);
             try {
               final comics = await source
-                  .fetchComics(
-                      page: _page, query: event.query, filters: event.filters)
+                  .fetchComics(page: _page, query: event.query)
                   .then((comics) => comics
                       .where((comic) => comic != null)
                       .toList(growable: false));
               yield currentState.clone(
                 type: SourceStateType.fetchSuccess,
+                query: event.query,
+                filters: event.filters,
                 comics: comics,
               );
             } catch (error) {
               yield currentState.clone(
                 type: SourceStateType.fetchFailure,
+                query: event.query,
+                filters: event.filters,
                 error: error,
               );
             }
@@ -56,8 +59,7 @@ class SourceBloc extends Bloc<SourceEvent, SourceState> {
             yield currentState.clone(type: SourceStateType.fetching);
             try {
               final comics = await source
-                  .fetchComics(
-                      page: _page, query: event.query, filters: event.filters)
+                  .fetchComics(page: _page, query: event.query)
                   .then((comics) => comics
                       .where((comic) => comic != null)
                       .toList(growable: false));
@@ -78,16 +80,6 @@ class SourceBloc extends Bloc<SourceEvent, SourceState> {
             // todo: impl. for LocalSource
           }
         }
-        break;
-      case SourceEventType.setQuery:
-        yield currentState.clone(
-          query: event.query,
-        );
-        break;
-      case SourceEventType.setFilters:
-        yield currentState.clone(
-          filters: event.filters,
-        );
         break;
       case SourceEventType.startSearching:
         yield currentState.clone(isSearchable: true);
