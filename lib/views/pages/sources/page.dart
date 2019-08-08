@@ -162,6 +162,7 @@ class _PageState extends State<_Page> {
                   child: FiltersWidget(
                     filters: state.filters,
                     onApply: () {
+                      textEditingController.clear();
                       bloc.dispatch(SourcesEvent(
                         SourcesEventType.fetch,
                         filters: state.filters,
@@ -193,7 +194,11 @@ class _PageState extends State<_Page> {
                       ),
                       onRefresh: () {
                         return Future(() {
-                          bloc.dispatch(SourcesEvent(SourcesEventType.fetch));
+                          bloc.dispatch(SourcesEvent(
+                            SourcesEventType.fetch,
+                            query: state.query,
+                            filters: state.filters,
+                          ));
                         });
                       },
                     ),

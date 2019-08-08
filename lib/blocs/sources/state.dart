@@ -12,6 +12,7 @@ enum SourcesStateType {
 class SourcesState extends base.State<SourcesStateType> {
   final SourceId sourceId;
   final bool searching;
+  final String query;
   final List<Comic> comics;
   final Object error;
   final StackTrace stackTrace;
@@ -29,6 +30,7 @@ class SourcesState extends base.State<SourcesStateType> {
     SourcesStateType type, {
     this.sourceId,
     this.searching = false,
+    this.query = '',
     this.comics = const [],
     this.error,
     this.stackTrace,
@@ -40,6 +42,7 @@ class SourcesState extends base.State<SourcesStateType> {
     SourcesStateType type,
     SourceId sourceId,
     bool searching,
+    String query,
     List<Comic> comics,
     Object error,
     StackTrace stackTrace,
@@ -48,6 +51,7 @@ class SourcesState extends base.State<SourcesStateType> {
       type ?? this.type,
       sourceId: sourceId ?? this.sourceId,
       searching: searching ?? this.searching,
+      query: query ?? this.query,
       comics: comics ?? this.comics,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,

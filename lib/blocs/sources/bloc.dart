@@ -74,6 +74,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
                   .toList(growable: false);
               yield currentState.clone(
                 type: SourcesStateType.successful,
+                query: event.query,
                 comics: [
                   if (_page > 0) ...currentState.comics,
                   ...comics,
@@ -83,6 +84,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
               // todo: local source
               yield currentState.clone(
                 type: SourcesStateType.successful,
+                query: event.query,
                 comics: [],
               );
             }
@@ -92,6 +94,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
             }
             yield currentState.clone(
               type: SourcesStateType.failed,
+              query: event.query,
               error: error,
             );
           }

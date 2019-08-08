@@ -106,6 +106,7 @@ class _SelectableFilterWidget extends StatefulWidget {
   final SelectableFilter filter;
 
   const _SelectableFilterWidget({Key key, this.filter}) : super(key: key);
+
   @override
   _SelectableFilterWidgetState createState() => _SelectableFilterWidgetState();
 }
@@ -153,7 +154,10 @@ class _SelectableFilterWidgetState extends State<_SelectableFilterWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Text(widget.filter.name),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Text(widget.filter.name),
+            ),
           ),
 //          Spacer(),
           Expanded(
