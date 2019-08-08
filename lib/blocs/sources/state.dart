@@ -12,18 +12,23 @@ enum SourcesStateType {
 class SourcesState extends base.State<SourcesStateType> {
   final SourceId sourceId;
   final bool searching;
-  final String query;
-  final List<Filter> filters;
   final List<Comic> comics;
   final Object error;
   final StackTrace stackTrace;
+
+  List<Filter> _filters;
+
+  List<Filter> get filters {
+    if (_filters == null) {
+      _filters = List.from(Source.of(sourceId).filters);
+    }
+    return _filters;
+  }
 
   SourcesState(
     SourcesStateType type, {
     this.sourceId,
     this.searching = false,
-    this.query = '',
-    this.filters = const [],
     this.comics = const [],
     this.error,
     this.stackTrace,
@@ -35,8 +40,6 @@ class SourcesState extends base.State<SourcesStateType> {
     SourcesStateType type,
     SourceId sourceId,
     bool searching,
-    String query,
-    List<Filter> filters,
     List<Comic> comics,
     Object error,
     StackTrace stackTrace,
@@ -45,11 +48,9 @@ class SourcesState extends base.State<SourcesStateType> {
       type ?? this.type,
       sourceId: sourceId ?? this.sourceId,
       searching: searching ?? this.searching,
-      query: query ?? this.query,
-      filters: filters ?? this.filters,
       comics: comics ?? this.comics,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,
-    );
+    ).._filters = filters;
   }
 }

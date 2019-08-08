@@ -232,6 +232,7 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
           .where((filter) => filter is! SortFilter)
           .map((filter) => filter as SelectableFilter)
           .map((filter) => filter.value)
+          .where((value) => value.isNotEmpty)
           .join('-');
       if (params.isEmpty) {
         params = '0';

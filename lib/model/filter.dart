@@ -6,12 +6,19 @@ abstract class Filter<State> {
       : assert(name != null && name.isNotEmpty),
         assert(state != null);
 
+  void reset();
+
   get option => null;
 }
 
 abstract class SwitchableFilter extends Filter<bool> {
   SwitchableFilter(String name, {bool state = false})
       : super(name, state: state);
+
+  @override
+  void reset() {
+    state = false;
+  }
 }
 
 abstract class SelectableFilter<E> extends Filter<int> {
@@ -20,6 +27,11 @@ abstract class SelectableFilter<E> extends Filter<int> {
   SelectableFilter(String name, this.options, {int state = 0})
       : assert(options != null && options.isNotEmpty),
         super(name, state: state);
+
+  @override
+  void reset() {
+    state = 0;
+  }
 
   @override
   E get option => options[state];

@@ -5,6 +5,7 @@ import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/views/widgets/comic_widget.dart';
+import 'package:fomic/views/widgets/filters_widget.dart';
 
 class SourcesPage extends StatelessWidget {
   @override
@@ -158,9 +159,15 @@ class _PageState extends State<_Page> {
           endDrawer: state.searching
               ? null
               : Drawer(
-                  // todo: filter drawer.
-                  child: Center(
-                    child: Text('endDrawer'),
+                  child: FiltersWidget(
+                    filters: state.filters,
+                    onApply: () {
+                      bloc.dispatch(SourcesEvent(
+                        SourcesEventType.fetch,
+                        filters: state.filters,
+                      ));
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ),
           body: SafeArea(
