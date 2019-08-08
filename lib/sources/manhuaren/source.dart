@@ -7,12 +7,12 @@ import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/sources/base/online/json_source.dart';
 import 'package:fomic/sources/base/online_source.dart';
-import 'package:fomic/sources/base/remote/api_source.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/manhuaren//filter.dart';
 
-class Manhuaren extends ApiSource {
+class Manhuaren extends JsonSource {
   @override
   SourceId get id => SourceId.manhuaren;
 

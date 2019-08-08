@@ -5,12 +5,10 @@ class ComicsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${this.runtimeType}'),
+        title: Text('Comics'),
       ),
       body: Container(
-        child: Center(
-          child: Text('${this.runtimeType}'),
-        ),
+        child: Center(),
       ),
     );
   }

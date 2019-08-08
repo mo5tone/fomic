@@ -11,7 +11,7 @@ enum SourcesStateType {
 
 class SourcesState extends base.State<SourcesStateType> {
   final SourceId sourceId;
-  final int page;
+  final bool searching;
   final String query;
   final List<Filter> filters;
   final List<Comic> comics;
@@ -21,7 +21,7 @@ class SourcesState extends base.State<SourcesStateType> {
   SourcesState(
     SourcesStateType type, {
     this.sourceId,
-    this.page = 0,
+    this.searching = false,
     this.query = '',
     this.filters = const [],
     this.comics = const [],
@@ -30,16 +30,11 @@ class SourcesState extends base.State<SourcesStateType> {
   })  : assert(sourceId != null),
         super(type);
 
-  List<Source> get sources => SourceId.values
-      .map((id) => Source.of(id))
-      .where((source) => source != null)
-      .toList(growable: false);
-
   @override
   clone({
     SourcesStateType type,
     SourceId sourceId,
-    int page,
+    bool searching,
     String query,
     List<Filter> filters,
     List<Comic> comics,
@@ -49,7 +44,7 @@ class SourcesState extends base.State<SourcesStateType> {
     return SourcesState(
       type ?? this.type,
       sourceId: sourceId ?? this.sourceId,
-      page: page ?? this.page,
+      searching: searching ?? this.searching,
       query: query ?? this.query,
       filters: filters ?? this.filters,
       comics: comics ?? this.comics,

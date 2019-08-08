@@ -95,6 +95,33 @@ class _SelectableFilterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final children = <Widget>[];
+    for (var i = 0; i < filter.aliases.length; i++) {
+      final alias = filter.aliases[i];
+      children.add(Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                color: i == filter.state
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.background,
+                child: Text(
+                  alias,
+                  style: Theme.of(context).textTheme.body1,
+                ),
+              ),
+            ),
+          )
+        ],
+      ));
+    }
     return Container(
       padding: EdgeInsets.all(4),
       child: Row(
@@ -109,29 +136,7 @@ class _SelectableFilterWidget extends StatelessWidget {
             child: Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: filter.aliases.map((key) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 8,
-                          ),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Text(
-                            key,
-                            style: Theme.of(context).textTheme.body1,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              }).toList(growable: false),
+              children: children,
             ),
           ),
         ],

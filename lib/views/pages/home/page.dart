@@ -13,17 +13,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (ctx) => HomeBloc(),
-      child: _HomePage(),
+      child: _Page(),
     );
   }
 }
 
-class _HomePage extends StatefulWidget {
+class _Page extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _PageState createState() => _PageState();
 }
 
-class _HomePageState extends State<_HomePage> {
+class _PageState extends State<_Page> {
   HomeBloc bloc;
   List<Widget> _bodies;
 

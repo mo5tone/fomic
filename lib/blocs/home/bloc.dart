@@ -8,12 +8,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event.type == HomeEventType.display) {
-      if (currentState.index != event.index) {
-        yield currentState.clone(
-          index: event.index,
-        );
-      }
+    switch (event.type) {
+      case HomeEventType.display:
+        if (currentState.index != event.index) {
+          yield currentState.clone(
+            index: event.index,
+          );
+        }
+        break;
     }
   }
 }

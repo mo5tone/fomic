@@ -5,12 +5,10 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${this.runtimeType}'),
+        title: Text('Setting'),
       ),
       body: Container(
-        child: Center(
-          child: Text('${this.runtimeType}'),
-        ),
+        child: Center(),
       ),
     );
   }
