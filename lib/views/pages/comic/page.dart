@@ -45,9 +45,35 @@ class _PageState extends State<_Page> {
     return BlocBuilder<ComicBloc, ComicState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(),
           body: SafeArea(
-            child: Container(),
+            top: false,
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  title: Text('${state.comic.title}'),
+                  pinned: true,
+                  expandedHeight: MediaQuery.of(context).size.height / 3,
+                ),
+                SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        child: Center(
+                          child: Text('${state.chapters[index].name}'),
+                        ),
+                      );
+                    },
+                    childCount: state.chapters.length,
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 4 / 1,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

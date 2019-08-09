@@ -4,6 +4,7 @@ import 'package:fomic/blocs/sources/bloc.dart';
 import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
 import 'package:fomic/sources/base/source.dart';
+import 'package:fomic/views/pages/comic/page.dart';
 import 'package:fomic/views/widgets/comic_widget.dart';
 import 'package:fomic/views/widgets/filters_widget.dart';
 
@@ -80,7 +81,6 @@ class _PageState extends State<_Page> {
             scaffoldKey.currentState.openDrawer();
           },
         ),
-        centerTitle: Theme.of(context).platform == TargetPlatform.iOS,
         title: Text('${Source.of(state.sourceId).name}'),
         actions: [
           IconButton(
@@ -189,7 +189,17 @@ class _PageState extends State<_Page> {
                           childAspectRatio: 10 / 13,
                         ),
                         itemBuilder: (context, index) {
-                          return ComicWidget(comic: state.comics[index]);
+                          return ComicWidget(
+                            comic: state.comics[index],
+                            onTap: () {
+                              final route = MaterialPageRoute<void>(
+                                builder: (context) {
+                                  return ComicPage(comic: state.comics[index]);
+                                },
+                              );
+                              Navigator.of(context).push(route);
+                            },
+                          );
                         },
                       ),
                       onRefresh: () {

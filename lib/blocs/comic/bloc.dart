@@ -24,19 +24,13 @@ class ComicBloc extends Bloc<ComicEvent, ComicState> {
         try {
           if (source is OnlineSource) {
             final comic = await source.fetchComic(this.comic);
-            if (comic.chapters.isEmpty) {
-              yield currentState.clone(
-                type: ComicStateType.successful,
-                comic: comic,
-                chapters: await source.fetchChapters(comic),
-              );
-            } else {
-              yield currentState.clone(
-                type: ComicStateType.successful,
-                comic: comic,
-                chapters: comic.chapters,
-              );
-            }
+            yield currentState.clone(
+              type: ComicStateType.successful,
+              comic: comic,
+              chapters: comic.chapters.isEmpty
+                  ? await source.fetchChapters(comic)
+                  : comic.chapters,
+            );
           } else if (source is LocalSource) {
             yield currentState.clone();
           }
