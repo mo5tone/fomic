@@ -1,4 +1,5 @@
-import 'dart:ui';
+import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -31,15 +32,21 @@ class _Page extends StatefulWidget {
 
 class _PageState extends State<_Page> {
   ComicBloc bloc;
+  ScrollController scrollController;
+
+  void scrollControllerListener() {}
 
   @override
   void initState() {
     super.initState();
     bloc = BlocProvider.of<ComicBloc>(context);
+    scrollController = ScrollController()
+      ..addListener(scrollControllerListener);
   }
 
   @override
   void dispose() {
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -48,6 +55,7 @@ class _PageState extends State<_Page> {
     final appBarExpandedHeight = MediaQuery.of(context).size.height / 3;
     return BlocBuilder<ComicBloc, ComicState>(
       builder: (context, state) {
+        var extraHeight = 0.0;
         final backgroundImage = Hero(
           tag: '${state.comic.source.id.index}${state.comic.url}',
           child: CachedNetworkImage(
@@ -61,7 +69,7 @@ class _PageState extends State<_Page> {
           ),
         );
         final blurMask = BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          filter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor.withOpacity(0.5),
@@ -76,24 +84,31 @@ class _PageState extends State<_Page> {
             height: appBarExpandedHeight - kToolbarHeight,
             padding: EdgeInsets.all(8),
             child: SingleChildScrollView(
-              child: Text.rich(TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Summary: ${state.comic.description}',
-                    style: Theme.of(context).textTheme.subhead,
-                  ),
-                  TextSpan(text: '\n'),
-                  TextSpan(
-                    text: 'Authors: ${state.comic.author}',
-                    style: Theme.of(context).textTheme.body1,
-                  ),
-                  TextSpan(text: '\n'),
-                  TextSpan(
-                    text: 'Genre: ${state.comic.genre}',
-                    style: Theme.of(context).textTheme.body1,
-                  ),
-                ],
-              )),
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${state.comic.title}',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    TextSpan(text: '\n'),
+                    TextSpan(
+                      text: 'Summary: ${state.comic.description}',
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    TextSpan(text: '\n'),
+                    TextSpan(
+                      text: 'Authors: ${state.comic.author}',
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                    TextSpan(text: '\n'),
+                    TextSpan(
+                      text: 'Genre: ${state.comic.genre}',
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
@@ -101,46 +116,91 @@ class _PageState extends State<_Page> {
           body: SafeArea(
             top: false,
             child: CustomScrollView(
+              controller: scrollController,
               slivers: [
                 SliverAppBar(
-                  title: Text(state.comic.title),
                   expandedHeight: appBarExpandedHeight,
                   pinned: true,
                   actions: [
                     IconButton(
                       icon: Icon(Icons.favorite_border),
                       onPressed: () {
-                        print('favorite');
+                        // todo: add to favorites.
                       },
                     )
                   ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        backgroundImage,
-                        blurMask,
-                        description,
-                      ],
-                    ),
-                  ),
-                ),
-                SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Container(
-                        child: Center(
-                          child: Text('${state.chapters[index].name}'),
+                  flexibleSpace: LayoutBuilder(
+                    builder: (context, constraints) {
+                      extraHeight = math.max(extraHeight,
+                          constraints.biggest.height - appBarExpandedHeight);
+                      return FlexibleSpaceBar(
+                        title: AnimatedOpacity(
+                          duration: Duration(milliseconds: 300),
+                          opacity: constraints.biggest.height ==
+                                  kToolbarHeight + extraHeight
+                              ? 1.0
+                              : 0.0,
+                          child: Text(state.comic.title),
+                        ),
+                        background: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            backgroundImage,
+                            blurMask,
+                            description,
+                          ],
                         ),
                       );
                     },
-                    childCount: state.chapters.length,
                   ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 4 / 1,
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.all(8),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final chapter = state.chapters[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // todo: navigate to chapter page
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 4,
+                                  color: Theme.of(context).disabledColor,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 2),
+                                color: Theme.of(context).cardColor,
+                                child: Center(
+                                  child: Text(
+                                    chapter.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      childCount: state.chapters.length,
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 4 / 1,
+                    ),
                   ),
                 ),
               ],
