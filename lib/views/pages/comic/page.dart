@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/comic/bloc.dart';
@@ -42,17 +45,86 @@ class _PageState extends State<_Page> {
 
   @override
   Widget build(BuildContext context) {
+    final appBarExpandedHeight = MediaQuery.of(context).size.height / 3;
     return BlocBuilder<ComicBloc, ComicState>(
       builder: (context, state) {
+        final backgroundImage = Hero(
+          tag: '${state.comic.source.id.index}${state.comic.url}',
+          child: CachedNetworkImage(
+            useOldImageOnUrlChange: true,
+            imageUrl: state.comic.thumbnailUrl ?? '',
+            errorWidget: (context, url, error) => Icon(
+              Icons.broken_image,
+              color: Theme.of(context).errorColor,
+            ),
+            fit: BoxFit.cover,
+          ),
+        );
+        final blurMask = BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor.withOpacity(0.5),
+            ),
+          ),
+        );
+        final description = Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: appBarExpandedHeight - kToolbarHeight,
+            padding: EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Text.rich(TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Summary: ${state.comic.description}',
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                  TextSpan(text: '\n'),
+                  TextSpan(
+                    text: 'Authors: ${state.comic.author}',
+                    style: Theme.of(context).textTheme.body1,
+                  ),
+                  TextSpan(text: '\n'),
+                  TextSpan(
+                    text: 'Genre: ${state.comic.genre}',
+                    style: Theme.of(context).textTheme.body1,
+                  ),
+                ],
+              )),
+            ),
+          ),
+        );
         return Scaffold(
           body: SafeArea(
             top: false,
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  title: Text('${state.comic.title}'),
+                  title: Text(state.comic.title),
+                  expandedHeight: appBarExpandedHeight,
                   pinned: true,
-                  expandedHeight: MediaQuery.of(context).size.height / 3,
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      onPressed: () {
+                        print('favorite');
+                      },
+                    )
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Stack(
+                      fit: StackFit.expand,
+                      overflow: Overflow.visible,
+                      children: [
+                        backgroundImage,
+                        blurMask,
+                        description,
+                      ],
+                    ),
+                  ),
                 ),
                 SliverGrid(
                   delegate: SliverChildBuilderDelegate(
