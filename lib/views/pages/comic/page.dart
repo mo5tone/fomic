@@ -117,7 +117,6 @@ class _PageState extends State<_Page> {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Stack(
                       fit: StackFit.expand,
-                      overflow: Overflow.visible,
                       children: [
                         backgroundImage,
                         blurMask,
