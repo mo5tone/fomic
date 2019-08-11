@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Vue</title>
+</head>
+
+<body>
+<div id="app">
+    <button @click="click" type="button">
+        <span v-if="fileName">重新上传</span>
+        <span v-else>上传文件</span>
+    </button>
+    <span>{{fileName}}</span>
+    <input @change="upload" multiple ref="uploadFile" style="display:none" type="file"/>
+</div>
+<script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                fileName: ''
+            },
+            methods: {
+                click () {
+                    // 偷梁换柱,触发文件上传
+                    this.$refs.uploadFile.click();
+                },
+                upload (event) {
+                    let files = event.target.files || event.dataTransfer.files;
+
+                    if (!files.length) {
+                        this.fileName = '';
+                        return;
+                    }
+
+                    this.fileName = Array.from(files).map(file => file.name).join(', ');
+
+                    // 上传之后调用接口...
+                    let params = new FormData();
+                    for(let i = 0; i < files.length; i++){
+                        params.append('files[' + i + ']',files[i]);
+                    }
+
+                    let config = {
+                      headers: {
+                        'Content-Type': 'multipart/form-data'
+                        }
+                       }
+                    axios.post('/upload', params, config)
+                        .then(function (response) {
+                            console.log(response);
+                         })
+                         .catch(function (error) {
+                           console.log(error);
+                         });
+
+                    this.$refs.uploadFile.value = null; // 移除文件，可以保证上传同样的文件时，也会触发change事件
+                }
+            }
+        })
+
+</script>
+</body>
+
+</html>

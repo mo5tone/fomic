@@ -28,6 +28,8 @@ dependencies:
   # Network
   dio: ^2.1.13
   cached_network_image: ^1.1.0
+  http_server: ^0.9.8+3
+  connectivity: ^0.4.3+7
   # en/decryption
   crypto: ^2.0.6
   # Date format
@@ -40,6 +42,8 @@ dependencies:
   shared_preferences: ^0.5.3+4
   # route
   fluro: "^1.5.1"
+  # local path
+  path_provider: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -58,8 +62,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
+  assets:
+    - assets/html/index.html
+    - images/acfun/
+    - images/acfun/2.0x/
+    - images/acfun/3.0x/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

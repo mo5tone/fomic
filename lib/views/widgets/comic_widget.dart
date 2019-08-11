@@ -37,12 +37,13 @@ class ComicWidget extends StatelessWidget {
           tag: '${comic.source.id.index}${comic.url}',
           child: CachedNetworkImage(
             imageUrl: comic.thumbnailUrl ?? '',
-            placeholder: (context, url) => Center(
-              child: CircularProgressIndicator(),
+            placeholder: (context, url) => Image.asset(
+              'images/acfun/2018.png',
+              fit: BoxFit.cover,
             ),
-            errorWidget: (context, url, error) => Icon(
-              Icons.broken_image,
-              color: Theme.of(context).errorColor,
+            errorWidget: (context, url, error) => Image.asset(
+              'images/acfun/2023.png',
+              fit: BoxFit.cover,
             ),
             fit: BoxFit.cover,
           ),
