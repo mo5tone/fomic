@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/common/util/utils.dart' as utils;
 import 'package:fomic/model/chapter.dart';
-import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
+import 'package:fomic/model/manga.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/sources/base/online//json_source.dart';
 import 'package:fomic/sources/base/online_source.dart';
@@ -115,13 +115,13 @@ class Dmzj extends JsonSource {
   factory Dmzj() => _instance;
 
   @override
-  Future<List<Comic>> fetchComics({
+  Future<List<Manga>> fetchComics({
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
   }) {
     return _ComicsFetcher(
-      client,
+      this,
       page: page,
       query: query,
       filters: filters,
@@ -129,31 +129,31 @@ class Dmzj extends JsonSource {
   }
 
   @override
-  Future<Comic> fetchComic(Comic comic) =>
-      _ComicFetcher(client, comic: comic).fetch();
+  Future<Manga> fetchComic(Manga comic) =>
+      _ComicFetcher(this, comic: comic).fetch();
 
   @override
-  Future<List<Chapter>> fetchChapters(Comic comic) =>
-      _ChaptersFetcher(client, comic: comic).fetch();
+  Future<List<Chapter>> fetchChapters(Manga comic) =>
+      _ChaptersFetcher(this, comic: comic).fetch();
 
   @override
   Future<List<Page>> fetchPages(Chapter chapter) =>
-      _PagesFetcher(client, chapter: chapter).fetch();
+      _PagesFetcher(this, chapter: chapter).fetch();
 }
 
-class _ComicsFetcher extends Fetcher<List<Comic>> {
+class _ComicsFetcher extends Fetcher<List<Manga>> {
   final int page;
   final String query;
   final List<Filter> filters;
 
   _ComicsFetcher(
-    Dio client, {
+    OnlineSource source, {
     this.page = 0,
     this.query = '',
     this.filters = const [],
-  }) : super(client);
+  }) : super(source);
 
-  List<Comic> _onSearchSuccess(Response response) {
+  List<Manga> _onSearchSuccess(Response response) {
     String data = response.data;
     var regExp = RegExp(r'g_search_data = (.*);');
     var match = regExp.firstMatch(data);
@@ -162,61 +162,63 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
     }
     List array = convert.jsonDecode(match.group(1));
     return array.map((obj) {
-      ComicStatus status;
+      MangaStatus status;
       switch (obj['status_tag_id'] as String) {
         case '2310':
-          status = ComicStatus.completed;
+          status = MangaStatus.completed;
           break;
         case '2309':
-          status = ComicStatus.ongoing;
+          status = MangaStatus.ongoing;
           break;
         default:
-          status = ComicStatus.unknown;
+          status = MangaStatus.unknown;
           break;
       }
-      return Comic()
-        ..source = Dmzj()
-        ..url = '/comic/${obj['id']}.json'
-        ..title = obj['name']
-        ..author = obj['authors']
-        ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..status = status
-        ..description = obj['description'];
+      return Manga(
+        sourceId: source.id,
+        url: '/comic/${obj['id']}.json',
+        title: obj['name'],
+        author: obj['authors'],
+        thumbnailUrl: utils.fixScheme(obj['cover']),
+        status: status,
+        description: obj['description'],
+      );
     }).toList();
   }
 
   @override
-  List<Comic> onFailure(Object error, StackTrace stackTrace) {
+  List<Manga> onFailure(Object error, StackTrace stackTrace) {
     return [];
   }
 
   @override
-  List<Comic> onSuccess(Response response) {
+  List<Manga> onSuccess(Response response) {
     if (response.data is String) {
       return _onSearchSuccess(response);
     }
     List array = response.data;
     return array.map((obj) {
-      ComicStatus status;
+      MangaStatus status;
       switch (obj['status'] as String) {
         case '已完结':
-          status = ComicStatus.completed;
+          status = MangaStatus.completed;
           break;
         case '连载中':
-          status = ComicStatus.ongoing;
+          status = MangaStatus.ongoing;
           break;
         default:
-          status = ComicStatus.unknown;
+          status = MangaStatus.unknown;
           break;
       }
-      return Comic()
-        ..source = Dmzj()
-        ..url = '/comic/${obj['id']}.json'
-        ..title = obj['title']
-        ..author = obj['authors']
-        ..thumbnailUrl = utils.fixScheme(obj['cover'])
-        ..status = status
-        ..description = obj['description'];
+      return Manga(
+        sourceId: source.id,
+        url: '/comic/${obj['id']}.json',
+        title: obj['title'],
+        author: obj['authors'],
+        thumbnailUrl: utils.fixScheme(obj['cover']),
+        status: status,
+        description: obj['description'],
+      );
     }).toList();
   }
 
@@ -255,33 +257,29 @@ class _ComicsFetcher extends Fetcher<List<Comic>> {
   }
 }
 
-class _ComicFetcher extends Fetcher<Comic> {
-  final Comic comic;
+class _ComicFetcher extends Fetcher<Manga> {
+  final Manga comic;
 
-  _ComicFetcher(
-    Dio client, {
-    @required this.comic,
-  })  : assert(comic != null),
-        super(client);
+  _ComicFetcher(OnlineSource source, {this.comic}) : super(source);
 
   @override
-  Comic onFailure(Object error, StackTrace stackTrace) {
+  Manga onFailure(Object error, StackTrace stackTrace) {
     return null;
   }
 
   @override
-  Comic onSuccess(Response response) {
+  Manga onSuccess(Response response) {
     Map obj = response.data;
-    ComicStatus status;
+    MangaStatus status;
     switch (obj['status'][0]['tag_id'] as int) {
       case 2310:
-        status = ComicStatus.completed;
+        status = MangaStatus.completed;
         break;
       case 2309:
-        status = ComicStatus.ongoing;
+        status = MangaStatus.ongoing;
         break;
       default:
-        status = ComicStatus.unknown;
+        status = MangaStatus.unknown;
         break;
     }
     return comic.clone(
@@ -291,7 +289,7 @@ class _ComicFetcher extends Fetcher<Comic> {
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
       status: status,
       description: obj['description'],
-      chapters: _ChaptersFetcher(client, comic: comic).onSuccess(response),
+      chapters: _ChaptersFetcher(source, comic: comic).onSuccess(response),
     );
   }
 
@@ -301,13 +299,9 @@ class _ComicFetcher extends Fetcher<Comic> {
 }
 
 class _ChaptersFetcher extends Fetcher<List<Chapter>> {
-  final Comic comic;
+  final Manga comic;
 
-  _ChaptersFetcher(
-    Dio client, {
-    @required this.comic,
-  })  : assert(comic != null),
-        super(client);
+  _ChaptersFetcher(OnlineSource source, {this.comic}) : super(source);
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
@@ -323,12 +317,13 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       String prefix = item0['title'];
       List data = item0['data'];
       for (final item1 in data) {
-        chapters.add(Chapter()
-          ..source = Dmzj()
-          ..name = '$prefix: ${item1['chapter_title']}'
-          ..updateAt =
-              DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000)
-          ..url = '/chapter/$id/${item1["chapter_id"]}.json');
+        chapters.add(Chapter(
+          sourceId: source.id,
+          name: '$prefix: ${item1['chapter_title']}',
+          updateAt:
+              DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000),
+          url: '/chapter/$id/${item1["chapter_id"]}.json',
+        ));
       }
     }
     return chapters;
@@ -342,11 +337,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 class _PagesFetcher extends Fetcher<List<Page>> {
   final Chapter chapter;
 
-  _PagesFetcher(
-    Dio client, {
-    @required this.chapter,
-  })  : assert(chapter != null),
-        super(client);
+  _PagesFetcher(OnlineSource source, {this.chapter}) : super(source);
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
@@ -359,11 +350,12 @@ class _PagesFetcher extends Fetcher<List<Page>> {
     var index = 0;
 
     return array
-        .map((obj) => Page()
-          ..source = Dmzj()
-          ..index = index++
-          ..url = ''
-          ..imageUrl = obj)
+        .map((obj) => Page(
+              sourceId: source.id,
+              index: index++,
+              url: '',
+              imageUrl: obj,
+            ))
         .toList();
   }
 

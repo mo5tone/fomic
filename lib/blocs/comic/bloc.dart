@@ -1,12 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:fomic/blocs/comic/event.dart';
 import 'package:fomic/blocs/comic/state.dart';
-import 'package:fomic/model/comic.dart';
+import 'package:fomic/model/manga.dart';
 import 'package:fomic/sources/base/online_source.dart';
+import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/local/source.dart';
 
 class ComicBloc extends Bloc<ComicEvent, ComicState> {
-  final Comic comic;
+  final Manga comic;
 
   ComicBloc(this.comic);
 
@@ -20,7 +21,7 @@ class ComicBloc extends Bloc<ComicEvent, ComicState> {
   Stream<ComicState> mapEventToState(ComicEvent event) async* {
     switch (event.type) {
       case ComicEventType.fetch:
-        final source = comic.source;
+        final source = Source.of(comic.sourceId);
         try {
           if (source is OnlineSource) {
             final comic = await source.fetchComic(this.comic);

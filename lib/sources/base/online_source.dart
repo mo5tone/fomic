@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fomic/model/chapter.dart';
-import 'package:fomic/model/comic.dart';
 import 'package:fomic/model/filter.dart';
+import 'package:fomic/model/manga.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/sources/base/source.dart';
 
@@ -56,15 +56,15 @@ abstract class OnlineSource extends Source {
       LogInterceptor(),
     ]);
 
-  Future<List<Comic>> fetchComics({
+  Future<List<Manga>> fetchComics({
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
   });
 
-  Future<Comic> fetchComic(Comic comic);
+  Future<Manga> fetchComic(Manga comic);
 
-  Future<List<Chapter>> fetchChapters(Comic comic);
+  Future<List<Chapter>> fetchChapters(Manga comic);
 
   Future<List<Page>> fetchPages(Chapter chapter);
 }
@@ -76,14 +76,14 @@ abstract class Fetcher<Output> {
 
   Output onFailure(Object error, StackTrace stackTrace);
 
-  final Dio client;
+  final OnlineSource source;
 
-  Fetcher(this.client);
+  Fetcher(this.source);
 
   bool toCatch(Object error) => false;
 
   Future<Output> fetch() {
-    return client
+    return source.client
         .request(requestOptions.path, options: requestOptions)
         .then(onSuccess)
         .catchError(

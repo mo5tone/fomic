@@ -1,5 +1,4 @@
 import 'package:fomic/common/helper/pair.dart';
-import 'package:fomic/common/helper/triplet.dart';
 import 'package:fomic/model/filter.dart';
 
 class SortFilter extends SelectableFilter<Pair<String, String>> {
@@ -7,31 +6,32 @@ class SortFilter extends SelectableFilter<Pair<String, String>> {
       : super(name, options);
 
   @override
-  String get alias => option.first;
+  String get alias => option[0];
 
   @override
-  String get value => option.second;
+  String get value => option[1];
 
   @override
   List<String> get aliases =>
-      options.map((pair) => pair.first).toList(growable: false);
+      options.map((pair) => pair[0]).toList(growable: false);
 }
 
-class CategoryFilter extends SelectableFilter<Triplet<String, String, String>> {
-  CategoryFilter(String name, List<Triplet<String, String, String>> options)
+class CategoryFilter
+    extends SelectableFilter<Pair<String, Pair<String, String>>> {
+  CategoryFilter(String name, List<Pair<String, Pair<String, String>>> options)
       : super(name, options);
 
   @override
-  get alias => option.first;
+  get alias => option[0];
 
   @override
-  Triplet<String, String, String> get value => option;
+  Pair<String, Pair<String, String>> get value => option;
 
-  String get type => value.second;
+  String get type => value[1][0];
 
-  String get id => value.third;
+  String get id => value[1][1];
 
   @override
   List<String> get aliases =>
-      options.map((triplet) => triplet.first).toList(growable: false);
+      options.map((pair) => pair[0]).toList(growable: false);
 }

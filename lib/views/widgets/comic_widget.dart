@@ -2,10 +2,11 @@ import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/model/comic.dart';
+import 'package:fomic/model/manga.dart';
+import 'package:fomic/sources/base/source.dart';
 
 class ComicWidget extends StatelessWidget {
-  final Comic comic;
+  final Manga comic;
   final void Function() onTap;
   final void Function() onLongPress;
 
@@ -34,7 +35,7 @@ class ComicWidget extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: '${comic.source.id.index}${comic.url}',
+          tag: '${comic.sourceId.index}${comic.url}',
           child: CachedNetworkImage(
             imageUrl: comic.thumbnailUrl ?? '',
             placeholder: (context, url) => Image.asset(
@@ -58,7 +59,7 @@ class ComicWidget extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: Theme.of(context).primaryColor,
                 child: Text(
-                  '${comic.source.name}',
+                  '${Source.of(comic.sourceId).name}',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ),
@@ -70,6 +71,21 @@ class ComicWidget extends StatelessWidget {
   }
 
   Widget _info(BuildContext context) {
+    var status = 'unknown';
+    switch (comic.status) {
+      case MangaStatus.ongoing:
+        status = 'ongoing';
+        break;
+      case MangaStatus.completed:
+        status = 'completed';
+        break;
+      case MangaStatus.licensed:
+        status = 'licensed';
+        break;
+      case MangaStatus.unknown:
+        status = 'unknown';
+        break;
+    }
     return Container(
       padding: EdgeInsets.all(8),
       child: Column(
@@ -88,7 +104,7 @@ class ComicWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              Text('${comic.status.name}'),
+              Text(status),
             ],
           )
         ],

@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/comic/bloc.dart';
 import 'package:fomic/blocs/comic/event.dart';
 import 'package:fomic/blocs/comic/state.dart';
-import 'package:fomic/model/comic.dart';
+import 'package:fomic/model/manga.dart';
 
 class ComicPage extends StatelessWidget {
-  final Comic comic;
+  final Manga comic;
 
   const ComicPage({Key key, this.comic}) : super(key: key);
 
@@ -57,7 +57,7 @@ class _PageState extends State<_Page> {
       builder: (context, state) {
         var extraHeight = 0.0;
         final backgroundImage = Hero(
-          tag: '${state.comic.source.id.index}${state.comic.url}',
+          tag: '${state.comic.sourceId.index}${state.comic.url}',
           child: CachedNetworkImage(
             useOldImageOnUrlChange: true,
             imageUrl: state.comic.thumbnailUrl ?? '',

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/sources/bloc.dart';
 import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
+import 'package:fomic/common/util/routes.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/views/pages/comic/page.dart';
 import 'package:fomic/views/widgets/comic_widget.dart';
@@ -63,11 +64,17 @@ class _PageState extends State<_Page> {
     runZoned(() {
       HttpServer.bind('0.0.0.0', 8000).then((server) {
         server.transform(HttpBodyHandler()).listen((request) async {
+          final response = request.request.response;
+          response.headers
+              .set('Content-Type', 'application/json; charset=utf-8');
           switch (request.request.uri.toString()) {
             case '/upload':
               if (request.type != "form") {
-                request.request.response.statusCode = 400;
-                request.request.response.close();
+                response.statusCode = 400;
+                response.write({
+                  'error': 'Incorrect request type: ${request.type}.',
+                });
+                response.close();
                 return;
               }
               List.from(request.body.values
@@ -78,22 +85,22 @@ class _PageState extends State<_Page> {
                   ..createSync(recursive: true)
                   ..writeAsBytesSync(data.content);
               });
-              request.request.response.statusCode = 201;
-              request.request.response.close();
+              response.statusCode = 201;
+              response.close();
               break;
             case '/':
-              String _content = await DefaultAssetBundle.of(context)
-                  .loadString('assets/html/index.html');
-              request.request.response.statusCode = 200;
-              request.request.response.headers
-                  .set("Content-Type", "text/html; charset=utf-8");
-              request.request.response.write(_content);
-              request.request.response.close();
+              response.statusCode = 200;
+              response.headers.set("Content-Type", "text/html; charset=utf-8");
+              response.write(await DefaultAssetBundle.of(context)
+                  .loadString('assets/html/index.html'));
+              response.close();
               break;
             default:
-              request.request.response.statusCode = 404;
-              request.request.response.write('Not found');
-              request.request.response.close();
+              response.statusCode = 404;
+              response.write({
+                'error': 'Not found.',
+              });
+              response.close();
               break;
           }
         });
@@ -247,12 +254,14 @@ class _PageState extends State<_Page> {
                           return ComicWidget(
                             comic: state.comics[index],
                             onTap: () {
-                              final route = MaterialPageRoute<void>(
-                                builder: (context) {
-                                  return ComicPage(comic: state.comics[index]);
-                                },
-                              );
-                              Navigator.of(context).push(route);
+//                              final route = MaterialPageRoute<void>(
+//                                builder: (context) {
+//                                  return ComicPage(comic: state.comics[index]);
+//                                },
+//                              );
+//                              Navigator.of(context).push(route);
+                            print('/manga/${state.comics[index]}');
+                            Routes.navigateTo(context, '/manga/${state.comics[index]}');
                             },
                           );
                         },
@@ -281,8 +290,8 @@ class _PageState extends State<_Page> {
                   ignoring: state.type == SourcesStateType.fetching,
                   child: FloatingActionButton(
                     onPressed: () {
+                      Routes.navigateTo(context, '/upload');
                       // todo: add local files
-                      _startWebServer();
                     },
                     child: Icon(Icons.add),
                   ),
