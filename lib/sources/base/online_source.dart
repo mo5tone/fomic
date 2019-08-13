@@ -56,17 +56,17 @@ abstract class OnlineSource extends Source {
       LogInterceptor(),
     ]);
 
-  Future<List<Manga>> fetchComics({
+  Future<List<Manga>> fetchMangaList({
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
   });
 
-  Future<Manga> fetchComic(Manga comic);
+  Future<Manga> fetchManga(Manga manga);
 
-  Future<List<Chapter>> fetchChapters(Manga comic);
+  Future<List<Chapter>> fetchChapterList(Manga manga);
 
-  Future<List<Page>> fetchPages(Chapter chapter);
+  Future<List<Page>> fetchPageList(Chapter chapter);
 }
 
 abstract class Fetcher<Output> {

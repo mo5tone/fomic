@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/sources/base/source.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-part 'manga.g.dart';
 
 enum MangaStatus {
   unknown,
@@ -14,7 +9,6 @@ enum MangaStatus {
   licensed,
 }
 
-@JsonSerializable()
 class Manga implements Cloneable<Manga> {
   final SourceId sourceId;
   final String url;
@@ -39,15 +33,6 @@ class Manga implements Cloneable<Manga> {
     this.status = MangaStatus.unknown,
     this.chapters = const [],
   }) : assert(sourceId != null);
-
-  factory Manga.fromJson(Map<String, dynamic> json) => _$MangaFromJson(json);
-
-  Map<String, dynamic> toJson() => _$MangaToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
 
   @override
   Manga clone({

@@ -1,7 +1,6 @@
 import 'dart:convert' as convert;
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/common/util/utils.dart' as utils;
 import 'package:fomic/model/chapter.dart';
@@ -115,12 +114,12 @@ class Dmzj extends JsonSource {
   factory Dmzj() => _instance;
 
   @override
-  Future<List<Manga>> fetchComics({
+  Future<List<Manga>> fetchMangaList({
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
   }) {
-    return _ComicsFetcher(
+    return _MangaListFetcher(
       this,
       page: page,
       query: query,
@@ -129,24 +128,24 @@ class Dmzj extends JsonSource {
   }
 
   @override
-  Future<Manga> fetchComic(Manga comic) =>
-      _ComicFetcher(this, comic: comic).fetch();
+  Future<Manga> fetchManga(Manga manga) =>
+      _MangaFetcher(this, manga: manga).fetch();
 
   @override
-  Future<List<Chapter>> fetchChapters(Manga comic) =>
-      _ChaptersFetcher(this, comic: comic).fetch();
+  Future<List<Chapter>> fetchChapterList(Manga manga) =>
+      _ChaptersFetcher(this, manga: manga).fetch();
 
   @override
-  Future<List<Page>> fetchPages(Chapter chapter) =>
+  Future<List<Page>> fetchPageList(Chapter chapter) =>
       _PagesFetcher(this, chapter: chapter).fetch();
 }
 
-class _ComicsFetcher extends Fetcher<List<Manga>> {
+class _MangaListFetcher extends Fetcher<List<Manga>> {
   final int page;
   final String query;
   final List<Filter> filters;
 
-  _ComicsFetcher(
+  _MangaListFetcher(
     OnlineSource source, {
     this.page = 0,
     this.query = '',
@@ -257,10 +256,10 @@ class _ComicsFetcher extends Fetcher<List<Manga>> {
   }
 }
 
-class _ComicFetcher extends Fetcher<Manga> {
-  final Manga comic;
+class _MangaFetcher extends Fetcher<Manga> {
+  final Manga manga;
 
-  _ComicFetcher(OnlineSource source, {this.comic}) : super(source);
+  _MangaFetcher(OnlineSource source, {this.manga}) : super(source);
 
   @override
   Manga onFailure(Object error, StackTrace stackTrace) {
@@ -282,26 +281,26 @@ class _ComicFetcher extends Fetcher<Manga> {
         status = MangaStatus.unknown;
         break;
     }
-    return comic.clone(
+    return manga.clone(
       title: obj['title'],
       thumbnailUrl: obj['cover'],
       author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
       status: status,
       description: obj['description'],
-      chapters: _ChaptersFetcher(source, comic: comic).onSuccess(response),
+      chapters: _ChaptersFetcher(source, manga: manga).onSuccess(response),
     );
   }
 
   @override
   RequestOptions get requestOptions => RequestOptions(
-      path: comic.url, headers: {'Referer': 'http://www.dmzj.com/'});
+      path: manga.url, headers: {'Referer': 'http://www.dmzj.com/'});
 }
 
 class _ChaptersFetcher extends Fetcher<List<Chapter>> {
-  final Manga comic;
+  final Manga manga;
 
-  _ChaptersFetcher(OnlineSource source, {this.comic}) : super(source);
+  _ChaptersFetcher(OnlineSource source, {this.manga}) : super(source);
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
@@ -331,7 +330,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
 
   @override
   RequestOptions get requestOptions => RequestOptions(
-      path: comic.url, headers: {'Referer': 'http://www.dmzj.com/'});
+      path: manga.url, headers: {'Referer': 'http://www.dmzj.com/'});
 }
 
 class _PagesFetcher extends Fetcher<List<Page>> {

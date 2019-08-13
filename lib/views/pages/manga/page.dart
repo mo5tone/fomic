@@ -4,21 +4,21 @@ import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fomic/blocs/comic/bloc.dart';
-import 'package:fomic/blocs/comic/event.dart';
-import 'package:fomic/blocs/comic/state.dart';
+import 'package:fomic/blocs/manga/bloc.dart';
+import 'package:fomic/blocs/manga/event.dart';
+import 'package:fomic/blocs/manga/state.dart';
 import 'package:fomic/model/manga.dart';
 
-class ComicPage extends StatelessWidget {
-  final Manga comic;
+class MangaPage extends StatelessWidget {
+  final Manga manga;
 
-  const ComicPage({Key key, this.comic}) : super(key: key);
+  const MangaPage({Key key, this.manga}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return ComicBloc(comic)..dispatch(ComicEvent(ComicEventType.fetch));
+        return MangaBloc(manga)..dispatch(MangaEvent(MangaEventType.fetch));
       },
       child: _Page(),
     );
@@ -31,7 +31,7 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  ComicBloc bloc;
+  MangaBloc bloc;
   ScrollController scrollController;
 
   void scrollControllerListener() {}
@@ -39,7 +39,7 @@ class _PageState extends State<_Page> {
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<ComicBloc>(context);
+    bloc = BlocProvider.of<MangaBloc>(context);
     scrollController = ScrollController()
       ..addListener(scrollControllerListener);
   }
@@ -53,14 +53,14 @@ class _PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
     final appBarExpandedHeight = MediaQuery.of(context).size.height / 3;
-    return BlocBuilder<ComicBloc, ComicState>(
+    return BlocBuilder<MangaBloc, MangaState>(
       builder: (context, state) {
         var extraHeight = 0.0;
         final backgroundImage = Hero(
-          tag: '${state.comic.sourceId.index}${state.comic.url}',
+          tag: '${state.manga.sourceId.index}${state.manga.url}',
           child: CachedNetworkImage(
             useOldImageOnUrlChange: true,
-            imageUrl: state.comic.thumbnailUrl ?? '',
+            imageUrl: state.manga.thumbnailUrl ?? '',
             errorWidget: (context, url, error) => Icon(
               Icons.broken_image,
               color: Theme.of(context).errorColor,
@@ -88,22 +88,22 @@ class _PageState extends State<_Page> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: '${state.comic.title}',
+                      text: '${state.manga.title}',
                       style: Theme.of(context).textTheme.title,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Summary: ${state.comic.description}',
+                      text: 'Summary: ${state.manga.description}',
                       style: Theme.of(context).textTheme.subtitle,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Authors: ${state.comic.author}',
+                      text: 'Authors: ${state.manga.author}',
                       style: Theme.of(context).textTheme.body1,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Genre: ${state.comic.genre}',
+                      text: 'Genre: ${state.manga.genre}',
                       style: Theme.of(context).textTheme.body1,
                     ),
                   ],
@@ -140,7 +140,7 @@ class _PageState extends State<_Page> {
                                   kToolbarHeight + extraHeight
                               ? 1.0
                               : 0.0,
-                          child: Text(state.comic.title),
+                          child: Text(state.manga.title),
                         ),
                         background: Stack(
                           fit: StackFit.expand,

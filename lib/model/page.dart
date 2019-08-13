@@ -1,12 +1,6 @@
-import 'dart:convert';
-
 import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/sources/base/source.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'page.g.dart';
-
-@JsonSerializable()
 class Page implements Cloneable<Page> {
   final SourceId sourceId;
   final int index;
@@ -22,14 +16,6 @@ class Page implements Cloneable<Page> {
     this.headers = const {},
   });
 
-  factory Page.fromJson(Map<String, dynamic> json) => _$PageFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PageToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
   @override
   Page clone({
     SourceId sourceId,

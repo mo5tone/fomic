@@ -8,15 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/sources/bloc.dart';
 import 'package:fomic/blocs/sources/event.dart';
 import 'package:fomic/blocs/sources/state.dart';
-import 'package:fomic/common/util/routes.dart';
 import 'package:fomic/sources/base/source.dart';
-import 'package:fomic/views/pages/comic/page.dart';
-import 'package:fomic/views/widgets/comic_widget.dart';
-import 'package:fomic/views/widgets/filters_widget.dart';
+import 'package:fomic/views/widgets/filters_drawer.dart';
+import 'package:fomic/views/widgets/manga_item.dart';
 import 'package:http_server/http_server.dart';
 import 'package:path_provider/path_provider.dart';
 
-class SourcesPage extends StatelessWidget {
+class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -132,6 +130,7 @@ class _PageState extends State<_Page> {
         final appBar = state.searching
             ? AppBar(
                 title: TextField(
+                  autofocus: true,
                   textInputAction: TextInputAction.search,
                   controller: textEditingController,
                   decoration: InputDecoration(
@@ -243,7 +242,7 @@ class _PageState extends State<_Page> {
                       child: GridView.builder(
                         padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
                         controller: scrollController,
-                        itemCount: state.comics.length,
+                        itemCount: state.mangaList.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 8,
@@ -251,18 +250,12 @@ class _PageState extends State<_Page> {
                           childAspectRatio: 10 / 13,
                         ),
                         itemBuilder: (context, index) {
-                          return ComicWidget(
-                            comic: state.comics[index],
-                            onTap: () {
-//                              final route = MaterialPageRoute<void>(
-//                                builder: (context) {
-//                                  return ComicPage(comic: state.comics[index]);
-//                                },
-//                              );
-//                              Navigator.of(context).push(route);
-                            print('/manga/${state.comics[index]}');
-                            Routes.navigateTo(context, '/manga/${state.comics[index]}');
-                            },
+                          return MangaItem(
+                            manga: state.mangaList[index],
+                            onTap: (manga) => Navigator.of(context).pushNamed(
+                              '/manga',
+                              arguments: manga,
+                            ),
                           );
                         },
                       ),
@@ -290,8 +283,7 @@ class _PageState extends State<_Page> {
                   ignoring: state.type == SourcesStateType.fetching,
                   child: FloatingActionButton(
                     onPressed: () {
-                      Routes.navigateTo(context, '/upload');
-                      // todo: add local files
+                      Navigator.of(context).pushNamed('/upload');
                     },
                     child: Icon(Icons.add),
                   ),

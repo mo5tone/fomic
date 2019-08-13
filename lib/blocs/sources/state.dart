@@ -13,7 +13,7 @@ class SourcesState extends base.State<SourcesStateType> {
   final SourceId sourceId;
   final bool searching;
   final String query;
-  final List<Manga> comics;
+  final List<Manga> mangaList;
   final Object error;
   final StackTrace stackTrace;
 
@@ -31,7 +31,7 @@ class SourcesState extends base.State<SourcesStateType> {
     this.sourceId,
     this.searching = false,
     this.query = '',
-    this.comics = const [],
+    this.mangaList = const [],
     this.error,
     this.stackTrace,
   })  : assert(sourceId != null),
@@ -43,7 +43,7 @@ class SourcesState extends base.State<SourcesStateType> {
     SourceId sourceId,
     bool searching,
     String query,
-    List<Manga> comics,
+    List<Manga> mangaList,
     Object error,
     StackTrace stackTrace,
   }) {
@@ -52,7 +52,7 @@ class SourcesState extends base.State<SourcesStateType> {
       sourceId: sourceId ?? this.sourceId,
       searching: searching ?? this.searching,
       query: query ?? this.query,
-      comics: comics ?? this.comics,
+      mangaList: mangaList ?? this.mangaList,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,
     ).._filters = filters;

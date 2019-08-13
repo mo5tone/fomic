@@ -5,20 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:fomic/model/manga.dart';
 import 'package:fomic/sources/base/source.dart';
 
-class ComicWidget extends StatelessWidget {
-  final Manga comic;
-  final void Function() onTap;
-  final void Function() onLongPress;
+class MangaItem extends StatelessWidget {
+  final Manga manga;
+  final void Function(Manga manga) onTap;
+  final void Function(Manga manga) onLongPress;
 
-  const ComicWidget({
+  String get status {
+    var status = 'unknown';
+    switch (manga.status) {
+      case MangaStatus.ongoing:
+        status = 'ongoing';
+        break;
+      case MangaStatus.completed:
+        status = 'completed';
+        break;
+      case MangaStatus.licensed:
+        status = 'licensed';
+        break;
+      case MangaStatus.unknown:
+        status = 'unknown';
+        break;
+    }
+    return status;
+  }
+
+  const MangaItem({
     Key key,
-    @required this.comic,
+    @required this.manga,
     this.onTap,
     this.onLongPress,
   }) : super(key: key);
 
-  Decoration _decoration(BuildContext context) {
-    return BoxDecoration(
+  @override
+  Widget build(BuildContext context) {
+    final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(8),
       boxShadow: [
         BoxShadow(
@@ -28,16 +48,13 @@ class ComicWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget _cover(BuildContext context) {
-    return Stack(
+    final cover = Stack(
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: '${comic.sourceId.index}${comic.url}',
+          tag: '${manga.sourceId.index}${manga.url}',
           child: CachedNetworkImage(
-            imageUrl: comic.thumbnailUrl ?? '',
+            imageUrl: manga.thumbnailUrl ?? '',
             placeholder: (context, url) => Image.asset(
               'images/acfun/2018.png',
               fit: BoxFit.cover,
@@ -59,7 +76,7 @@ class ComicWidget extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: Theme.of(context).primaryColor,
                 child: Text(
-                  '${Source.of(comic.sourceId).name}',
+                  '${Source.of(manga.sourceId).name}',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ),
@@ -68,31 +85,13 @@ class ComicWidget extends StatelessWidget {
         )
       ],
     );
-  }
-
-  Widget _info(BuildContext context) {
-    var status = 'unknown';
-    switch (comic.status) {
-      case MangaStatus.ongoing:
-        status = 'ongoing';
-        break;
-      case MangaStatus.completed:
-        status = 'completed';
-        break;
-      case MangaStatus.licensed:
-        status = 'licensed';
-        break;
-      case MangaStatus.unknown:
-        status = 'unknown';
-        break;
-    }
-    return Container(
+    final info = Container(
       padding: EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '${comic.title}',
+            '${manga.title}',
             style: Theme.of(context).textTheme.subtitle,
             maxLines: 1,
           ),
@@ -100,7 +99,7 @@ class ComicWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${comic.author}',
+                  '${manga.author}',
                   maxLines: 1,
                 ),
               ),
@@ -110,13 +109,9 @@ class ComicWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        decoration: _decoration(context),
+        decoration: decoration,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
@@ -125,12 +120,12 @@ class ComicWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Expanded(
-                  child: _cover(context),
+                  child: cover,
                   flex: 10,
                 ),
                 Expanded(
                   flex: 3,
-                  child: _info(context),
+                  child: info,
                 )
               ],
             ),
@@ -139,12 +134,12 @@ class ComicWidget extends StatelessWidget {
       ),
       onTap: () {
         if (onTap != null) {
-          onTap();
+          onTap(manga);
         }
       },
       onLongPress: () {
         if (onLongPress != null) {
-          onLongPress();
+          onLongPress(manga);
         }
       },
     );

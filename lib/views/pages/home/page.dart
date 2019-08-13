@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/home/bloc.dart';
 import 'package:fomic/blocs/home/event.dart';
 import 'package:fomic/blocs/home/state.dart';
-import 'package:fomic/views/pages/comics/page.dart';
-import 'package:fomic/views/pages/downloads/page.dart';
+import 'package:fomic/views/pages/download/page.dart';
+import 'package:fomic/views/pages/explore/page.dart';
+import 'package:fomic/views/pages/read/page.dart';
 import 'package:fomic/views/pages/settings/page.dart';
-import 'package:fomic/views/pages/sources/page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -41,13 +41,13 @@ class _PageState extends State<_Page> {
         if (_bodies[state.index] is Container) {
           switch (state.index) {
             case 0:
-              _bodies[state.index] = ComicsPage();
+              _bodies[state.index] = ReadPage();
               break;
             case 1:
-              _bodies[state.index] = SourcesPage();
+              _bodies[state.index] = ExplorePage();
               break;
             case 2:
-              _bodies[state.index] = DownloadsPage();
+              _bodies[state.index] = DownloadPage();
               break;
             case 3:
               _bodies[state.index] = SettingsPage();
@@ -66,15 +66,15 @@ class _PageState extends State<_Page> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.photo_library),
-                title: Text('Comics'),
+                title: Text('Read'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.explore),
-                title: Text('Sources'),
+                title: Text('Explore'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.cloud_download),
-                title: Text('Downloads'),
+                title: Text('Download'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),

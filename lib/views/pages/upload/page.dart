@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/uploads/bloc.dart';
 import 'package:fomic/blocs/uploads/state.dart';
-import 'package:fomic/common/util/routes.dart';
 
-class UploadsPage extends StatelessWidget {
+class UploadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -51,7 +50,7 @@ class _PageState extends State<_Page> {
               IconButton(
                 icon: Icon(Icons.pause),
                 onPressed: () {
-                  Routes.navigateTo(context, '/hello');
+                  Navigator.of(context).pushNamed('hello');
                   // todo: start or end mini server.
                 },
               ),

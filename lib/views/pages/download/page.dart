@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DownloadsPage extends StatelessWidget {
+class DownloadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
