@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:fomic/blocs/sources/event.dart';
-import 'package:fomic/blocs/sources/state.dart';
 import 'package:fomic/common/util/key_value_store.dart';
 import 'package:fomic/sources/base/online_source.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/local/source.dart';
+
+import 'event.dart';
+import 'state.dart';
 
 class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
   var _page = 0;
