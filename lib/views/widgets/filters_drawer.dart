@@ -1,84 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/filter.dart';
 
-class FiltersWidget extends StatefulWidget {
+class FiltersDrawer extends StatefulWidget {
   final List<Filter> filters;
   final void Function() onApply;
 
-  const FiltersWidget({Key key, this.filters, this.onApply}) : super(key: key);
+  const FiltersDrawer({Key key, this.filters, this.onApply}) : super(key: key);
 
   @override
-  _FiltersWidgetState createState() => _FiltersWidgetState();
+  _FiltersDrawerState createState() => _FiltersDrawerState();
 }
 
-class _FiltersWidgetState extends State<FiltersWidget> {
+class _FiltersDrawerState extends State<FiltersDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.filters.length,
-              itemBuilder: (ctx, index) {
-                final filter = widget.filters[index];
-                if (filter is SelectableFilter) {
-                  return _SelectableFilterWidget(
-                    filter: filter,
-                  );
-                } else if (filter is SwitchableFilter) {
-                  return _SwitchableFilterWidget(
-                    filter: filter,
-                  );
-                }
-                return Divider();
-              },
+    return Drawer(
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.filters.length,
+                itemBuilder: (ctx, index) {
+                  final filter = widget.filters[index];
+                  if (filter is SelectableFilter) {
+                    return _SelectableFilterItem(
+                      filter: filter,
+                    );
+                  } else if (filter is SwitchableFilter) {
+                    return _SwitchableFilterItem(
+                      filter: filter,
+                    );
+                  }
+                  return Divider();
+                },
+              ),
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 8,
-                child: FlatButton(
-                  child: Text('Reset'),
-                  onPressed: () {
-                    setState(() {
-                      widget.filters.forEach((filter) => filter.reset());
-                    });
-                  },
+            Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: FlatButton(
+                    child: Text('Reset'),
+                    onPressed: () {
+                      setState(() {
+                        widget.filters.forEach((filter) => filter.reset());
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Spacer(),
-              Expanded(
-                flex: 8,
-                child: FlatButton(
-                  child: Text('Apply'),
-                  onPressed: () {
-                    if (widget.onApply != null) {
-                      widget.onApply();
-                    }
-                  },
+                Spacer(),
+                Expanded(
+                  flex: 8,
+                  child: FlatButton(
+                    child: Text('Apply'),
+                    onPressed: () {
+                      if (widget.onApply != null) {
+                        widget.onApply();
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _SwitchableFilterWidget extends StatefulWidget {
+class _SwitchableFilterItem extends StatefulWidget {
   final SwitchableFilter filter;
 
-  const _SwitchableFilterWidget({Key key, this.filter}) : super(key: key);
+  const _SwitchableFilterItem({Key key, this.filter}) : super(key: key);
 
   @override
-  _SwitchableFilterWidgetState createState() => _SwitchableFilterWidgetState();
+  _SwitchableFilterItemState createState() => _SwitchableFilterItemState();
 }
 
-class _SwitchableFilterWidgetState extends State<_SwitchableFilterWidget> {
+class _SwitchableFilterItemState extends State<_SwitchableFilterItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,16 +104,16 @@ class _SwitchableFilterWidgetState extends State<_SwitchableFilterWidget> {
   }
 }
 
-class _SelectableFilterWidget extends StatefulWidget {
+class _SelectableFilterItem extends StatefulWidget {
   final SelectableFilter filter;
 
-  const _SelectableFilterWidget({Key key, this.filter}) : super(key: key);
+  const _SelectableFilterItem({Key key, this.filter}) : super(key: key);
 
   @override
-  _SelectableFilterWidgetState createState() => _SelectableFilterWidgetState();
+  _SelectableFilterItemState createState() => _SelectableFilterItemState();
 }
 
-class _SelectableFilterWidgetState extends State<_SelectableFilterWidget> {
+class _SelectableFilterItemState extends State<_SelectableFilterItem> {
   @override
   Widget build(BuildContext context) {
     final children = <Widget>[];

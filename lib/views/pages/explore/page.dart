@@ -63,8 +63,6 @@ class _PageState extends State<_Page> {
       HttpServer.bind('0.0.0.0', 8000).then((server) {
         server.transform(HttpBodyHandler()).listen((request) async {
           final response = request.request.response;
-          response.headers
-              .set('Content-Type', 'application/json; charset=utf-8');
           switch (request.request.uri.toString()) {
             case '/upload':
               if (request.type != "form") {
@@ -219,18 +217,16 @@ class _PageState extends State<_Page> {
                 ),
           endDrawer: state.searching
               ? null
-              : Drawer(
-                  child: FiltersWidget(
-                    filters: state.filters,
-                    onApply: () {
-                      textEditingController.clear();
-                      bloc.dispatch(SourcesEvent(
-                        SourcesEventType.fetch,
-                        filters: state.filters,
-                      ));
-                      Navigator.of(context).pop();
-                    },
-                  ),
+              : FiltersDrawer(
+                  filters: state.filters,
+                  onApply: () {
+                    textEditingController.clear();
+                    bloc.dispatch(SourcesEvent(
+                      SourcesEventType.fetch,
+                      filters: state.filters,
+                    ));
+                    Navigator.of(context).pop();
+                  },
                 ),
           body: SafeArea(
             child: Stack(

@@ -1,3 +1,5 @@
+import 'package:fomic/common/helper/pair.dart';
+
 abstract class Filter<State> {
   final String name;
   State state;
@@ -21,8 +23,8 @@ abstract class SwitchableFilter extends Filter<bool> {
   }
 }
 
-abstract class SelectableFilter<E> extends Filter<int> {
-  final List<E> options;
+abstract class SelectableFilter<Value> extends Filter<int> {
+  final List<Pair<String, Value>> options;
 
   SelectableFilter(String name, this.options, {int state = 0})
       : assert(options != null && options.isNotEmpty),
@@ -34,7 +36,7 @@ abstract class SelectableFilter<E> extends Filter<int> {
   }
 
   @override
-  E get option => options[state];
+  Pair<String, Value> get option => options[state];
 
   get alias;
 
