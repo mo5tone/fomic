@@ -84,8 +84,8 @@ class _PageState extends State<_Page> {
             height: appBarExpandedHeight - kToolbarHeight,
             padding: EdgeInsets.all(8),
             child: SingleChildScrollView(
-              child: Text.rich(
-                TextSpan(
+              child: RichText(
+                text: TextSpan(
                   children: [
                     TextSpan(
                       text: '${state.manga.title}',
@@ -159,10 +159,13 @@ class _PageState extends State<_Page> {
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final chapter = state.chapters[index];
+                        final chapter = state.chapterList[index];
                         return GestureDetector(
                           onTap: () {
-                            // todo: navigate to chapter page
+                            Navigator.of(context).pushNamed(
+                              '/reading',
+                              arguments: state.chapterList[index],
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -193,7 +196,7 @@ class _PageState extends State<_Page> {
                           ),
                         );
                       },
-                      childCount: state.chapters.length,
+                      childCount: state.chapterList.length,
                     ),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,

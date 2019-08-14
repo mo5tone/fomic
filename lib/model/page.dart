@@ -1,15 +1,16 @@
 import 'package:fomic/common/helper/cloneable.dart';
-import 'package:fomic/sources/base/source.dart';
+
+import 'chapter.dart';
 
 class Page implements Cloneable<Page> {
-  final SourceId sourceId;
+  final Chapter chapter;
   final int index;
   final String url;
   final String imageUrl;
   final Map<String, String> headers;
 
   Page({
-    this.sourceId,
+    this.chapter,
     this.index,
     this.url,
     this.imageUrl,
@@ -18,14 +19,14 @@ class Page implements Cloneable<Page> {
 
   @override
   Page clone({
-    SourceId sourceId,
+    Chapter chapter,
     int index,
     String url,
     String imageUrl,
     Map<String, String> headers,
   }) {
     return Page(
-      sourceId: sourceId ?? this.sourceId,
+      chapter: chapter ?? this.chapter,
       index: index ?? this.index,
       url: url ?? this.url,
       imageUrl: imageUrl ?? this.imageUrl,

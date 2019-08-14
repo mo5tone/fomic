@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fomic/blocs/uploads/bloc.dart';
-import 'package:fomic/blocs/uploads/state.dart';
+import 'package:fomic/blocs/upload/bloc.dart';
+import 'package:fomic/blocs/upload/state.dart';
+import 'package:fomic/common/util/utils.dart' as utils;
+import 'package:http_server/http_server.dart';
+import 'package:path_provider/path_provider.dart';
 
 class UploadPage extends StatelessWidget {
   @override
@@ -19,6 +25,80 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
+  UploadsBloc bloc;
+  Future<HttpServer> httpServer;
+
+  Future<HttpServer> startHttpServer() async {
+    stopHttpServer();
+    if (!await utils.isWifi) {
+      return Future.value(null);
+    }
+    return runZoned(
+      () => HttpServer.bind('0.0.0.0', 8000)
+        ..then((server) {
+          server.transform(HttpBodyHandler()).listen((request) async {
+            final response = request.request.response;
+            switch (request.request.uri.toString()) {
+              case '/upload':
+                if (request.type != "form") {
+                  response.statusCode = 400;
+                  response.write({
+                    'error': 'Incorrect request type: ${request.type}.',
+                  });
+                  response.close();
+                  return;
+                }
+                List.from(request.body.values
+                        .where((value) => value is HttpBodyFileUpload))
+                    .forEach((data) async {
+                  final directory = await getApplicationDocumentsDirectory();
+                  File('${directory.path}/upload/${data.filename}')
+                    ..createSync(recursive: true)
+                    ..writeAsBytesSync(data.content);
+                });
+                response.statusCode = 201;
+                response.close();
+                break;
+              case '/':
+                response.statusCode = 200;
+                response.headers
+                    .set("Content-Type", "text/html; charset=utf-8");
+                response.write(await DefaultAssetBundle.of(context)
+                    .loadString('assets/html/index.html'));
+                response.close();
+                break;
+              default:
+                response.statusCode = 404;
+                response.write({
+                  'error': 'Not found.',
+                });
+                response.close();
+                break;
+            }
+          });
+        }),
+      onError: (e, stackTrace) => print('Error: $e, StackTrace: $stackTrace'),
+    );
+  }
+
+  void stopHttpServer({bool force = false}) {
+    if (httpServer != null) {
+      httpServer.then((server) => server?.close(force: force));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<UploadsBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    stopHttpServer();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UploadsBloc, UploadsState>(
@@ -29,7 +109,7 @@ class _PageState extends State<_Page> {
               icon: Icon(Icons.close),
               onPressed: () {
                 // todo: check mini server is running and close it.
-                Navigator.of(context).maybePop();
+                Navigator.of(context).pop();
               },
             ),
             title: Text.rich(

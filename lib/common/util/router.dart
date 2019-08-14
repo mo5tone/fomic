@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/views/pages/manga/page.dart';
+import 'package:fomic/views/pages/reading/page.dart';
 import 'package:fomic/views/pages/upload/page.dart';
 
 class Router {
@@ -19,9 +20,14 @@ class Router {
       case '/manga':
         route = MaterialPageRoute<void>(
           builder: (context) {
-            return MangaPage(
-              manga: settings.arguments,
-            );
+            return MangaPage(manga: settings.arguments);
+          },
+        );
+        break;
+      case '/reading':
+        route = MaterialPageRoute<void>(
+          builder: (context) {
+            return ReadingPage(chapter: settings.arguments);
           },
         );
         break;

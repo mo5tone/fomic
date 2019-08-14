@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/manga.dart';
@@ -23,35 +26,7 @@ abstract class OnlineSource extends Source {
 
   Dio get client => Dio(baseOptions)
     ..interceptors.addAll([
-      InterceptorsWrapper(
-        onResponse: (response) {
-          dynamic data = response.data;
-          bool shouldReject = false;
-          switch (response.request.responseType) {
-            case ResponseType.json:
-              shouldReject = (data is! Map) && (data is! List);
-              break;
-            case ResponseType.stream:
-              shouldReject = (data is! ResponseBody);
-              break;
-            case ResponseType.plain:
-              shouldReject = (data is! String);
-              break;
-            case ResponseType.bytes:
-              shouldReject = (data is! List<int>);
-              break;
-          }
-          if (shouldReject) {
-            return DioError(
-              request: response.request,
-              response: response,
-              message:
-                  'Expect ${response.request.responseType}, but get ${data.runtimeType}, data: $data',
-            );
-          }
-          return response;
-        },
-      ),
+      StrictResponseType(),
       ...interceptors,
       LogInterceptor(),
     ]);
@@ -66,7 +41,46 @@ abstract class OnlineSource extends Source {
 
   Future<List<Chapter>> fetchChapterList(Manga manga);
 
+  Future<Pair<Manga, List<Chapter>>> fetchMangaAndChapterList(Manga manga) {
+    return fetchManga(manga).then((value) async {
+      final chapterList = await fetchChapterList(value);
+      return Pair(value, chapterList);
+    });
+  }
+
   Future<List<Page>> fetchPageList(Chapter chapter);
+}
+
+class StrictResponseType extends InterceptorsWrapper {
+  @override
+  FutureOr onResponse(Response response) {
+    super.onResponse(response);
+    dynamic data = response.data;
+    bool shouldReject = false;
+    switch (response.request.responseType) {
+      case ResponseType.json:
+        shouldReject = (data is! Map) && (data is! List);
+        break;
+      case ResponseType.stream:
+        shouldReject = (data is! ResponseBody);
+        break;
+      case ResponseType.plain:
+        shouldReject = (data is! String);
+        break;
+      case ResponseType.bytes:
+        shouldReject = (data is! List<int>);
+        break;
+    }
+    if (shouldReject) {
+      return DioError(
+        request: response.request,
+        response: response,
+        message:
+            'Expect ${response.request.responseType}, but get ${data.runtimeType}, data: $data',
+      );
+    }
+    return response;
+  }
 }
 
 abstract class Fetcher<Output> {
@@ -77,18 +91,23 @@ abstract class Fetcher<Output> {
   Output onFailure(Object error, StackTrace stackTrace);
 
   final OnlineSource source;
+  final bool Function(Object) toCatch;
 
-  Fetcher(this.source);
+  Dio get client => source.client;
 
-  bool toCatch(Object error) => false;
+  Fetcher(this.source, {this.toCatch}) : assert(source != null);
+
+  bool _test(Object error) {
+    if (toCatch != null) {
+      return (error is DioError) || toCatch(error);
+    }
+    return error is DioError;
+  }
 
   Future<Output> fetch() {
-    return source.client
+    return client
         .request(requestOptions.path, options: requestOptions)
         .then(onSuccess)
-        .catchError(
-          onFailure,
-          test: (err) => (err is DioError) || toCatch(err),
-        );
+        .catchError(onFailure, test: _test);
   }
 }

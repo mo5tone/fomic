@@ -21,74 +21,11 @@ class Dmzj extends JsonSource {
 
   @override
   List<Filter> get filters => [
-        GenreFilter('分类', [
-          Pair('全部', ''),
-          Pair('冒险', '4'),
-          Pair('百合', '3243'),
-          Pair('生活', '3242'),
-          Pair('四格', '17'),
-          Pair('伪娘', '3244'),
-          Pair('悬疑', '3245'),
-          Pair('后宫', '3249'),
-          Pair('热血', '3248'),
-          Pair('耽美', '3246'),
-          Pair('其他', '16'),
-          Pair('恐怖', '14'),
-          Pair('科幻', '7'),
-          Pair('格斗', '6'),
-          Pair('欢乐向', '5'),
-          Pair('爱情', '8'),
-          Pair('侦探', '9'),
-          Pair('校园', '13'),
-          Pair('神鬼', '12'),
-          Pair('魔法', '11'),
-          Pair('竞技', '10'),
-          Pair('历史', '3250'),
-          Pair('战争', '3251'),
-          Pair('魔幻', '5806'),
-          Pair('扶她', '5345'),
-          Pair('东方', '5077'),
-          Pair('奇幻', '5848'),
-          Pair('轻小说', '6316'),
-          Pair('仙侠', '7900'),
-          Pair('搞笑', '7568'),
-          Pair('颜艺', '6437'),
-          Pair('性转换', '4518'),
-          Pair('高清单行', '4459'),
-          Pair('治愈', '3254'),
-          Pair('宅系', '3253'),
-          Pair('萌系', '3252'),
-          Pair('励志', '3255'),
-          Pair('节操', '6219'),
-          Pair('职场', '3328'),
-          Pair('西方魔幻', '3365'),
-          Pair('音乐舞蹈', '3326'),
-          Pair('机战', '3325'),
-        ]),
-        StatusFilter('连载状态', [
-          Pair('全部', ''),
-          Pair('连载', '2309'),
-          Pair('完结', '2310'),
-        ]),
-        TypeFilter('地区', [
-          Pair('全部', ''),
-          Pair('日本', '2304'),
-          Pair('韩国', '2305'),
-          Pair('欧美', '2306'),
-          Pair('港台', '2307'),
-          Pair('内地', '2308'),
-          Pair('其他', '8453'),
-        ]),
-        SortFilter('排序', [
-          Pair('人气', '0'),
-          Pair('更新', '1'),
-        ]),
-        ReaderFilter('读者', [
-          Pair('全部', ''),
-          Pair('少年', '3262'),
-          Pair('少女', '3263'),
-          Pair('青年', '3264'),
-        ]),
+        GenreFilter(),
+        StatusFilter(),
+        TypeFilter(),
+        SortFilter(),
+        ReaderFilter(),
       ];
 
   @override
@@ -119,25 +56,28 @@ class Dmzj extends JsonSource {
     String query = '',
     List<Filter> filters = const [],
   }) {
-    return _MangaListFetcher(
-      this,
-      page: page,
-      query: query,
-      filters: filters,
-    ).fetch();
+    return _MangaListFetcher(this, page, query, filters).fetch();
   }
 
   @override
-  Future<Manga> fetchManga(Manga manga) =>
-      _MangaFetcher(this, manga: manga).fetch();
+  Future<Manga> fetchManga(Manga manga) {
+    return _MangaFetcher(this, manga).fetch();
+  }
 
   @override
-  Future<List<Chapter>> fetchChapterList(Manga manga) =>
-      _ChaptersFetcher(this, manga: manga).fetch();
+  Future<List<Chapter>> fetchChapterList(Manga manga) {
+    return _ChapterListFetcher(this, manga).fetch();
+  }
 
   @override
-  Future<List<Page>> fetchPageList(Chapter chapter) =>
-      _PagesFetcher(this, chapter: chapter).fetch();
+  Future<Pair<Manga, List<Chapter>>> fetchMangaAndChapterList(Manga manga) {
+    return _MangaAndChapterListFetcher(this, manga).fetch();
+  }
+
+  @override
+  Future<List<Page>> fetchPageList(Chapter chapter) {
+    return _PageListFetcher(this, chapter).fetch();
+  }
 }
 
 class _MangaListFetcher extends Fetcher<List<Manga>> {
@@ -145,14 +85,10 @@ class _MangaListFetcher extends Fetcher<List<Manga>> {
   final String query;
   final List<Filter> filters;
 
-  _MangaListFetcher(
-    OnlineSource source, {
-    this.page = 0,
-    this.query = '',
-    this.filters = const [],
-  }) : super(source);
+  _MangaListFetcher(OnlineSource source, this.page, this.query, this.filters)
+      : super(source);
 
-  List<Manga> _onSearchSuccess(Response response) {
+  List<Manga> _onSuccessQuery(Response response) {
     String data = response.data;
     var regExp = RegExp(r'g_search_data = (.*);');
     var match = regExp.firstMatch(data);
@@ -185,16 +121,7 @@ class _MangaListFetcher extends Fetcher<List<Manga>> {
     }).toList();
   }
 
-  @override
-  List<Manga> onFailure(Object error, StackTrace stackTrace) {
-    return [];
-  }
-
-  @override
-  List<Manga> onSuccess(Response response) {
-    if (response.data is String) {
-      return _onSearchSuccess(response);
-    }
+  List<Manga> _onSuccessFilters(Response response) {
     List array = response.data;
     return array.map((obj) {
       MangaStatus status;
@@ -222,11 +149,26 @@ class _MangaListFetcher extends Fetcher<List<Manga>> {
   }
 
   @override
+  List<Manga> onFailure(Object error, StackTrace stackTrace) {
+    return [];
+  }
+
+  @override
+  List<Manga> onSuccess(Response response) {
+    if (response.data is String) {
+      return _onSuccessQuery(response);
+    }
+    return _onSuccessFilters(response);
+  }
+
+  @override
   RequestOptions get requestOptions {
     var path = '';
+    var responseType = ResponseType.json;
     var queryParameters = <String, dynamic>{};
     if (query.isNotEmpty) {
       path = 'http://s.acg.dmzj.com/comicsum/search.php';
+      responseType = ResponseType.plain;
       queryParameters['s'] = query;
     } else {
       var params = filters
@@ -247,19 +189,22 @@ class _MangaListFetcher extends Fetcher<List<Manga>> {
         order = '0';
       }
       path = '/classify/$params/$order/$page.json';
+      responseType = ResponseType.json;
     }
     return RequestOptions(
-        path: path,
-        queryParameters: queryParameters,
-        responseType:
-            path.startsWith('http') ? ResponseType.plain : ResponseType.json);
+      path: path,
+      queryParameters: queryParameters,
+      responseType: responseType,
+    );
   }
 }
 
 class _MangaFetcher extends Fetcher<Manga> {
   final Manga manga;
 
-  _MangaFetcher(OnlineSource source, {this.manga}) : super(source);
+  _MangaFetcher(OnlineSource source, this.manga)
+      : assert(manga != null),
+        super(source);
 
   @override
   Manga onFailure(Object error, StackTrace stackTrace) {
@@ -288,7 +233,6 @@ class _MangaFetcher extends Fetcher<Manga> {
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
       status: status,
       description: obj['description'],
-      chapters: _ChaptersFetcher(source, manga: manga).onSuccess(response),
     );
   }
 
@@ -297,10 +241,12 @@ class _MangaFetcher extends Fetcher<Manga> {
       path: manga.url, headers: {'Referer': 'http://www.dmzj.com/'});
 }
 
-class _ChaptersFetcher extends Fetcher<List<Chapter>> {
+class _ChapterListFetcher extends Fetcher<List<Chapter>> {
   final Manga manga;
 
-  _ChaptersFetcher(OnlineSource source, {this.manga}) : super(source);
+  _ChapterListFetcher(OnlineSource source, this.manga)
+      : assert(manga != null),
+        super(source);
 
   @override
   List<Chapter> onFailure(Object error, StackTrace stackTrace) {
@@ -317,7 +263,7 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       List data = item0['data'];
       for (final item1 in data) {
         chapters.add(Chapter(
-          sourceId: source.id,
+          manga: manga,
           name: '$prefix: ${item1['chapter_title']}',
           updateAt:
               DateTime.fromMillisecondsSinceEpoch(item1['updatetime'] * 1000),
@@ -333,10 +279,70 @@ class _ChaptersFetcher extends Fetcher<List<Chapter>> {
       path: manga.url, headers: {'Referer': 'http://www.dmzj.com/'});
 }
 
-class _PagesFetcher extends Fetcher<List<Page>> {
+class _MangaAndChapterListFetcher extends Fetcher<Pair<Manga, List<Chapter>>> {
+  final Manga manga;
+
+  _MangaAndChapterListFetcher(OnlineSource source, this.manga)
+      : assert(manga != null),
+        super(source);
+
+  @override
+  Pair<Manga, List<Chapter>> onFailure(Object error, StackTrace stackTrace) {
+    return null;
+  }
+
+  @override
+  Pair<Manga, List<Chapter>> onSuccess(Response response) {
+    final Map obj = response.data;
+    MangaStatus status;
+    switch (obj['status'][0]['tag_id'] as int) {
+      case 2310:
+        status = MangaStatus.completed;
+        break;
+      case 2309:
+        status = MangaStatus.ongoing;
+        break;
+      default:
+        status = MangaStatus.unknown;
+        break;
+    }
+    final manga = this.manga.clone(
+          title: obj['title'],
+          thumbnailUrl: obj['cover'],
+          author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
+          genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
+          status: status,
+          description: obj['description'],
+        );
+    final id = obj['id'];
+    final chapterList = <Chapter>[];
+    (obj['chapters'] as List).forEach((chaptersItem) {
+      final String prefix = chaptersItem['title'];
+      (chaptersItem['data'] as List).forEach((dataItem) {
+        final updateAt =
+            DateTime.fromMillisecondsSinceEpoch(dataItem['updatetime'] * 1000);
+        chapterList.add(Chapter(
+          manga: manga,
+          name: '$prefix: ${dataItem['chapter_title']}',
+          updateAt: updateAt,
+          url: '/chapter/$id/${dataItem["chapter_id"]}.json',
+        ));
+      });
+    });
+    return Pair(manga, chapterList);
+  }
+
+  @override
+  RequestOptions get requestOptions => RequestOptions(
+      path: manga.url, headers: {'Referer': 'http://www.dmzj.com/'});
+}
+
+class _PageListFetcher extends Fetcher<List<Page>> {
   final Chapter chapter;
 
-  _PagesFetcher(OnlineSource source, {this.chapter}) : super(source);
+  _PageListFetcher(OnlineSource source, this.chapter)
+      : assert(chapter != null),
+        super(source);
 
   @override
   List<Page> onFailure(Object error, StackTrace stackTrace) {
@@ -350,7 +356,7 @@ class _PagesFetcher extends Fetcher<List<Page>> {
 
     return array
         .map((obj) => Page(
-              sourceId: source.id,
+              chapter: chapter,
               index: index++,
               url: '',
               imageUrl: obj,

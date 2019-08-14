@@ -10,14 +10,14 @@ enum MangaStateType {
 
 class MangaState extends base.State<MangaStateType> {
   final Manga manga;
-  final List<Chapter> chapters;
+  final List<Chapter> chapterList;
   final Object error;
   final StackTrace stackTrace;
 
   MangaState(
     MangaStateType type, {
     this.manga,
-    this.chapters = const [],
+    this.chapterList = const [],
     this.error,
     this.stackTrace,
   })  : assert(manga != null),
@@ -27,14 +27,14 @@ class MangaState extends base.State<MangaStateType> {
   clone({
     MangaStateType type,
     Manga manga,
-    List<Chapter> chapters,
+    List<Chapter> chapterList,
     Object error,
     StackTrace stackTrace,
   }) {
     return MangaState(
       type ?? this.type,
       manga: manga ?? this.manga,
-      chapters: chapters ?? this.chapters,
+      chapterList: chapterList ?? this.chapterList,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,
     );

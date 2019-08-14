@@ -5,7 +5,7 @@ import 'package:fomic/blocs/home/event.dart';
 import 'package:fomic/blocs/home/state.dart';
 import 'package:fomic/views/pages/download/page.dart';
 import 'package:fomic/views/pages/explore/page.dart';
-import 'package:fomic/views/pages/read/page.dart';
+import 'package:fomic/views/pages/favorite//page.dart';
 import 'package:fomic/views/pages/settings/page.dart';
 
 class HomePage extends StatelessWidget {
@@ -41,7 +41,7 @@ class _PageState extends State<_Page> {
         if (_bodies[state.index] is Container) {
           switch (state.index) {
             case 0:
-              _bodies[state.index] = ReadPage();
+              _bodies[state.index] = FavoritePage();
               break;
             case 1:
               _bodies[state.index] = ExplorePage();
@@ -65,8 +65,8 @@ class _PageState extends State<_Page> {
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.photo_library),
-                title: Text('Read'),
+                icon: Icon(Icons.favorite),
+                title: Text('Favorite'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.explore),

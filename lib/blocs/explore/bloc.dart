@@ -60,7 +60,10 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
       more:
       case SourcesEventType.more:
         if (currentState.type != SourcesStateType.fetching) {
-          yield currentState.clone(type: SourcesStateType.fetching);
+          yield currentState.clone(
+            type: SourcesStateType.fetching,
+            query: event.query,
+          );
           _page = event.type == SourcesEventType.more ? _page + 1 : 0;
           final source = Source.of(currentState.sourceId);
           try {
@@ -68,7 +71,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
               var mangaList = await source.fetchMangaList(
                 page: _page,
                 query: event.query,
-                filters: event.filters,
+                filters: currentState.filters,
               );
               mangaList = mangaList
                   .where((manga) => manga != null)

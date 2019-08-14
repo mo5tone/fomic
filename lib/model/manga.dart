@@ -19,7 +19,6 @@ class Manga implements Cloneable<Manga> {
   final String genre;
   final String description;
   final MangaStatus status;
-  final List<Chapter> chapters;
 
   Manga({
     this.sourceId,
@@ -31,7 +30,6 @@ class Manga implements Cloneable<Manga> {
     this.genre,
     this.description,
     this.status = MangaStatus.unknown,
-    this.chapters = const [],
   }) : assert(sourceId != null);
 
   @override
@@ -57,7 +55,6 @@ class Manga implements Cloneable<Manga> {
       genre: genre ?? this.genre,
       description: description ?? this.description,
       status: status ?? this.status,
-      chapters: chapters ?? this.chapters,
     );
   }
 }

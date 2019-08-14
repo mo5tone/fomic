@@ -25,13 +25,12 @@ class MangaBloc extends Bloc<MangaEvent, MangaState> {
         final source = Source.of(manga.sourceId);
         try {
           if (source is OnlineSource) {
-            final manga = await source.fetchManga(this.manga);
+            final mangaAndChapterList =
+                await source.fetchMangaAndChapterList(this.manga);
             yield currentState.clone(
               type: MangaStateType.successful,
-              manga: manga,
-              chapters: manga.chapters.isEmpty
-                  ? await source.fetchChapterList(manga)
-                  : manga.chapters,
+              manga: mangaAndChapterList.$0,
+              chapterList: mangaAndChapterList.$1,
             );
           } else if (source is LocalSource) {
             yield currentState.clone();

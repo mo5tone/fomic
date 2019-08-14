@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +9,6 @@ import 'package:fomic/blocs/explore/state.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/views/widgets/filters_drawer.dart';
 import 'package:fomic/views/widgets/manga_item.dart';
-import 'package:http_server/http_server.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ExplorePage extends StatelessWidget {
   @override
@@ -47,61 +43,6 @@ class _PageState extends State<_Page> {
 
   void textEditingControllerListener() {
     // todo
-  }
-
-  Future _startWebServer() async {
-    final connectivity = Connectivity();
-    connectivity.checkConnectivity().then((result) {
-      print('result: $result');
-      return connectivity.getWifiIP();
-    }).then((ip) {
-      print('ip: $ip');
-    }).catchError((error) {
-      print('error: $error');
-    });
-    runZoned(() {
-      HttpServer.bind('0.0.0.0', 8000).then((server) {
-        server.transform(HttpBodyHandler()).listen((request) async {
-          final response = request.request.response;
-          switch (request.request.uri.toString()) {
-            case '/upload':
-              if (request.type != "form") {
-                response.statusCode = 400;
-                response.write({
-                  'error': 'Incorrect request type: ${request.type}.',
-                });
-                response.close();
-                return;
-              }
-              List.from(request.body.values
-                      .where((value) => value is HttpBodyFileUpload))
-                  .forEach((data) async {
-                final directory = await getApplicationDocumentsDirectory();
-                File('${directory.path}/upload/${data.filename}')
-                  ..createSync(recursive: true)
-                  ..writeAsBytesSync(data.content);
-              });
-              response.statusCode = 201;
-              response.close();
-              break;
-            case '/':
-              response.statusCode = 200;
-              response.headers.set("Content-Type", "text/html; charset=utf-8");
-              response.write(await DefaultAssetBundle.of(context)
-                  .loadString('assets/html/index.html'));
-              response.close();
-              break;
-            default:
-              response.statusCode = 404;
-              response.write({
-                'error': 'Not found.',
-              });
-              response.close();
-              break;
-          }
-        });
-      });
-    }, onError: (e, stackTrace) => print('Error: $e, StackTrace: $stackTrace'));
   }
 
   @override
@@ -180,54 +121,59 @@ class _PageState extends State<_Page> {
                   ),
                 ],
               );
+        final drawer = state.searching
+            ? null
+            : Drawer(
+                child: ListView.builder(
+                  itemCount: SourceId.values.length,
+                  itemBuilder: (context, index) {
+                    final source = Source.of(SourceId.values[index]);
+                    return ListTile(
+                      onTap: () {
+                        textEditingController.clear();
+                        bloc.dispatch(SourcesEvent(
+                          SourcesEventType.displaySource,
+                          sourceId: source.id,
+                        ));
+                        Navigator.of(context).pop();
+                      },
+                      title: Text(source.name),
+                      trailing: Switch(
+                        value: source.available,
+                        onChanged: (value) {
+                          bloc.dispatch(SourcesEvent(
+                            value
+                                ? SourcesEventType.enableSource
+                                : SourcesEventType.disableSource,
+                            sourceId: source.id,
+                          ));
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+        final endDrawer = state.searching
+            ? null
+            : FiltersDrawer(
+                filters: state.filters,
+                onApply: () {
+                  textEditingController.clear();
+                  bloc.dispatch(SourcesEvent(SourcesEventType.fetch));
+                  Navigator.of(context).pop();
+                },
+              );
+        final onRefresh = () => Future(() {
+              bloc.dispatch(SourcesEvent(
+                SourcesEventType.fetch,
+                query: state.query,
+              ));
+            });
         return Scaffold(
           key: scaffoldKey,
           appBar: appBar,
-          drawer: state.searching
-              ? null
-              : Drawer(
-                  child: ListView.builder(
-                    itemCount: SourceId.values.length,
-                    itemBuilder: (context, index) {
-                      final source = Source.of(SourceId.values[index]);
-                      return ListTile(
-                        onTap: () {
-                          textEditingController.clear();
-                          bloc.dispatch(SourcesEvent(
-                            SourcesEventType.displaySource,
-                            sourceId: source.id,
-                          ));
-                          Navigator.of(context).pop();
-                        },
-                        title: Text(source.name),
-                        trailing: Switch(
-                          value: source.available,
-                          onChanged: (value) {
-                            bloc.dispatch(SourcesEvent(
-                              value
-                                  ? SourcesEventType.enableSource
-                                  : SourcesEventType.disableSource,
-                              sourceId: source.id,
-                            ));
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-          endDrawer: state.searching
-              ? null
-              : FiltersDrawer(
-                  filters: state.filters,
-                  onApply: () {
-                    textEditingController.clear();
-                    bloc.dispatch(SourcesEvent(
-                      SourcesEventType.fetch,
-                      filters: state.filters,
-                    ));
-                    Navigator.of(context).pop();
-                  },
-                ),
+          drawer: drawer,
+          endDrawer: endDrawer,
           body: SafeArea(
             child: Stack(
               children: [
@@ -255,15 +201,7 @@ class _PageState extends State<_Page> {
                           );
                         },
                       ),
-                      onRefresh: () {
-                        return Future(() {
-                          bloc.dispatch(SourcesEvent(
-                            SourcesEventType.fetch,
-                            query: state.query,
-                            filters: state.filters,
-                          ));
-                        });
-                      },
+                      onRefresh: onRefresh,
                     ),
                   ),
                 ),
