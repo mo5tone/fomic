@@ -25,11 +25,13 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  UploadsBloc bloc;
-  Future<HttpServer> httpServer;
+  UploadsBloc _bloc;
+  Future<HttpServer> _httpServer;
 
-  Future<HttpServer> startHttpServer() async {
-    stopHttpServer();
+  ThemeData get _theme => Theme.of(context);
+
+  Future<HttpServer> _startHttpServer() async {
+    _stopHttpServer();
     if (!await utils.isWifi) {
       return Future.value(null);
     }
@@ -81,21 +83,21 @@ class _PageState extends State<_Page> {
     );
   }
 
-  void stopHttpServer({bool force = false}) {
-    if (httpServer != null) {
-      httpServer.then((server) => server?.close(force: force));
+  void _stopHttpServer({bool force = false}) {
+    if (_httpServer != null) {
+      _httpServer.then((server) => server?.close(force: force));
     }
   }
 
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<UploadsBloc>(context);
+    _bloc = BlocProvider.of<UploadsBloc>(context);
   }
 
   @override
   void dispose() {
-    stopHttpServer();
+    _stopHttpServer();
     super.dispose();
   }
 
@@ -115,12 +117,12 @@ class _PageState extends State<_Page> {
             title: Text.rich(
               TextSpan(
                 text: 'Uploads',
-                style: Theme.of(context).textTheme.title,
+                style: _theme.textTheme.title,
                 children: [
                   TextSpan(text: '\n'),
                   TextSpan(
                     text: 'IP Address: 127.0.0.1',
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: _theme.textTheme.subtitle,
                   ),
                 ],
               ),

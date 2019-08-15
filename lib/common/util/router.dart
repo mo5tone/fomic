@@ -40,6 +40,7 @@ class Router {
   static Route<dynamic> unknownRoute(RouteSettings settings) {
     return MaterialPageRoute<void>(
       builder: (context) {
+        final theme = Theme.of(context);
         return Scaffold(
           appBar: AppBar(
             title: Text('Wooops'),
@@ -48,7 +49,7 @@ class Router {
             child: Center(
               child: Text(
                 'Not Found.',
-                style: Theme.of(context).textTheme.headline,
+                style: theme.textTheme.headline,
               ),
             ),
           ),

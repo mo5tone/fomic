@@ -24,14 +24,32 @@ class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
   Stream<ReadingState> mapEventToState(ReadingEvent event) async* {
     switch (event.type) {
       case ReadingEventType.fetch:
-        if (source is OnlineSource) {
-          final pageList = (source as OnlineSource).fetchPageList(chapter);
-        } else if (source is LocalSource) {
-          // todo
+        if (currentState.type != ReadingStateType.fetching) {
+          yield currentState.clone(type: ReadingStateType.fetching);
+          try {
+            if (source is OnlineSource) {
+              final pageList =
+                  await (source as OnlineSource).fetchPageList(chapter);
+              yield currentState.clone(
+                type: ReadingStateType.successful,
+                pageList: pageList,
+              );
+            } else if (source is LocalSource) {
+              // todo
+            }
+          } catch (error) {
+            yield currentState.clone(
+              type: ReadingStateType.failed,
+              error: error,
+            );
+          }
         }
         break;
       case ReadingEventType.toggleOverlay:
         yield currentState.clone(fullPage: !currentState.fullPage);
+        break;
+      case ReadingEventType.showPage:
+        yield currentState.clone(currentPageIndex: event.pageIndex);
         break;
     }
   }

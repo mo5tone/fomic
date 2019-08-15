@@ -114,6 +114,8 @@ class _SelectableFilterItem extends StatefulWidget {
 }
 
 class _SelectableFilterItemState extends State<_SelectableFilterItem> {
+  ThemeData get _theme => Theme.of(context);
+
   @override
   Widget build(BuildContext context) {
     final children = <Widget>[];
@@ -137,11 +139,15 @@ class _SelectableFilterItemState extends State<_SelectableFilterItem> {
                     horizontal: 8,
                   ),
                   color: i == widget.filter.state
-                      ? Theme.of(context).colorScheme.background
+                      ? _theme.colorScheme.secondary
                       : null,
                   child: Text(
                     alias,
-                    style: Theme.of(context).textTheme.body1,
+                    style: _theme.textTheme.body1.copyWith(
+                      color: i == widget.filter.state
+                          ? _theme.colorScheme.onSecondary
+                          : null,
+                    ),
                   ),
                 ),
               ),

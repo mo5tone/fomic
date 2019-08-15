@@ -11,9 +11,10 @@ class Fomic extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocSupervisor.delegate = FomicBlocDelegate();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Fomic',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Colors.transparent,
         ),

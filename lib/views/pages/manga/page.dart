@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -31,22 +30,24 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  MangaBloc bloc;
-  ScrollController scrollController;
+  MangaBloc _bloc;
+  ScrollController _scrollController;
 
-  void scrollControllerListener() {}
+  ThemeData get _theme => Theme.of(context);
+
+  void _scrollControllerListener() {}
 
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<MangaBloc>(context);
-    scrollController = ScrollController()
-      ..addListener(scrollControllerListener);
+    _bloc = BlocProvider.of<MangaBloc>(context);
+    _scrollController = ScrollController()
+      ..addListener(_scrollControllerListener);
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -55,7 +56,7 @@ class _PageState extends State<_Page> {
     final appBarExpandedHeight = MediaQuery.of(context).size.height / 3;
     return BlocBuilder<MangaBloc, MangaState>(
       builder: (context, state) {
-        var extraHeight = 0.0;
+        final statusBarHeight = MediaQuery.of(context).padding.top;
         final backgroundImage = Hero(
           tag: '${state.manga.sourceId.index}${state.manga.url}',
           child: CachedNetworkImage(
@@ -63,7 +64,7 @@ class _PageState extends State<_Page> {
             imageUrl: state.manga.thumbnailUrl ?? '',
             errorWidget: (context, url, error) => Icon(
               Icons.broken_image,
-              color: Theme.of(context).errorColor,
+              color: _theme.errorColor,
             ),
             fit: BoxFit.cover,
           ),
@@ -72,7 +73,7 @@ class _PageState extends State<_Page> {
           filter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor.withOpacity(0.5),
+              color: _theme.backgroundColor.withOpacity(0.5),
             ),
           ),
         );
@@ -89,22 +90,22 @@ class _PageState extends State<_Page> {
                   children: [
                     TextSpan(
                       text: '${state.manga.title}',
-                      style: Theme.of(context).textTheme.title,
+                      style: _theme.textTheme.title,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
                       text: 'Summary: ${state.manga.description}',
-                      style: Theme.of(context).textTheme.subtitle,
+                      style: _theme.textTheme.subtitle,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
                       text: 'Authors: ${state.manga.author}',
-                      style: Theme.of(context).textTheme.body1,
+                      style: _theme.textTheme.body1,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
                       text: 'Genre: ${state.manga.genre}',
-                      style: Theme.of(context).textTheme.body1,
+                      style: _theme.textTheme.body1,
                     ),
                   ],
                 ),
@@ -116,7 +117,7 @@ class _PageState extends State<_Page> {
           body: SafeArea(
             top: false,
             child: CustomScrollView(
-              controller: scrollController,
+              controller: _scrollController,
               slivers: [
                 SliverAppBar(
                   expandedHeight: appBarExpandedHeight,
@@ -131,13 +132,11 @@ class _PageState extends State<_Page> {
                   ],
                   flexibleSpace: LayoutBuilder(
                     builder: (context, constraints) {
-                      extraHeight = math.max(extraHeight,
-                          constraints.biggest.height - appBarExpandedHeight);
                       return FlexibleSpaceBar(
                         title: AnimatedOpacity(
-                          duration: Duration(milliseconds: 300),
+                          duration: kThemeChangeDuration,
                           opacity: constraints.biggest.height ==
-                                  kToolbarHeight + extraHeight
+                                  kToolbarHeight + statusBarHeight
                               ? 1.0
                               : 0.0,
                           child: Text(state.manga.title),
@@ -174,7 +173,7 @@ class _PageState extends State<_Page> {
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 4,
-                                  color: Theme.of(context).disabledColor,
+                                  color: _theme.disabledColor,
                                   offset: Offset(2, 2),
                                 ),
                               ],
@@ -183,7 +182,7 @@ class _PageState extends State<_Page> {
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 2),
-                                color: Theme.of(context).cardColor,
+                                color: _theme.cardColor,
                                 child: Center(
                                   child: Text(
                                     chapter.name,

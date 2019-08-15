@@ -3,8 +3,14 @@ import 'package:fomic/blocs/base/event.dart';
 enum ReadingEventType {
   fetch,
   toggleOverlay,
+  showPage,
 }
 
 class ReadingEvent extends Event<ReadingEventType> {
-  ReadingEvent(ReadingEventType type) : super(type);
+  final int pageIndex;
+
+  ReadingEvent(
+    ReadingEventType type, {
+    this.pageIndex = 0,
+  }) : super(type);
 }

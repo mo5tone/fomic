@@ -38,12 +38,13 @@ class MangaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(8),
       boxShadow: [
         BoxShadow(
           blurRadius: 4,
-          color: Theme.of(context).disabledColor,
+          color: theme.disabledColor,
           offset: Offset(2, 2),
         ),
       ],
@@ -74,10 +75,10 @@ class MangaItem extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 2),
                 alignment: Alignment.bottomCenter,
-                color: Theme.of(context).primaryColor,
+                color: theme.primaryColor,
                 child: Text(
                   '${Source.of(manga.sourceId).name}',
-                  style: Theme.of(context).textTheme.caption,
+                  style: theme.textTheme.caption,
                 ),
               ),
             ],
@@ -92,7 +93,7 @@ class MangaItem extends StatelessWidget {
         children: [
           Text(
             '${manga.title}',
-            style: Theme.of(context).textTheme.subtitle,
+            style: theme.textTheme.subtitle,
             maxLines: 1,
           ),
           Row(
@@ -115,10 +116,10 @@ class MangaItem extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
-            color: Theme.of(context).cardColor,
+            color: theme.cardColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
                 Expanded(
                   child: cover,
                   flex: 10,
