@@ -17,7 +17,7 @@ class MangaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return MangaBloc(manga)..dispatch(MangaEvent(MangaEventType.fetch));
+        return MangaBloc(manga)..dispatch(MangaEvent.fetch());
       },
       child: _Page(),
     );
@@ -126,6 +126,7 @@ class _PageState extends State<_Page> {
                     IconButton(
                       icon: Icon(Icons.favorite_border),
                       onPressed: () {
+                        _bloc.dispatch(MangaEvent.favorite());
                         // todo: add to favorites.
                       },
                     )

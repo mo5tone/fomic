@@ -31,79 +31,69 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
 
   @override
   Stream<SourcesState> mapEventToState(SourcesEvent event) async* {
-    switch (event.type) {
-      case SourcesEventType.beginSearching:
-        yield currentState.clone(searching: true);
-        break;
-      case SourcesEventType.endSearching:
-        yield currentState.clone(searching: false);
-        break;
-      case SourcesEventType.enableSource:
-        KeyValue.enableSource(event.sourceId);
-        Source.of(event.sourceId).enable();
-        yield currentState.clone();
-        break;
-      case SourcesEventType.disableSource:
+    if (event is SourcesEventToggleSearching) {
+      yield currentState.clone(searching: !currentState.searching);
+    } else if (event is SourcesEventToggleSource) {
+      final source = Source.of(event.sourceId);
+      if (source.available) {
         KeyValue.disableSource(event.sourceId);
         Source.of(event.sourceId).disable();
-        yield currentState.clone();
-        break;
-      case SourcesEventType.displaySource:
+      } else {
+        KeyValue.enableSource(event.sourceId);
+        Source.of(event.sourceId).enable();
+      }
+      yield currentState.clone();
+    } else if (event is SourcesEventDisplaySource ||
+        event is SourcesEventFetch ||
+        event is SourcesEventMore) {
+      if (event is SourcesEventDisplaySource) {
         yield SourcesState(
           SourcesStateType.successful,
           sourceId: event.sourceId,
         );
-        continue fetch;
-      fetch:
-      case SourcesEventType.fetch:
-        continue more;
-      more:
-      case SourcesEventType.more:
-        if (currentState.type != SourcesStateType.fetching) {
-          yield currentState.clone(
-            type: SourcesStateType.fetching,
-            query: event.query,
-          );
-          _page = event.type == SourcesEventType.more ? _page + 1 : 0;
-          final source = Source.of(currentState.sourceId);
-          try {
-            if (source is OnlineSource) {
-              var mangaList = await source.fetchMangaList(
-                page: _page,
-                query: event.query,
-                filters: currentState.filters,
-              );
-              mangaList = mangaList
+      }
+      _page = event is SourcesEventMore ? _page + 1 : 0;
+      if (currentState.type == SourcesStateType.fetching) {
+        return;
+      }
+      yield currentState.clone(type: SourcesStateType.fetching);
+      final source = Source.of(currentState.sourceId);
+      try {
+        if (source is OnlineSource) {
+          final mangas = await source
+              .fetchMangaList(
+                  page: _page,
+                  query: event.query,
+                  filters: currentState.filters)
+              .then((mangas) => mangas
                   .where((manga) => manga != null)
-                  .toList(growable: false);
-              yield currentState.clone(
-                type: SourcesStateType.successful,
-                query: event.query,
-                mangaList: [
-                  if (_page > 0) ...currentState.mangaList,
-                  ...mangaList,
-                ],
-              );
-            } else if (source is LocalSource) {
-              // todo: local source
-              yield currentState.clone(
-                type: SourcesStateType.successful,
-                query: event.query,
-                mangaList: [],
-              );
-            }
-          } catch (error) {
-            if (_page > 0) {
-              _page--;
-            }
-            yield currentState.clone(
-              type: SourcesStateType.failed,
-              query: event.query,
-              error: error,
-            );
-          }
+                  .toList(growable: false));
+          yield currentState.clone(
+            type: SourcesStateType.successful,
+            query: event.query,
+            mangaList: [
+              if (_page > 0) ...currentState.mangaList,
+              ...mangas,
+            ],
+          );
+        } else if (source is LocalSource) {
+          // todo: local source
+          yield currentState.clone(
+            type: SourcesStateType.successful,
+            query: event.query,
+            mangaList: [],
+          );
         }
-        break;
+      } catch (error) {
+        if (_page > 0) {
+          _page--;
+        }
+        yield currentState.clone(
+          type: SourcesStateType.failed,
+          query: event.query,
+          error: error,
+        );
+      }
     }
   }
 }

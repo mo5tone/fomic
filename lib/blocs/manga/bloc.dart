@@ -20,28 +20,28 @@ class MangaBloc extends Bloc<MangaEvent, MangaState> {
 
   @override
   Stream<MangaState> mapEventToState(MangaEvent event) async* {
-    switch (event.type) {
-      case MangaEventType.fetch:
-        final source = Source.of(manga.sourceId);
-        try {
-          if (source is OnlineSource) {
-            final mangaAndChapterList =
-                await source.fetchMangaAndChapterList(this.manga);
-            yield currentState.clone(
-              type: MangaStateType.successful,
-              manga: mangaAndChapterList.$0,
-              chapterList: mangaAndChapterList.$1,
-            );
-          } else if (source is LocalSource) {
-            yield currentState.clone();
-          }
-        } catch (error) {
+    if (event is MangaEventFetch) {
+      final source = Source.of(manga.sourceId);
+      try {
+        if (source is OnlineSource) {
+          final mangaAndChapterList =
+              await source.fetchMangaAndChapterList(this.manga);
           yield currentState.clone(
-            type: MangaStateType.failed,
-            error: error,
+            type: MangaStateType.successful,
+            manga: mangaAndChapterList.$0,
+            chapterList: mangaAndChapterList.$1,
           );
+        } else if (source is LocalSource) {
+          yield currentState.clone();
         }
-        break;
+      } catch (error) {
+        yield currentState.clone(
+          type: MangaStateType.failed,
+          error: error,
+        );
+      }
+    } else if (event is MangaEventFavorite) {
+      // todo
     }
   }
 }

@@ -20,8 +20,7 @@ class ReadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return ReadingBloc(chapter)
-          ..dispatch(ReadingEvent(ReadingEventType.fetch));
+        return ReadingBloc(chapter)..dispatch(ReadingEvent.fetch());
       },
       child: _Page(),
     );
@@ -139,10 +138,8 @@ class _PageState extends State<_Page> {
                           divisions: state.pageList.length + 1,
                           onChanged: (value) {
                             _changedByGesture = false;
-                            _bloc.dispatch(ReadingEvent(
-                              ReadingEventType.displayPage,
-                              pageIndex: value.round(),
-                            ));
+                            final index = value.round();
+                            _bloc.dispatch(ReadingEvent.displayPage(index));
                           },
                         ),
                       ),
@@ -158,7 +155,7 @@ class _PageState extends State<_Page> {
             body: SafeArea(
               child: GestureDetector(
                 onTap: () {
-                  _bloc.dispatch(ReadingEvent(ReadingEventType.toggleOverlay));
+                  _bloc.dispatch(ReadingEvent.toggleOverlay());
                 },
                 child: Container(
                   child: Stack(
@@ -185,10 +182,7 @@ class _PageState extends State<_Page> {
                             },
                             onPageChanged: (index) {
                               if (_changedByGesture) {
-                                _bloc.dispatch(ReadingEvent(
-                                  ReadingEventType.displayPage,
-                                  pageIndex: index,
-                                ));
+                                _bloc.dispatch(ReadingEvent.displayPage(index));
                               } else {
                                 _changedByGesture = true;
                               }

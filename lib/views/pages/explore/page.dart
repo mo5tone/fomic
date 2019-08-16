@@ -15,7 +15,7 @@ class ExplorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return SourcesBloc()..dispatch(SourcesEvent(SourcesEventType.fetch));
+        return SourcesBloc()..dispatch(SourcesEvent.fetch());
       },
       child: _Page(),
     );
@@ -37,7 +37,7 @@ class _PageState extends State<_Page> {
     final maxScrollExtent = scrollController.position.maxScrollExtent;
     final extentBefore = scrollController.position.extentBefore;
     if (extentBefore == maxScrollExtent) {
-      bloc.dispatch(SourcesEvent(SourcesEventType.more));
+      bloc.dispatch(SourcesEvent.more());
     }
   }
 
@@ -79,8 +79,7 @@ class _PageState extends State<_Page> {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: () {
-                        bloc.dispatch(
-                            SourcesEvent(SourcesEventType.endSearching));
+                        bloc.dispatch(SourcesEvent.toggleSearching());
                       },
                     ),
                   ),
@@ -90,10 +89,7 @@ class _PageState extends State<_Page> {
                       curve: Curves.bounceInOut,
                       duration: Duration(milliseconds: 300),
                     );
-                    bloc.dispatch(SourcesEvent(
-                      SourcesEventType.fetch,
-                      query: text,
-                    ));
+                    bloc.dispatch(SourcesEvent.fetch(query: text));
                   },
                 ),
               )
@@ -109,8 +105,7 @@ class _PageState extends State<_Page> {
                   IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
-                      bloc.dispatch(
-                          SourcesEvent(SourcesEventType.beginSearching));
+                      bloc.dispatch(SourcesEvent.toggleSearching());
                     },
                   ),
                   IconButton(
@@ -131,22 +126,14 @@ class _PageState extends State<_Page> {
                     return ListTile(
                       onTap: () {
                         textEditingController.clear();
-                        bloc.dispatch(SourcesEvent(
-                          SourcesEventType.displaySource,
-                          sourceId: source.id,
-                        ));
+                        bloc.dispatch(SourcesEvent.displaySource(source.id));
                         Navigator.of(context).pop();
                       },
                       title: Text(source.name),
                       trailing: Switch(
                         value: source.available,
                         onChanged: (value) {
-                          bloc.dispatch(SourcesEvent(
-                            value
-                                ? SourcesEventType.enableSource
-                                : SourcesEventType.disableSource,
-                            sourceId: source.id,
-                          ));
+                          bloc.dispatch(SourcesEvent.toggleSource(source.id));
                         },
                       ),
                     );
@@ -159,15 +146,12 @@ class _PageState extends State<_Page> {
                 filters: state.filters,
                 onApply: () {
                   textEditingController.clear();
-                  bloc.dispatch(SourcesEvent(SourcesEventType.fetch));
+                  bloc.dispatch(SourcesEvent.fetch());
                   Navigator.of(context).pop();
                 },
               );
         final onRefresh = () => Future(() {
-              bloc.dispatch(SourcesEvent(
-                SourcesEventType.fetch,
-                query: state.query,
-              ));
+              bloc.dispatch(SourcesEvent.fetch(query: state.query));
             });
         return Scaffold(
           key: scaffoldKey,

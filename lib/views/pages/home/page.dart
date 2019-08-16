@@ -83,7 +83,7 @@ class _PageState extends State<_Page> {
             ],
             currentIndex: state.index,
             onTap: (index) {
-              bloc.dispatch(HomeEvent(HomeEventType.display, index: index));
+              bloc.dispatch(HomeEvent.display(index: index));
             },
           ),
         );

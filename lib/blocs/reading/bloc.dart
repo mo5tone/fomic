@@ -22,35 +22,31 @@ class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
 
   @override
   Stream<ReadingState> mapEventToState(ReadingEvent event) async* {
-    switch (event.type) {
-      case ReadingEventType.fetch:
-        if (currentState.type != ReadingStateType.fetching) {
-          yield currentState.clone(type: ReadingStateType.fetching);
-          try {
-            if (source is OnlineSource) {
-              final pageList =
-                  await (source as OnlineSource).fetchPageList(chapter);
-              yield currentState.clone(
-                type: ReadingStateType.successful,
-                pageList: pageList,
-              );
-            } else if (source is LocalSource) {
-              // todo
-            }
-          } catch (error) {
+    if (event is ReadingEventFetch) {
+      if (currentState.type != ReadingStateType.fetching) {
+        yield currentState.clone(type: ReadingStateType.fetching);
+        try {
+          if (source is OnlineSource) {
+            final pageList =
+                await (source as OnlineSource).fetchPageList(chapter);
             yield currentState.clone(
-              type: ReadingStateType.failed,
-              error: error,
+              type: ReadingStateType.successful,
+              pageList: pageList,
             );
+          } else if (source is LocalSource) {
+            // todo
           }
+        } catch (error) {
+          yield currentState.clone(
+            type: ReadingStateType.failed,
+            error: error,
+          );
         }
-        break;
-      case ReadingEventType.toggleOverlay:
-        yield currentState.clone(fullPage: !currentState.fullPage);
-        break;
-      case ReadingEventType.displayPage:
-        yield currentState.clone(pageIndex: event.pageIndex);
-        break;
+      }
+    } else if (event is ReadingEventToggleOverlay) {
+      yield currentState.clone(fullPage: !currentState.fullPage);
+    } else if (event is ReadingEventDisplayPage) {
+      yield currentState.clone(pageIndex: event.pageIndex);
     }
   }
 }
