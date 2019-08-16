@@ -11,7 +11,7 @@ enum ReadingStateType {
 class ReadingState extends State<ReadingStateType> {
   final bool fullPage;
   final Chapter chapter;
-  final int currentPageIndex;
+  final int pageIndex;
   final List<Page> pageList;
   final Object error;
   final StackTrace stackTrace;
@@ -20,7 +20,7 @@ class ReadingState extends State<ReadingStateType> {
     ReadingStateType type, {
     this.fullPage = true,
     this.chapter,
-    this.currentPageIndex = 0,
+    this.pageIndex = 0,
     this.pageList = const [],
     this.error,
     this.stackTrace,
@@ -31,7 +31,7 @@ class ReadingState extends State<ReadingStateType> {
     ReadingStateType type,
     bool fullPage,
     Chapter chapter,
-    int currentPageIndex,
+    int pageIndex,
     List<Page> pageList,
     Object error,
     StackTrace stackTrace,
@@ -40,7 +40,7 @@ class ReadingState extends State<ReadingStateType> {
       type ?? this.type,
       fullPage: fullPage ?? this.fullPage,
       chapter: chapter ?? this.chapter,
-      currentPageIndex: currentPageIndex ?? this.currentPageIndex,
+      pageIndex: pageIndex ?? this.pageIndex,
       pageList: pageList ?? this.pageList,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,

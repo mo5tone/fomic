@@ -36,6 +36,7 @@ class _Page extends StatefulWidget {
 class _PageState extends State<_Page> {
   ReadingBloc _bloc;
   PageController _pageController;
+  bool _changedByGesture;
 
   ThemeData get _theme => Theme.of(context);
 
@@ -43,11 +44,10 @@ class _PageState extends State<_Page> {
     final List<ImageProvider> providerList = [];
     final imageConfiguration = createLocalImageConfiguration(context);
     pageList.where((page) => page.imageUrl != null).forEach((page) {
-      final provider = CachedNetworkImageProvider(
+      providerList.add(CachedNetworkImageProvider(
         page.imageUrl,
         headers: page.headers,
-      )..resolve(imageConfiguration);
-      providerList.add(provider);
+      )..resolve(imageConfiguration));
     });
     return providerList;
   }
@@ -59,6 +59,7 @@ class _PageState extends State<_Page> {
     super.initState();
     _bloc = BlocProvider.of<ReadingBloc>(context);
     _pageController = PageController()..addListener(_pageControllerListener);
+    _changedByGesture = true;
   }
 
   @override
@@ -70,52 +71,90 @@ class _PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ReadingBloc, ReadingState>(
+      condition: (previous, current) {
+        return previous.fullPage != current.fullPage ||
+            previous.pageIndex != current.pageIndex;
+      },
       listener: (context, state) {
-        List<SystemUiOverlay> overlays =
-            state.fullPage ? [] : SystemUiOverlay.values;
+        final overlays =
+            state.fullPage ? <SystemUiOverlay>[] : SystemUiOverlay.values;
         SystemChrome.setEnabledSystemUIOverlays(overlays);
-        if (state.pageList.isNotEmpty &&
-            state.currentPageIndex != _pageController.page.round()) {
-          _pageController.animateToPage(
-            state.currentPageIndex,
-            duration: Duration(milliseconds: 200),
-            curve: Curves.linear,
-          );
-        }
+        _pageController.jumpToPage(state.pageIndex);
       },
       child: BlocBuilder<ReadingBloc, ReadingState>(
+        condition: (previous, current) {
+          return true;
+        },
         builder: (context, state) {
-          return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size(double.infinity, kToolbarHeight),
+          final appBar = PreferredSize(
+            preferredSize: Size(double.infinity, kToolbarHeight),
+            child: IgnorePointer(
+              ignoring: state.fullPage,
               child: AnimatedOpacity(
                 opacity: state.fullPage ? 0 : 1,
                 duration: Duration(milliseconds: 300),
-                child: IgnorePointer(
-                  ignoring: state.fullPage,
-                  child: AppBar(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.chapter.manga.title,
-                          style: _theme.primaryTextTheme.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          state.chapter.name,
-                          style: _theme.primaryTextTheme.subtitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
+                child: AppBar(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        state.chapter.manga.title,
+                        style: _theme.primaryTextTheme.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        state.chapter.name,
+                        style: _theme.primaryTextTheme.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
+          );
+          final pageListSlider = IgnorePointer(
+            ignoring: state.fullPage,
+            child: AnimatedOpacity(
+              opacity: state.fullPage ? 0 : 1,
+              duration: kThemeAnimationDuration,
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text('1'),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        child: Slider(
+                          min: 1.0,
+                          max: state.pageList.length + 1.0,
+                          value: state.pageIndex + 1.0,
+                          divisions: state.pageList.length + 1,
+                          onChanged: (value) {
+                            _changedByGesture = false;
+                            _bloc.dispatch(ReadingEvent(
+                              ReadingEventType.displayPage,
+                              pageIndex: value.round(),
+                            ));
+                          },
+                        ),
+                      ),
+                    ),
+                    Text('${state.pageList.length + 1}'),
+                  ],
+                ),
+              ),
+            ),
+          );
+          return Scaffold(
+            appBar: appBar,
             body: SafeArea(
               child: GestureDetector(
                 onTap: () {
@@ -144,6 +183,16 @@ class _PageState extends State<_Page> {
                                 imageProvider: snapShot.data[index],
                               );
                             },
+                            onPageChanged: (index) {
+                              if (_changedByGesture) {
+                                _bloc.dispatch(ReadingEvent(
+                                  ReadingEventType.displayPage,
+                                  pageIndex: index,
+                                ));
+                              } else {
+                                _changedByGesture = true;
+                              }
+                            },
                           );
                         },
                       ),
@@ -151,35 +200,7 @@ class _PageState extends State<_Page> {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text('1'),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4),
-                                  child: Slider(
-                                    min: 1.0,
-                                    max: state.pageList.length + 1.0,
-                                    value: state.currentPageIndex + 1.0,
-                                    divisions: state.pageList.length + 1,
-                                    onChanged: (value) {
-                                      _bloc.dispatch(ReadingEvent(
-                                        ReadingEventType.showPage,
-                                        pageIndex: value.round(),
-                                      ));
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Text('${state.pageList.length + 1}'),
-                            ],
-                          ),
-                        ),
+                        child: pageListSlider,
                       ),
                     ],
                   ),

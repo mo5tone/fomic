@@ -48,8 +48,8 @@ class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
       case ReadingEventType.toggleOverlay:
         yield currentState.clone(fullPage: !currentState.fullPage);
         break;
-      case ReadingEventType.showPage:
-        yield currentState.clone(currentPageIndex: event.pageIndex);
+      case ReadingEventType.displayPage:
+        yield currentState.clone(pageIndex: event.pageIndex);
         break;
     }
   }
