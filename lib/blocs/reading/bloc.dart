@@ -10,7 +10,7 @@ import 'state.dart';
 class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
   final Chapter chapter;
 
-  Source get source => Source.of(chapter.manga.sourceId);
+  Source get source => Source.of(chapter.book.sourceId);
 
   ReadingBloc(this.chapter);
 
@@ -27,8 +27,7 @@ class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
         yield currentState.clone(type: ReadingStateType.fetching);
         try {
           if (source is OnlineSource) {
-            final pageList =
-                await (source as OnlineSource).fetchPageList(chapter);
+            final pageList = await (source as OnlineSource).fetchPages(chapter);
             yield currentState.clone(
               type: ReadingStateType.successful,
               pageList: pageList,

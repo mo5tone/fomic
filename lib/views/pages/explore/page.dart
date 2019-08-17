@@ -7,8 +7,8 @@ import 'package:fomic/blocs/explore/bloc.dart';
 import 'package:fomic/blocs/explore/event.dart';
 import 'package:fomic/blocs/explore/state.dart';
 import 'package:fomic/sources/base/source.dart';
+import 'package:fomic/views/widgets/book_grid_view_item.dart';
 import 'package:fomic/views/widgets/filters_drawer.dart';
-import 'package:fomic/views/widgets/manga_item.dart';
 
 class ExplorePage extends StatelessWidget {
   @override
@@ -168,7 +168,7 @@ class _PageState extends State<_Page> {
                       child: GridView.builder(
                         padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
                         controller: scrollController,
-                        itemCount: state.mangaList.length,
+                        itemCount: state.books.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 8,
@@ -176,11 +176,11 @@ class _PageState extends State<_Page> {
                           childAspectRatio: 10 / 13,
                         ),
                         itemBuilder: (context, index) {
-                          return MangaItem(
-                            manga: state.mangaList[index],
-                            onTap: (manga) => Navigator.of(context).pushNamed(
-                              '/manga',
-                              arguments: manga,
+                          return BookGridViewItem(
+                            book: state.books[index],
+                            onTap: (book) => Navigator.of(context).pushNamed(
+                              '/book',
+                              arguments: book,
                             ),
                           );
                         },

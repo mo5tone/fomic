@@ -1,17 +1,17 @@
 import 'package:fomic/common/helper/cloneable.dart';
 
-import 'manga.dart';
+import 'book.dart';
 import 'page.dart';
 
 class Chapter implements Cloneable {
-  final Manga manga;
+  final Book book;
   final String url;
   final String name;
   final DateTime updateAt;
   final num chapterNumber;
 
   Chapter({
-    this.manga,
+    this.book,
     this.url,
     this.name,
     this.updateAt,
@@ -20,7 +20,7 @@ class Chapter implements Cloneable {
 
   @override
   clone({
-    Manga manga,
+    Book book,
     String url,
     String name,
     DateTime updateAt,
@@ -28,7 +28,7 @@ class Chapter implements Cloneable {
     List<Page> pages,
   }) {
     return Chapter(
-      manga: manga ?? this.manga,
+      book: book ?? this.book,
       url: url ?? this.url,
       name: name ?? this.name,
       updateAt: updateAt ?? this.updateAt,

@@ -98,7 +98,7 @@ class _PageState extends State<_Page> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        state.chapter.manga.title,
+                        state.chapter.book.title,
                         style: _theme.primaryTextTheme.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

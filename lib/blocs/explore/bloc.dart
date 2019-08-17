@@ -60,20 +60,19 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
       final source = Source.of(currentState.sourceId);
       try {
         if (source is OnlineSource) {
-          final mangas = await source
-              .fetchMangaList(
+          final books = await source
+              .fetchBooks(
                   page: _page,
                   query: event.query,
                   filters: currentState.filters)
-              .then((mangas) => mangas
-                  .where((manga) => manga != null)
-                  .toList(growable: false));
+              .then((books) =>
+                  books.where((book) => book != null).toList(growable: false));
           yield currentState.clone(
             type: SourcesStateType.successful,
             query: event.query,
-            mangaList: [
-              if (_page > 0) ...currentState.mangaList,
-              ...mangas,
+            books: [
+              if (_page > 0) ...currentState.books,
+              ...books,
             ],
           );
         } else if (source is LocalSource) {
@@ -81,7 +80,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
           yield currentState.clone(
             type: SourcesStateType.successful,
             query: event.query,
-            mangaList: [],
+            books: [],
           );
         }
       } catch (error) {

@@ -1,39 +1,39 @@
 import 'package:fomic/blocs/base/state.dart' as base;
+import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
-import 'package:fomic/model/manga.dart';
 
-enum MangaStateType {
+enum BookStateType {
   fetching,
   successful,
   failed,
 }
 
-class MangaState extends base.State<MangaStateType> {
-  final Manga manga;
+class BookState extends base.State<BookStateType> {
+  final Book book;
   final List<Chapter> chapterList;
   final Object error;
   final StackTrace stackTrace;
 
-  MangaState(
-    MangaStateType type, {
-    this.manga,
+  BookState(
+    BookStateType type, {
+    this.book,
     this.chapterList = const [],
     this.error,
     this.stackTrace,
-  })  : assert(manga != null),
+  })  : assert(book != null),
         super(type);
 
   @override
   clone({
-    MangaStateType type,
-    Manga manga,
+    BookStateType type,
+    Book book,
     List<Chapter> chapterList,
     Object error,
     StackTrace stackTrace,
   }) {
-    return MangaState(
+    return BookState(
       type ?? this.type,
-      manga: manga ?? this.manga,
+      book: book ?? this.book,
       chapterList: chapterList ?? this.chapterList,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,

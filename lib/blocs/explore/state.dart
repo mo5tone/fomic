@@ -1,6 +1,6 @@
 import 'package:fomic/blocs/base/state.dart' as base;
+import 'package:fomic/model/book.dart';
 import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga.dart';
 import 'package:fomic/sources/base/source.dart';
 
 enum SourcesStateType {
@@ -13,7 +13,7 @@ class SourcesState extends base.State<SourcesStateType> {
   final SourceId sourceId;
   final bool searching;
   final String query;
-  final List<Manga> mangaList;
+  final List<Book> books;
   final Object error;
   final StackTrace stackTrace;
 
@@ -31,7 +31,7 @@ class SourcesState extends base.State<SourcesStateType> {
     this.sourceId,
     this.searching = false,
     this.query = '',
-    this.mangaList = const [],
+    this.books = const [],
     this.error,
     this.stackTrace,
   })  : assert(sourceId != null),
@@ -43,7 +43,7 @@ class SourcesState extends base.State<SourcesStateType> {
     SourceId sourceId,
     bool searching,
     String query,
-    List<Manga> mangaList,
+    List<Book> books,
     Object error,
     StackTrace stackTrace,
   }) {
@@ -52,7 +52,7 @@ class SourcesState extends base.State<SourcesStateType> {
       sourceId: sourceId ?? this.sourceId,
       searching: searching ?? this.searching,
       query: query ?? this.query,
-      mangaList: mangaList ?? this.mangaList,
+      books: books ?? this.books,
       error: error ?? this.error,
       stackTrace: stackTrace ?? this.stackTrace,
     ).._filters = filters;

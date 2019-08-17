@@ -2,36 +2,36 @@ import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/model/manga.dart';
+import 'package:fomic/model/book.dart';
 import 'package:fomic/sources/base/source.dart';
 
-class MangaItem extends StatelessWidget {
-  final Manga manga;
-  final void Function(Manga manga) onTap;
-  final void Function(Manga manga) onLongPress;
+class BookGridViewItem extends StatelessWidget {
+  final Book book;
+  final void Function(Book book) onTap;
+  final void Function(Book book) onLongPress;
 
   String get status {
     var status = 'unknown';
-    switch (manga.status) {
-      case MangaStatus.ongoing:
+    switch (book.status) {
+      case BookStatus.ongoing:
         status = 'ongoing';
         break;
-      case MangaStatus.completed:
+      case BookStatus.completed:
         status = 'completed';
         break;
-      case MangaStatus.licensed:
+      case BookStatus.licensed:
         status = 'licensed';
         break;
-      case MangaStatus.unknown:
+      case BookStatus.unknown:
         status = 'unknown';
         break;
     }
     return status;
   }
 
-  const MangaItem({
+  const BookGridViewItem({
     Key key,
-    @required this.manga,
+    @required this.book,
     this.onTap,
     this.onLongPress,
   }) : super(key: key);
@@ -53,9 +53,9 @@ class MangaItem extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: '${manga.sourceId.index}${manga.url}',
+          tag: '${book.sourceId.index}${book.url}',
           child: CachedNetworkImage(
-            imageUrl: manga.thumbnailUrl ?? '',
+            imageUrl: book.thumbnailUrl ?? '',
             placeholder: (context, url) => Image.asset(
               'images/acfun/2018.png',
               fit: BoxFit.cover,
@@ -77,7 +77,7 @@ class MangaItem extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: theme.primaryColor,
                 child: Text(
-                  '${Source.of(manga.sourceId).name}',
+                  '${Source.of(book.sourceId).name}',
                   style: theme.textTheme.caption,
                 ),
               ),
@@ -92,7 +92,7 @@ class MangaItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '${manga.title}',
+            '${book.title}',
             style: theme.textTheme.subtitle,
             maxLines: 1,
           ),
@@ -100,7 +100,7 @@ class MangaItem extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${manga.author}',
+                  '${book.author}',
                   maxLines: 1,
                 ),
               ),
@@ -135,12 +135,12 @@ class MangaItem extends StatelessWidget {
       ),
       onTap: () {
         if (onTap != null) {
-          onTap(manga);
+          onTap(book);
         }
       },
       onLongPress: () {
         if (onLongPress != null) {
-          onLongPress(manga);
+          onLongPress(book);
         }
       },
     );

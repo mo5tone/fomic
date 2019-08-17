@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/common/helper/pair.dart';
+import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/sources/base/source.dart';
 
@@ -31,24 +31,24 @@ abstract class OnlineSource extends Source {
       LogInterceptor(),
     ]);
 
-  Future<List<Manga>> fetchMangaList({
+  Future<List<Book>> fetchBooks({
     int page = 0,
     String query = '',
     List<Filter> filters = const [],
   });
 
-  Future<Manga> fetchManga(Manga manga);
+  Future<Book> fetchBook(Book book);
 
-  Future<List<Chapter>> fetchChapterList(Manga manga);
+  Future<List<Chapter>> fetchChapters(Book book);
 
-  Future<Pair<Manga, List<Chapter>>> fetchMangaAndChapterList(Manga manga) {
-    return fetchManga(manga).then((value) async {
-      final chapterList = await fetchChapterList(value);
+  Future<Pair<Book, List<Chapter>>> fetchBookAndChapters(Book book) {
+    return fetchBook(book).then((value) async {
+      final chapterList = await fetchChapters(value);
       return Pair(value, chapterList);
     });
   }
 
-  Future<List<Page>> fetchPageList(Chapter chapter);
+  Future<List<Page>> fetchPages(Chapter chapter);
 }
 
 class StrictResponseType extends InterceptorsWrapper {

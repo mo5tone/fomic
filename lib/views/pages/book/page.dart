@@ -3,21 +3,21 @@ import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fomic/blocs/manga/bloc.dart';
-import 'package:fomic/blocs/manga/event.dart';
-import 'package:fomic/blocs/manga/state.dart';
-import 'package:fomic/model/manga.dart';
+import 'package:fomic/blocs/book//bloc.dart';
+import 'package:fomic/blocs/book/event.dart';
+import 'package:fomic/blocs/book/state.dart';
+import 'package:fomic/model/book.dart';
 
-class MangaPage extends StatelessWidget {
-  final Manga manga;
+class BookPage extends StatelessWidget {
+  final Book book;
 
-  const MangaPage({Key key, this.manga}) : super(key: key);
+  const BookPage({Key key, this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return MangaBloc(manga)..dispatch(MangaEvent.fetch());
+        return BookBloc(book)..dispatch(BookEvent.fetch());
       },
       child: _Page(),
     );
@@ -30,7 +30,7 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  MangaBloc _bloc;
+  BookBloc _bloc;
   ScrollController _scrollController;
 
   ThemeData get _theme => Theme.of(context);
@@ -40,7 +40,7 @@ class _PageState extends State<_Page> {
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<MangaBloc>(context);
+    _bloc = BlocProvider.of<BookBloc>(context);
     _scrollController = ScrollController()
       ..addListener(_scrollControllerListener);
   }
@@ -54,14 +54,14 @@ class _PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
     final appBarExpandedHeight = MediaQuery.of(context).size.height / 3;
-    return BlocBuilder<MangaBloc, MangaState>(
+    return BlocBuilder<BookBloc, BookState>(
       builder: (context, state) {
         final statusBarHeight = MediaQuery.of(context).padding.top;
         final backgroundImage = Hero(
-          tag: '${state.manga.sourceId.index}${state.manga.url}',
+          tag: '${state.book.sourceId.index}${state.book.url}',
           child: CachedNetworkImage(
             useOldImageOnUrlChange: true,
-            imageUrl: state.manga.thumbnailUrl ?? '',
+            imageUrl: state.book.thumbnailUrl ?? '',
             errorWidget: (context, url, error) => Icon(
               Icons.broken_image,
               color: _theme.errorColor,
@@ -89,22 +89,22 @@ class _PageState extends State<_Page> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: '${state.manga.title}',
+                      text: '${state.book.title}',
                       style: _theme.textTheme.title,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Summary: ${state.manga.description}',
+                      text: 'Summary: ${state.book.description}',
                       style: _theme.textTheme.subtitle,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Authors: ${state.manga.author}',
+                      text: 'Authors: ${state.book.author}',
                       style: _theme.textTheme.body1,
                     ),
                     TextSpan(text: '\n'),
                     TextSpan(
-                      text: 'Genre: ${state.manga.genre}',
+                      text: 'Genre: ${state.book.genre}',
                       style: _theme.textTheme.body1,
                     ),
                   ],
@@ -126,7 +126,7 @@ class _PageState extends State<_Page> {
                     IconButton(
                       icon: Icon(Icons.favorite_border),
                       onPressed: () {
-                        _bloc.dispatch(MangaEvent.favorite());
+                        _bloc.dispatch(BookEvent.favorite());
                         // todo: add to favorites.
                       },
                     )
@@ -140,7 +140,7 @@ class _PageState extends State<_Page> {
                                   kToolbarHeight + statusBarHeight
                               ? 1.0
                               : 0.0,
-                          child: Text(state.manga.title),
+                          child: Text(state.book.title),
                         ),
                         background: Stack(
                           fit: StackFit.expand,

@@ -2,14 +2,14 @@ import 'package:fomic/common/helper/cloneable.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/sources/base/source.dart';
 
-enum MangaStatus {
+enum BookStatus {
   unknown,
   ongoing,
   completed,
   licensed,
 }
 
-class Manga implements Cloneable<Manga> {
+class Book implements Cloneable<Book> {
   final SourceId sourceId;
   final String url;
   final String thumbnailUrl;
@@ -18,9 +18,9 @@ class Manga implements Cloneable<Manga> {
   final String author;
   final String genre;
   final String description;
-  final MangaStatus status;
+  final BookStatus status;
 
-  Manga({
+  Book({
     this.sourceId,
     this.url,
     this.thumbnailUrl,
@@ -29,11 +29,11 @@ class Manga implements Cloneable<Manga> {
     this.author,
     this.genre,
     this.description,
-    this.status = MangaStatus.unknown,
+    this.status = BookStatus.unknown,
   }) : assert(sourceId != null);
 
   @override
-  Manga clone({
+  Book clone({
     SourceId sourceId,
     String url,
     String thumbnailUrl,
@@ -42,10 +42,10 @@ class Manga implements Cloneable<Manga> {
     String author,
     String genre,
     String description,
-    MangaStatus status,
+    BookStatus status,
     List<Chapter> chapters,
   }) {
-    return Manga(
+    return Book(
       sourceId: sourceId ?? this.sourceId,
       url: url ?? this.url,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
