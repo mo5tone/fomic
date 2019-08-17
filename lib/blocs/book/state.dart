@@ -2,41 +2,27 @@ import 'package:fomic/blocs/base/state.dart' as base;
 import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
 
-enum BookStateType {
-  fetching,
-  successful,
-  failed,
-}
-
-class BookState extends base.State<BookStateType> {
+class BookState extends base.State<BookState> {
   final Book book;
-  final List<Chapter> chapterList;
-  final Object error;
-  final StackTrace stackTrace;
+  bool isFetching = false;
+  List<Chapter> chapterList = [];
+  Object error;
+  StackTrace stackTrace;
 
-  BookState(
-    BookStateType type, {
-    this.book,
-    this.chapterList = const [],
-    this.error,
-    this.stackTrace,
-  })  : assert(book != null),
-        super(type);
+  BookState(this.book) : assert(book != null);
 
   @override
-  clone({
-    BookStateType type,
+  BookState clone({
     Book book,
+    bool isFetching,
     List<Chapter> chapterList,
     Object error,
     StackTrace stackTrace,
   }) {
-    return BookState(
-      type ?? this.type,
-      book: book ?? this.book,
-      chapterList: chapterList ?? this.chapterList,
-      error: error ?? this.error,
-      stackTrace: stackTrace ?? this.stackTrace,
-    );
+    return BookState(book ?? this.book)
+      ..isFetching = isFetching ?? false
+      ..chapterList = chapterList ?? this.chapterList
+      ..error = error
+      ..stackTrace = stackTrace;
   }
 }

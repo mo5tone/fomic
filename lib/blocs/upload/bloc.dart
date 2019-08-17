@@ -5,7 +5,7 @@ import 'state.dart';
 
 class UploadsBloc extends Bloc<UploadsEvent, UploadsState> {
   @override
-  UploadsState get initialState => UploadsState(UploadsStateType.placeholder);
+  UploadsState get initialState => UploadsState();
 
   @override
   Stream<UploadsState> mapEventToState(UploadsEvent event) async* {}

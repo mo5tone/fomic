@@ -71,12 +71,12 @@ class _PageState extends State<_Page> {
   Widget build(BuildContext context) {
     return BlocListener<ReadingBloc, ReadingState>(
       condition: (previous, current) {
-        return previous.fullPage != current.fullPage ||
+        return previous.isFullPage != current.isFullPage ||
             previous.pageIndex != current.pageIndex;
       },
       listener: (context, state) {
         final overlays =
-            state.fullPage ? <SystemUiOverlay>[] : SystemUiOverlay.values;
+            state.isFullPage ? <SystemUiOverlay>[] : SystemUiOverlay.values;
         SystemChrome.setEnabledSystemUIOverlays(overlays);
         _pageController.jumpToPage(state.pageIndex);
       },
@@ -88,9 +88,9 @@ class _PageState extends State<_Page> {
           final appBar = PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: IgnorePointer(
-              ignoring: state.fullPage,
+              ignoring: state.isFullPage,
               child: AnimatedOpacity(
-                opacity: state.fullPage ? 0 : 1,
+                opacity: state.isFullPage ? 0 : 1,
                 duration: Duration(milliseconds: 300),
                 child: AppBar(
                   title: Column(
@@ -116,9 +116,9 @@ class _PageState extends State<_Page> {
             ),
           );
           final pageListSlider = IgnorePointer(
-            ignoring: state.fullPage,
+            ignoring: state.isFullPage,
             child: AnimatedOpacity(
-              opacity: state.fullPage ? 0 : 1,
+              opacity: state.isFullPage ? 0 : 1,
               duration: kThemeAnimationDuration,
               child: Padding(
                 padding: EdgeInsets.all(8),

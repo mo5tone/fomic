@@ -66,7 +66,7 @@ class _PageState extends State<_Page> {
   Widget build(BuildContext context) {
     return BlocBuilder<SourcesBloc, SourcesState>(
       builder: (context, state) {
-        final appBar = state.searching
+        final appBar = state.isSearchMode
             ? AppBar(
                 title: TextField(
                   autofocus: true,
@@ -79,7 +79,7 @@ class _PageState extends State<_Page> {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: () {
-                        bloc.dispatch(SourcesEvent.toggleSearching());
+                        bloc.dispatch(SourcesEvent.toggleSearchMode());
                       },
                     ),
                   ),
@@ -105,7 +105,7 @@ class _PageState extends State<_Page> {
                   IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
-                      bloc.dispatch(SourcesEvent.toggleSearching());
+                      bloc.dispatch(SourcesEvent.toggleSearchMode());
                     },
                   ),
                   IconButton(
@@ -116,7 +116,7 @@ class _PageState extends State<_Page> {
                   ),
                 ],
               );
-        final drawer = state.searching
+        final drawer = state.isSearchMode
             ? null
             : Drawer(
                 child: ListView.builder(
@@ -140,7 +140,7 @@ class _PageState extends State<_Page> {
                   },
                 ),
               );
-        final endDrawer = state.searching
+        final endDrawer = state.isSearchMode
             ? null
             : FiltersDrawer(
                 filters: state.filters,
@@ -162,7 +162,7 @@ class _PageState extends State<_Page> {
             child: Stack(
               children: [
                 IgnorePointer(
-                  ignoring: state.type == SourcesStateType.fetching,
+                  ignoring: state.isFetching,
                   child: Container(
                     child: RefreshIndicator(
                       child: GridView.builder(
@@ -189,7 +189,7 @@ class _PageState extends State<_Page> {
                     ),
                   ),
                 ),
-                if (state.type == SourcesStateType.fetching)
+                if (state.isFetching)
                   Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -198,7 +198,7 @@ class _PageState extends State<_Page> {
           ),
           floatingActionButton: state.sourceId == SourceId.local
               ? IgnorePointer(
-                  ignoring: state.type == SourcesStateType.fetching,
+                  ignoring: state.isFetching,
                   child: FloatingActionButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/upload');

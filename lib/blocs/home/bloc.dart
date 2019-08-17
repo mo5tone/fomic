@@ -5,7 +5,7 @@ import 'state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
-  HomeState get initialState => HomeState(HomeStateType.displaying);
+  HomeState get initialState => HomeState();
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {

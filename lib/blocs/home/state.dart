@@ -1,19 +1,10 @@
 import 'package:fomic/blocs/base/state.dart' as base;
 
-enum HomeStateType {
-  displaying,
-}
-
-class HomeState extends base.State<HomeStateType> {
+class HomeState extends base.State<HomeState> {
   final int index;
 
-  HomeState(HomeStateType type, {this.index = 0}) : super(type);
+  HomeState({this.index = 0}) : assert(index != null);
 
   @override
-  clone({HomeStateType type, int index}) {
-    return HomeState(
-      type ?? this.type,
-      index: index ?? this.index,
-    );
-  }
+  HomeState clone({int index}) => HomeState(index: index ?? this.index);
 }

@@ -23,8 +23,8 @@ class SourcesEvent extends base.Event {
     return SourcesEventToggleSource._(sourceId);
   }
 
-  factory SourcesEvent.toggleSearching() {
-    return SourcesEventToggleSearching._();
+  factory SourcesEvent.toggleSearchMode() {
+    return SourcesEventToggleSearchMode._();
   }
 }
 
@@ -44,6 +44,6 @@ class SourcesEventToggleSource extends SourcesEvent {
   SourcesEventToggleSource._(SourceId sourceId) : super._(sourceId, null);
 }
 
-class SourcesEventToggleSearching extends SourcesEvent {
-  SourcesEventToggleSearching._() : super._(null, null);
+class SourcesEventToggleSearchMode extends SourcesEvent {
+  SourcesEventToggleSearchMode._() : super._(null, null);
 }

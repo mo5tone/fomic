@@ -3,21 +3,15 @@ import 'package:fomic/model/book.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/sources/base/source.dart';
 
-enum SourcesStateType {
-  fetching,
-  successful,
-  failed,
-}
-
-class SourcesState extends base.State<SourcesStateType> {
+class SourcesState extends base.State<SourcesState> {
   final SourceId sourceId;
-  final bool searching;
-  final String query;
-  final List<Book> books;
-  final Object error;
-  final StackTrace stackTrace;
-
+  bool isFetching = false;
+  bool isSearchMode = false;
+  String query = '';
   List<Filter> _filters;
+  List<Book> books = [];
+  Object error;
+  StackTrace stackTrace;
 
   List<Filter> get filters {
     if (_filters == null) {
@@ -26,35 +20,25 @@ class SourcesState extends base.State<SourcesStateType> {
     return _filters;
   }
 
-  SourcesState(
-    SourcesStateType type, {
-    this.sourceId,
-    this.searching = false,
-    this.query = '',
-    this.books = const [],
-    this.error,
-    this.stackTrace,
-  })  : assert(sourceId != null),
-        super(type);
+  SourcesState(this.sourceId) : assert(sourceId != null);
 
   @override
-  clone({
-    SourcesStateType type,
+  SourcesState clone({
     SourceId sourceId,
-    bool searching,
+    bool isFetching,
+    bool isSearchMode,
     String query,
     List<Book> books,
     Object error,
     StackTrace stackTrace,
   }) {
-    return SourcesState(
-      type ?? this.type,
-      sourceId: sourceId ?? this.sourceId,
-      searching: searching ?? this.searching,
-      query: query ?? this.query,
-      books: books ?? this.books,
-      error: error ?? this.error,
-      stackTrace: stackTrace ?? this.stackTrace,
-    ).._filters = filters;
+    return SourcesState(sourceId ?? this.sourceId)
+      ..isFetching = isFetching ?? false
+      ..isSearchMode = isSearchMode ?? this.isSearchMode
+      ..query = query ?? this.query
+      ..books = books ?? this.books
+      ..error = error
+      ..stackTrace = stackTrace
+      .._filters = filters;
   }
 }

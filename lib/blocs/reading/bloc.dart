@@ -10,42 +10,39 @@ import 'state.dart';
 class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
   final Chapter chapter;
 
-  Source get source => Source.of(chapter.book.sourceId);
-
   ReadingBloc(this.chapter);
 
   @override
-  ReadingState get initialState => ReadingState(
-        ReadingStateType.successful,
-        chapter: chapter,
-      );
+  ReadingState get initialState => ReadingState(chapter);
 
   @override
   Stream<ReadingState> mapEventToState(ReadingEvent event) async* {
-    if (event is ReadingEventFetch) {
-      if (currentState.type != ReadingStateType.fetching) {
-        yield currentState.clone(type: ReadingStateType.fetching);
+    switch (event.runtimeType) {
+      case ReadingEventFetch:
+        if (currentState.isFetching) {
+          return;
+        }
+        yield currentState.clone(isFetching: true);
+        final source = Source.of(chapter.book.sourceId);
         try {
           if (source is OnlineSource) {
-            final pageList = await (source as OnlineSource).fetchPages(chapter);
-            yield currentState.clone(
-              type: ReadingStateType.successful,
-              pageList: pageList,
-            );
+            final pageList = await source.fetchPages(chapter);
+            yield currentState.clone(pageList: pageList);
           } else if (source is LocalSource) {
             // todo
           }
         } catch (error) {
-          yield currentState.clone(
-            type: ReadingStateType.failed,
-            error: error,
-          );
+          yield currentState.clone(error: error);
         }
-      }
-    } else if (event is ReadingEventToggleOverlay) {
-      yield currentState.clone(fullPage: !currentState.fullPage);
-    } else if (event is ReadingEventDisplayPage) {
-      yield currentState.clone(pageIndex: event.pageIndex);
+        break;
+      case ReadingEventToggleOverlay:
+        yield currentState.clone(isFullPage: !currentState.isFullPage);
+        break;
+      case ReadingEventDisplayPage:
+        yield currentState.clone(pageIndex: event.pageIndex);
+        break;
+      default:
+        break;
     }
   }
 }
