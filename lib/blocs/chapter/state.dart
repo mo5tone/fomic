@@ -2,7 +2,7 @@ import 'package:fomic/blocs/base/state.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/page.dart';
 
-class ReadingState extends State<ReadingState> {
+class ChapterState extends State<ChapterState> {
   final Chapter chapter;
   bool isFetching = false;
   bool isFullPage = true;
@@ -11,10 +11,10 @@ class ReadingState extends State<ReadingState> {
   Object error;
   StackTrace stackTrace;
 
-  ReadingState(this.chapter);
+  ChapterState(this.chapter);
 
   @override
-  ReadingState clone({
+  ChapterState clone({
     Chapter chapter,
     bool isFetching,
     bool isFullPage,
@@ -23,7 +23,7 @@ class ReadingState extends State<ReadingState> {
     Object error,
     StackTrace stackTrace,
   }) {
-    return ReadingState(chapter ?? this.chapter)
+    return ChapterState(chapter ?? this.chapter)
       ..isFetching = isFetching ?? false
       ..isFullPage = isFullPage ?? this.isFullPage
       ..pageIndex = pageIndex ?? this.pageIndex

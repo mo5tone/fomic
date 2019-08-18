@@ -163,7 +163,7 @@ class _PageState extends State<_Page> {
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                              '/reading',
+                              '/chapter',
                               arguments: state.chapterList[index],
                             );
                           },

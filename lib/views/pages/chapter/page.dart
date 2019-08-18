@@ -2,17 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fomic/blocs/reading/bloc.dart';
-import 'package:fomic/blocs/reading/event.dart';
-import 'package:fomic/blocs/reading/state.dart';
+import 'package:fomic/blocs/chapter/bloc.dart';
+import 'package:fomic/blocs/chapter/event.dart';
+import 'package:fomic/blocs/chapter/state.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/page.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class ReadingPage extends StatelessWidget {
+class ChapterPage extends StatelessWidget {
   final Chapter chapter;
 
-  const ReadingPage({Key key, this.chapter})
+  const ChapterPage({Key key, this.chapter})
       : assert(chapter != null),
         super(key: key);
 
@@ -20,7 +20,7 @@ class ReadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       builder: (context) {
-        return ReadingBloc(chapter)..dispatch(ReadingEvent.fetch());
+        return ChapterBloc(chapter)..dispatch(ChapterEvent.fetch());
       },
       child: _Page(),
     );
@@ -33,7 +33,7 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  ReadingBloc _bloc;
+  ChapterBloc _bloc;
   PageController _pageController;
   bool _changedByGesture;
 
@@ -56,7 +56,7 @@ class _PageState extends State<_Page> {
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<ReadingBloc>(context);
+    _bloc = BlocProvider.of<ChapterBloc>(context);
     _pageController = PageController()..addListener(_pageControllerListener);
     _changedByGesture = true;
   }
@@ -69,7 +69,7 @@ class _PageState extends State<_Page> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ReadingBloc, ReadingState>(
+    return BlocListener<ChapterBloc, ChapterState>(
       condition: (previous, current) {
         return previous.isFullPage != current.isFullPage ||
             previous.pageIndex != current.pageIndex;
@@ -80,7 +80,7 @@ class _PageState extends State<_Page> {
         SystemChrome.setEnabledSystemUIOverlays(overlays);
         _pageController.jumpToPage(state.pageIndex);
       },
-      child: BlocBuilder<ReadingBloc, ReadingState>(
+      child: BlocBuilder<ChapterBloc, ChapterState>(
         condition: (previous, current) {
           return true;
         },
@@ -115,7 +115,37 @@ class _PageState extends State<_Page> {
               ),
             ),
           );
-          final pageListSlider = IgnorePointer(
+          final pageView = FutureBuilder(
+            future: _prefetchPageList(state.pageList),
+            builder: (context, snapShot) {
+              if (!snapShot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return PhotoViewGallery.builder(
+                pageController: _pageController,
+                backgroundDecoration: BoxDecoration(
+                  color: _theme.scaffoldBackgroundColor,
+                ),
+                scrollPhysics: PageScrollPhysics(),
+                itemCount: snapShot.data.length,
+                builder: (context, index) {
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider: snapShot.data[index],
+                  );
+                },
+                onPageChanged: (index) {
+                  if (_changedByGesture) {
+                    _bloc.dispatch(ChapterEvent.displayPage(index));
+                  } else {
+                    _changedByGesture = true;
+                  }
+                },
+              );
+            },
+          );
+          final progressSlider = IgnorePointer(
             ignoring: state.isFullPage,
             child: AnimatedOpacity(
               opacity: state.isFullPage ? 0 : 1,
@@ -126,25 +156,29 @@ class _PageState extends State<_Page> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text('1'),
+                    Text('0'),
                     Expanded(
                       flex: 1,
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: Slider(
-                          min: 1.0,
-                          max: state.pageList.length + 1.0,
-                          value: state.pageIndex + 1.0,
-                          divisions: state.pageList.length + 1,
-                          onChanged: (value) {
-                            _changedByGesture = false;
-                            final index = value.round();
-                            _bloc.dispatch(ReadingEvent.displayPage(index));
-                          },
-                        ),
+                        child: state.pageList.isEmpty
+                            ? null
+                            : Slider(
+                                min: 0,
+                                max: state.pageList.length.roundToDouble(),
+                                value: state.pageIndex.roundToDouble(),
+                                divisions: state.pageList.length,
+                                label: '${state.pageIndex}',
+                                onChanged: (value) {
+                                  _changedByGesture = false;
+                                  final index = value.round();
+                                  _bloc.dispatch(
+                                      ChapterEvent.displayPage(index));
+                                },
+                              ),
                       ),
                     ),
-                    Text('${state.pageList.length + 1}'),
+                    Text('${state.pageList.length}'),
                   ],
                 ),
               ),
@@ -155,46 +189,17 @@ class _PageState extends State<_Page> {
             body: SafeArea(
               child: GestureDetector(
                 onTap: () {
-                  _bloc.dispatch(ReadingEvent.toggleOverlay());
+                  _bloc.dispatch(ChapterEvent.toggleOverlay());
                 },
                 child: Container(
                   child: Stack(
                     children: [
-                      FutureBuilder(
-                        future: _prefetchPageList(state.pageList),
-                        builder: (context, snapShot) {
-                          if (!snapShot.hasData) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return PhotoViewGallery.builder(
-                            pageController: _pageController,
-                            backgroundDecoration: BoxDecoration(
-                              color: _theme.scaffoldBackgroundColor,
-                            ),
-                            scrollPhysics: PageScrollPhysics(),
-                            itemCount: snapShot.data.length,
-                            builder: (context, index) {
-                              return PhotoViewGalleryPageOptions(
-                                imageProvider: snapShot.data[index],
-                              );
-                            },
-                            onPageChanged: (index) {
-                              if (_changedByGesture) {
-                                _bloc.dispatch(ReadingEvent.displayPage(index));
-                              } else {
-                                _changedByGesture = true;
-                              }
-                            },
-                          );
-                        },
-                      ),
+                      pageView,
                       Positioned(
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        child: pageListSlider,
+                        child: progressSlider,
                       ),
                     ],
                   ),

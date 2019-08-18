@@ -7,18 +7,18 @@ import 'package:fomic/sources/local/source.dart';
 import 'event.dart';
 import 'state.dart';
 
-class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
+class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
   final Chapter chapter;
 
-  ReadingBloc(this.chapter);
+  ChapterBloc(this.chapter);
 
   @override
-  ReadingState get initialState => ReadingState(chapter);
+  ChapterState get initialState => ChapterState(chapter);
 
   @override
-  Stream<ReadingState> mapEventToState(ReadingEvent event) async* {
+  Stream<ChapterState> mapEventToState(ChapterEvent event) async* {
     switch (event.runtimeType) {
-      case ReadingEventFetch:
+      case ChapterEventFetch:
         if (currentState.isFetching) {
           return;
         }
@@ -35,10 +35,10 @@ class ReadingBloc extends Bloc<ReadingEvent, ReadingState> {
           yield currentState.clone(error: error);
         }
         break;
-      case ReadingEventToggleOverlay:
+      case ChapterEventToggleOverlay:
         yield currentState.clone(isFullPage: !currentState.isFullPage);
         break;
-      case ReadingEventDisplayPage:
+      case ChapterEventDisplayPage:
         yield currentState.clone(pageIndex: event.pageIndex);
         break;
       default:
