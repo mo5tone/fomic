@@ -30,7 +30,8 @@ class Book implements Cloneable<Book> {
     this.genre,
     this.description,
     this.status = BookStatus.unknown,
-  }) : assert(sourceId != null);
+  })  : assert(sourceId != null),
+        assert(url != null && url.isNotEmpty);
 
   @override
   Book clone({

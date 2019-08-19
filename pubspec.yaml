@@ -44,13 +44,15 @@ dependencies:
   # device info
   device_info: ^0.4.0+2
   # database
-  moor_flutter: ^1.6.0
+  floor: ^0.7.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  moor_generator: ^1.6.0+2
+  # build runner
   build_runner: ^1.6.6
+  # generator
+  floor_generator: ^0.7.0
 
 
 # For information on the generic Dart part of this file, see the
