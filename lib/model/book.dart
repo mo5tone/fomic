@@ -1,5 +1,4 @@
 import 'package:fomic/common/helper/cloneable.dart';
-import 'package:fomic/model/chapter.dart';
 import 'package:fomic/sources/base/source.dart';
 
 enum BookStatus {
@@ -44,7 +43,6 @@ class Book implements Cloneable<Book> {
     String genre,
     String description,
     BookStatus status,
-    List<Chapter> chapters,
   }) {
     return Book(
       sourceId: sourceId ?? this.sourceId,

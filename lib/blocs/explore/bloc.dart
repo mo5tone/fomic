@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:fomic/common/util/key_value_store.dart';
+import 'package:fomic/common/util/key_value.dart';
 import 'package:fomic/sources/base/online_source.dart';
 import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/local/source.dart';
