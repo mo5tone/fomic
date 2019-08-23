@@ -1,7 +1,6 @@
 import 'package:fomic/common/helper/cloneable.dart';
 
 import 'book.dart';
-import 'page.dart';
 
 class Chapter implements Cloneable {
   final Book book;
@@ -25,7 +24,6 @@ class Chapter implements Cloneable {
     String name,
     DateTime updateAt,
     num chapterNumber,
-    List<Page> pages,
   }) {
     return Chapter(
       book: book ?? this.book,

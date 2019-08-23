@@ -4,7 +4,7 @@ import 'package:fomic/model/filter.dart';
 import 'package:fomic/sources/base/source.dart';
 
 class SourcesState extends base.State<SourcesState> {
-  final SourceId sourceId;
+  final SourceIdentity sourceId;
   bool isFetching = false;
   bool isSearchMode = false;
   String query = '';
@@ -24,7 +24,7 @@ class SourcesState extends base.State<SourcesState> {
 
   @override
   SourcesState clone({
-    SourceId sourceId,
+    SourceIdentity sourceId,
     bool isFetching,
     bool isSearchMode,
     String query,

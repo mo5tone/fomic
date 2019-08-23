@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/sources/base/online_source.dart';
-import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/local/source.dart';
 
 import 'event.dart';
@@ -23,7 +22,7 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
           return;
         }
         yield currentState.clone(isFetching: true);
-        final source = Source.of(chapter.book.sourceId);
+        final source = chapter.book.source;
         try {
           if (source is OnlineSource) {
             final pageList = await source.fetchPages(chapter);

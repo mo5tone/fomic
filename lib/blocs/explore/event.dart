@@ -2,7 +2,7 @@ import 'package:fomic/blocs/base/event.dart' as base;
 import 'package:fomic/sources/base/source.dart';
 
 class SourcesEvent extends base.Event {
-  final SourceId sourceId;
+  final SourceIdentity sourceId;
   final String query;
 
   SourcesEvent._(this.sourceId, this.query);
@@ -15,11 +15,11 @@ class SourcesEvent extends base.Event {
     return SourcesEventMore._();
   }
 
-  factory SourcesEvent.displaySource(SourceId sourceId) {
+  factory SourcesEvent.displaySource(SourceIdentity sourceId) {
     return SourcesEventDisplaySource._(sourceId);
   }
 
-  factory SourcesEvent.toggleSource(SourceId sourceId) {
+  factory SourcesEvent.toggleSource(SourceIdentity sourceId) {
     return SourcesEventToggleSource._(sourceId);
   }
 
@@ -37,11 +37,11 @@ class SourcesEventMore extends SourcesEvent {
 }
 
 class SourcesEventDisplaySource extends SourcesEvent {
-  SourcesEventDisplaySource._(SourceId sourceId) : super._(sourceId, '');
+  SourcesEventDisplaySource._(SourceIdentity sourceId) : super._(sourceId, '');
 }
 
 class SourcesEventToggleSource extends SourcesEvent {
-  SourcesEventToggleSource._(SourceId sourceId) : super._(sourceId, null);
+  SourcesEventToggleSource._(SourceIdentity sourceId) : super._(sourceId, null);
 }
 
 class SourcesEventToggleSearchMode extends SourcesEvent {

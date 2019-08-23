@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/book.dart';
-import 'package:fomic/sources/base/source.dart';
 
 class BookGridViewItem extends StatelessWidget {
   final Book book;
@@ -53,7 +52,7 @@ class BookGridViewItem extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: '${book.sourceId.index}${book.url}',
+          tag: '${book.sourceIdentityIndex}${book.url}',
           child: CachedNetworkImage(
             imageUrl: book.thumbnailUrl ?? '',
             placeholder: (context, url) => Image.asset(
@@ -77,7 +76,7 @@ class BookGridViewItem extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: theme.primaryColor,
                 child: Text(
-                  '${Source.of(book.sourceId).name}',
+                  book.source.name,
                   style: theme.textTheme.caption,
                 ),
               ),

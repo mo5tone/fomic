@@ -58,7 +58,7 @@ class _PageState extends State<_Page> {
       builder: (context, state) {
         final statusBarHeight = MediaQuery.of(context).padding.top;
         final backgroundImage = Hero(
-          tag: '${state.book.sourceId.index}${state.book.url}',
+          tag: '${state.book.sourceIdentityIndex}${state.book.url}',
           child: CachedNetworkImage(
             useOldImageOnUrlChange: true,
             imageUrl: state.book.thumbnailUrl ?? '',

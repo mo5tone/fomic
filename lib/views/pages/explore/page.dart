@@ -120,20 +120,22 @@ class _PageState extends State<_Page> {
             ? null
             : Drawer(
                 child: ListView.builder(
-                  itemCount: SourceId.values.length,
+                  itemCount: SourceIdentity.values.length,
                   itemBuilder: (context, index) {
-                    final source = Source.of(SourceId.values[index]);
+                    final source = Source.of(SourceIdentity.values[index]);
                     return ListTile(
                       onTap: () {
                         textEditingController.clear();
-                        bloc.dispatch(SourcesEvent.displaySource(source.id));
+                        bloc.dispatch(
+                            SourcesEvent.displaySource(source.identity));
                         Navigator.of(context).pop();
                       },
                       title: Text(source.name),
                       trailing: Switch(
                         value: source.available,
                         onChanged: (value) {
-                          bloc.dispatch(SourcesEvent.toggleSource(source.id));
+                          bloc.dispatch(
+                              SourcesEvent.toggleSource(source.identity));
                         },
                       ),
                     );
@@ -196,7 +198,7 @@ class _PageState extends State<_Page> {
               ],
             ),
           ),
-          floatingActionButton: state.sourceId == SourceId.local
+          floatingActionButton: state.sourceId == SourceIdentity.local
               ? IgnorePointer(
                   ignoring: state.isFetching,
                   child: FloatingActionButton(

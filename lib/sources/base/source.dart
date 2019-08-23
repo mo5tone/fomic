@@ -3,14 +3,14 @@ import 'package:fomic/sources/dmzj/source.dart';
 import 'package:fomic/sources/local/source.dart';
 import 'package:fomic/sources/manhuaren/source.dart';
 
-enum SourceId {
+enum SourceIdentity {
   local,
   dmzj,
   manhuaren,
 }
 
 abstract class Source {
-  SourceId get id;
+  SourceIdentity get identity;
 
   String get name;
 
@@ -22,16 +22,16 @@ abstract class Source {
 
   Source();
 
-  factory Source.of(SourceId id) {
+  factory Source.of(SourceIdentity id) {
     Source source;
     switch (id) {
-      case SourceId.local:
+      case SourceIdentity.local:
         source = LocalSource();
         break;
-      case SourceId.dmzj:
+      case SourceIdentity.dmzj:
         source = Dmzj();
         break;
-      case SourceId.manhuaren:
+      case SourceIdentity.manhuaren:
         source = Manhuaren();
         break;
     }

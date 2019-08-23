@@ -14,7 +14,7 @@ import 'package:fomic/sources/dmzj/filter.dart';
 
 class Dmzj extends JsonSource {
   @override
-  SourceId get id => SourceId.dmzj;
+  SourceIdentity get identity => SourceIdentity.dmzj;
 
   @override
   String get name => '动漫之家';
@@ -110,12 +110,12 @@ class _BooksFetcher extends Fetcher<List<Book>> {
           break;
       }
       return Book(
-        sourceId: source.id,
-        url: '/comic/${obj['id']}.json',
+        SourceIdentity.values.indexOf(source.identity),
+        '/comic/${obj['id']}.json',
         title: obj['name'],
         author: obj['authors'],
         thumbnailUrl: utils.fixScheme(obj['cover']),
-        status: status,
+        bookStatusIndex: BookStatus.values.indexOf(status),
         description: obj['description'],
       );
     }).toList();
@@ -137,12 +137,12 @@ class _BooksFetcher extends Fetcher<List<Book>> {
           break;
       }
       return Book(
-        sourceId: source.id,
-        url: '/comic/${obj['id']}.json',
+        SourceIdentity.values.indexOf(source.identity),
+        '/comic/${obj['id']}.json',
         title: obj['title'],
         author: obj['authors'],
         thumbnailUrl: utils.fixScheme(obj['cover']),
-        status: status,
+        bookStatusIndex: BookStatus.values.indexOf(status),
         description: obj['description'],
       );
     }).toList();
@@ -231,7 +231,7 @@ class _BookFetcher extends Fetcher<Book> {
       thumbnailUrl: obj['cover'],
       author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-      status: status,
+      bookStatusIndex: BookStatus.values.indexOf(status),
       description: obj['description'],
     );
   }
@@ -311,7 +311,7 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
           thumbnailUrl: obj['cover'],
           author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
           genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-          status: status,
+          bookStatusIndex: BookStatus.values.indexOf(status),
           description: obj['description'],
         );
     final id = obj['id'];

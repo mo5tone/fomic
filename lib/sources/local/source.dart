@@ -4,7 +4,7 @@ import 'package:fomic/sources/local/filter.dart';
 
 class LocalSource extends Source {
   @override
-  SourceId get id => SourceId.local;
+  SourceIdentity get identity => SourceIdentity.local;
 
   @override
   String get name => '本地';

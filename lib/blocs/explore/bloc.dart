@@ -11,7 +11,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
   var _page = 0;
 
   SourcesBloc() : super() {
-    SourceId.values.forEach((id) {
+    SourceIdentity.values.forEach((id) {
       final source = Source.of(id);
       KeyValue.sourceIsAvailable(id).then((available) {
         if (available) {
@@ -24,7 +24,7 @@ class SourcesBloc extends Bloc<SourcesEvent, SourcesState> {
   }
 
   @override
-  SourcesState get initialState => SourcesState(SourceId.values.first);
+  SourcesState get initialState => SourcesState(SourceIdentity.values.first);
 
   @override
   Stream<SourcesState> mapEventToState(SourcesEvent event) async* {

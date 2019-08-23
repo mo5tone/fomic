@@ -9,7 +9,7 @@ enum BookStatus {
 }
 
 class Book implements Cloneable<Book> {
-  final SourceId sourceId;
+  final int sourceIdentityIndex;
   final String url;
   final String thumbnailUrl;
   final String title;
@@ -17,24 +17,30 @@ class Book implements Cloneable<Book> {
   final String author;
   final String genre;
   final String description;
-  final BookStatus status;
+  final int bookStatusIndex;
 
-  Book({
-    this.sourceId,
-    this.url,
+  Source get source {
+    return Source.of(SourceIdentity.values[sourceIdentityIndex ?? 0]);
+  }
+
+  BookStatus get status => BookStatus.values[bookStatusIndex ?? 0];
+
+  Book(
+    this.sourceIdentityIndex,
+    this.url, {
     this.thumbnailUrl,
     this.title,
     this.artist,
     this.author,
     this.genre,
     this.description,
-    this.status = BookStatus.unknown,
-  })  : assert(sourceId != null),
+    this.bookStatusIndex = 0,
+  })  : assert(sourceIdentityIndex != null),
         assert(url != null && url.isNotEmpty);
 
   @override
   Book clone({
-    SourceId sourceId,
+    int sourceIdentityIndex,
     String url,
     String thumbnailUrl,
     String title,
@@ -42,18 +48,18 @@ class Book implements Cloneable<Book> {
     String author,
     String genre,
     String description,
-    BookStatus status,
+    int bookStatusIndex,
   }) {
     return Book(
-      sourceId: sourceId ?? this.sourceId,
-      url: url ?? this.url,
+      sourceIdentityIndex ?? this.sourceIdentityIndex,
+      url ?? this.url,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       title: title ?? this.title,
       artist: artist ?? this.artist,
       author: author ?? this.author,
       genre: genre ?? this.genre,
       description: description ?? this.description,
-      status: status ?? this.status,
+      bookStatusIndex: bookStatusIndex ?? this.bookStatusIndex,
     );
   }
 }

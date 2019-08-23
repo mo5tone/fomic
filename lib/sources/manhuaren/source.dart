@@ -12,7 +12,7 @@ import 'package:fomic/sources/manhuaren//filter.dart';
 
 class Manhuaren extends JsonSource {
   @override
-  SourceId get id => SourceId.manhuaren;
+  SourceIdentity get identity => SourceIdentity.manhuaren;
 
   @override
   String get name => '漫画人';
@@ -158,11 +158,11 @@ class _BooksFetcher extends Fetcher<List<Book>> {
               ? BookStatus.completed
               : BookStatus.unknown);
       return Book(
-        sourceId: source.id,
-        url: '/v1/manga/getDetail?mangaId=${obj['mangaId']}',
+        SourceIdentity.values.indexOf(source.identity),
+        '/v1/manga/getDetail?mangaId=${obj['mangaId']}',
         title: obj['mangaName'],
         author: obj['mangaAuthor'],
-        status: status,
+        bookStatusIndex: BookStatus.values.indexOf(status),
         thumbnailUrl: obj['mangaCoverimageUrl'],
       );
     }).toList();
@@ -235,7 +235,7 @@ class _BookFetcher extends Fetcher<Book> {
       thumbnailUrl: thumbnailUrl,
       author: obj['mangaAuthors'].join(', '),
       genre: obj['mangaTheme'].replaceAll(' ', ', '),
-      status: status,
+      bookStatusIndex: BookStatus.values.indexOf(status),
       description: obj['mangaIntro'],
     );
   }
@@ -325,7 +325,7 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
           thumbnailUrl: thumbnailUrl,
           author: obj['mangaAuthors'].join(', '),
           genre: obj['mangaTheme'].replaceAll(' ', ', '),
-          status: status,
+          bookStatusIndex: BookStatus.values.indexOf(status),
           description: obj['mangaIntro'],
         );
     var chapterList = <Chapter>[];
