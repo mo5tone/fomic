@@ -72,7 +72,9 @@ class Books extends Table {
   String get tableName => 'book';
 
   @override
-  Set<Column> get primaryKey => {sourceIdentity, url};
+  List<String> get customConstraints => [
+        'PRIMARY KEY(source_identity, url) ON CONFLICT REPLACE',
+      ];
 }
 
 @UseMoor(tables: [Books])
