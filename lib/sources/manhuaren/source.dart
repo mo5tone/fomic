@@ -230,16 +230,14 @@ class _BookFetcher extends Fetcher<Book> {
         status = BookStatus.unknown;
         break;
     }
-    return Book(
-      sourceIdentity: book.sourceIdentity,
-      url: book.url,
-      title: obj['mangaName'],
-      thumbnailUrl: thumbnailUrl,
-      author: obj['mangaAuthors'].join(', '),
-      genre: obj['mangaTheme'].replaceAll(' ', ', '),
-      bookStatus: status,
-      description: obj['mangaIntro'],
-    );
+    return this.book.copyWith(
+          title: obj['mangaName'],
+          thumbnailUrl: thumbnailUrl,
+          author: obj['mangaAuthors'].join(', '),
+          genre: obj['mangaTheme'].replaceAll(' ', ', '),
+          bookStatus: status,
+          description: obj['mangaIntro'],
+        );
   }
 
   @override
@@ -322,16 +320,14 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
         status = BookStatus.unknown;
         break;
     }
-    final book = Book(
-      sourceIdentity: this.book.sourceIdentity,
-      url: this.book.url,
-      title: obj['mangaName'],
-      thumbnailUrl: thumbnailUrl,
-      author: obj['mangaAuthors'].join(', '),
-      genre: obj['mangaTheme'].replaceAll(' ', ', '),
-      bookStatus: status,
-      description: obj['mangaIntro'],
-    );
+    final book = this.book.copyWith(
+          title: obj['mangaName'],
+          thumbnailUrl: thumbnailUrl,
+          author: obj['mangaAuthors'].join(', '),
+          genre: obj['mangaTheme'].replaceAll(' ', ', '),
+          bookStatus: status,
+          description: obj['mangaIntro'],
+        );
     var chapterList = <Chapter>[];
     ['mangaEpisode', 'mangaWords', 'mangaRolls'].forEach((type) {
       List array = obj[type];

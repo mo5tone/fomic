@@ -229,16 +229,14 @@ class _BookFetcher extends Fetcher<Book> {
         break;
     }
 
-    return Book(
-      sourceIdentity: book.sourceIdentity,
-      url: book.url,
-      title: obj['title'],
-      thumbnailUrl: obj['cover'],
-      author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
-      genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-      bookStatus: status,
-      description: obj['description'],
-    );
+    return this.book.copyWith(
+          title: obj['title'],
+          thumbnailUrl: obj['cover'],
+          author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
+          genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
+          bookStatus: status,
+          description: obj['description'],
+        );
   }
 
   @override
@@ -312,16 +310,14 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
         break;
     }
 
-    final book = Book(
-      sourceIdentity: this.book.sourceIdentity,
-      url: this.book.url,
-      title: obj['title'],
-      thumbnailUrl: obj['cover'],
-      author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
-      genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-      bookStatus: status,
-      description: obj['description'],
-    );
+    final book = this.book.copyWith(
+          title: obj['title'],
+          thumbnailUrl: obj['cover'],
+          author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
+          genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
+          bookStatus: status,
+          description: obj['description'],
+        );
     final id = obj['id'];
     final chapterList = <Chapter>[];
     (obj['chapters'] as List).forEach((chaptersItem) {
