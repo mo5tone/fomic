@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fomic/blocs/book/bloc.dart';
 import 'package:fomic/blocs/book/event.dart';
 import 'package:fomic/blocs/book/state.dart';
-import 'package:fomic/model/book.dart';
+import 'package:fomic/persistence/database.dart';
 
 class BookPage extends StatelessWidget {
   final Book book;
@@ -58,7 +58,7 @@ class _PageState extends State<_Page> {
       builder: (context, state) {
         final statusBarHeight = MediaQuery.of(context).padding.top;
         final backgroundImage = Hero(
-          tag: '${state.book.sourceIdentityIndex}${state.book.url}',
+          tag: '${state.book.sourceIdentity.index}${state.book.url}',
           child: CachedNetworkImage(
             useOldImageOnUrlChange: true,
             imageUrl: state.book.thumbnailUrl ?? '',

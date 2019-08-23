@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/common/helper/pair.dart';
-import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/persistence/database.dart';
 import 'package:fomic/sources/base/source.dart';
 
 abstract class OnlineSource extends Source {

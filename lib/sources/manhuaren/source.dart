@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/common/util/utils.dart' as utils;
-import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/persistence/database.dart';
 import 'package:fomic/sources/base/online/json_source.dart';
 import 'package:fomic/sources/base/online_source.dart';
 import 'package:fomic/sources/base/source.dart';
@@ -158,11 +158,11 @@ class _BooksFetcher extends Fetcher<List<Book>> {
               ? BookStatus.completed
               : BookStatus.unknown);
       return Book(
-        SourceIdentity.values.indexOf(source.identity),
-        '/v1/manga/getDetail?mangaId=${obj['mangaId']}',
+        sourceIdentity: source.identity,
+        url: '/v1/manga/getDetail?mangaId=${obj['mangaId']}',
         title: obj['mangaName'],
         author: obj['mangaAuthor'],
-        bookStatusIndex: BookStatus.values.indexOf(status),
+        bookStatus: status,
         thumbnailUrl: obj['mangaCoverimageUrl'],
       );
     }).toList();
@@ -230,12 +230,14 @@ class _BookFetcher extends Fetcher<Book> {
         status = BookStatus.unknown;
         break;
     }
-    return book.clone(
+    return Book(
+      sourceIdentity: book.sourceIdentity,
+      url: book.url,
       title: obj['mangaName'],
       thumbnailUrl: thumbnailUrl,
       author: obj['mangaAuthors'].join(', '),
       genre: obj['mangaTheme'].replaceAll(' ', ', '),
-      bookStatusIndex: BookStatus.values.indexOf(status),
+      bookStatus: status,
       description: obj['mangaIntro'],
     );
   }
@@ -320,14 +322,16 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
         status = BookStatus.unknown;
         break;
     }
-    final book = this.book.clone(
-          title: obj['mangaName'],
-          thumbnailUrl: thumbnailUrl,
-          author: obj['mangaAuthors'].join(', '),
-          genre: obj['mangaTheme'].replaceAll(' ', ', '),
-          bookStatusIndex: BookStatus.values.indexOf(status),
-          description: obj['mangaIntro'],
-        );
+    final book = Book(
+      sourceIdentity: this.book.sourceIdentity,
+      url: this.book.url,
+      title: obj['mangaName'],
+      thumbnailUrl: thumbnailUrl,
+      author: obj['mangaAuthors'].join(', '),
+      genre: obj['mangaTheme'].replaceAll(' ', ', '),
+      bookStatus: status,
+      description: obj['mangaIntro'],
+    );
     var chapterList = <Chapter>[];
     ['mangaEpisode', 'mangaWords', 'mangaRolls'].forEach((type) {
       List array = obj[type];

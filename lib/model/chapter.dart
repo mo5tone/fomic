@@ -1,6 +1,5 @@
 import 'package:fomic/common/helper/cloneable.dart';
-
-import 'book.dart';
+import 'package:fomic/persistence/database.dart';
 
 class Chapter implements Cloneable {
   final Book book;

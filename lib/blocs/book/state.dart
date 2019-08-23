@@ -1,6 +1,6 @@
 import 'package:fomic/blocs/base/state.dart' as base;
-import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
+import 'package:fomic/persistence/database.dart';
 
 class BookState extends base.State<BookState> {
   final Book book;

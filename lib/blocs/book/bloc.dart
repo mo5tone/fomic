@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:fomic/model/book.dart';
+import 'package:fomic/persistence/database.dart';
 import 'package:fomic/sources/base/online_source.dart';
+import 'package:fomic/sources/base/source.dart';
 import 'package:fomic/sources/local/source.dart';
 
 import 'event.dart';
@@ -22,7 +23,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
           return;
         }
         yield currentState.clone(isFetching: true);
-        final source = book.source;
+        final source = Source.of(book.sourceIdentity);
         try {
           if (source is OnlineSource) {
             final bookAndChapters =

@@ -1,6 +1,6 @@
 import 'package:fomic/blocs/base/state.dart' as base;
-import 'package:fomic/model/book.dart';
 import 'package:fomic/model/filter.dart';
+import 'package:fomic/persistence/database.dart';
 import 'package:fomic/sources/base/source.dart';
 
 class SourcesState extends base.State<SourcesState> {

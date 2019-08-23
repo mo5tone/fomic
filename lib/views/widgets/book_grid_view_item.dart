@@ -2,7 +2,8 @@ import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/model/book.dart';
+import 'package:fomic/persistence/database.dart';
+import 'package:fomic/sources/base/source.dart';
 
 class BookGridViewItem extends StatelessWidget {
   final Book book;
@@ -11,7 +12,7 @@ class BookGridViewItem extends StatelessWidget {
 
   String get status {
     var status = 'unknown';
-    switch (book.status) {
+    switch (book.bookStatus) {
       case BookStatus.ongoing:
         status = 'ongoing';
         break;
@@ -52,7 +53,7 @@ class BookGridViewItem extends StatelessWidget {
       fit: StackFit.expand,
       children: <Widget>[
         Hero(
-          tag: '${book.sourceIdentityIndex}${book.url}',
+          tag: '${book.sourceIdentity.index}${book.url}',
           child: CachedNetworkImage(
             imageUrl: book.thumbnailUrl ?? '',
             placeholder: (context, url) => Image.asset(
@@ -76,7 +77,7 @@ class BookGridViewItem extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 color: theme.primaryColor,
                 child: Text(
-                  book.source.name,
+                  Source.of(book.sourceIdentity).name,
                   style: theme.textTheme.caption,
                 ),
               ),

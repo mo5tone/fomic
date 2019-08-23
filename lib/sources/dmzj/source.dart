@@ -3,10 +3,10 @@ import 'dart:convert' as convert;
 import 'package:dio/dio.dart';
 import 'package:fomic/common/helper/pair.dart';
 import 'package:fomic/common/util/utils.dart' as utils;
-import 'package:fomic/model/book.dart';
 import 'package:fomic/model/chapter.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/persistence/database.dart';
 import 'package:fomic/sources/base/online//json_source.dart';
 import 'package:fomic/sources/base/online_source.dart';
 import 'package:fomic/sources/base/source.dart';
@@ -109,13 +109,14 @@ class _BooksFetcher extends Fetcher<List<Book>> {
           status = BookStatus.unknown;
           break;
       }
+
       return Book(
-        SourceIdentity.values.indexOf(source.identity),
-        '/comic/${obj['id']}.json',
+        sourceIdentity: source.identity,
+        url: '/comic/${obj['id']}.json',
         title: obj['name'],
         author: obj['authors'],
         thumbnailUrl: utils.fixScheme(obj['cover']),
-        bookStatusIndex: BookStatus.values.indexOf(status),
+        bookStatus: status,
         description: obj['description'],
       );
     }).toList();
@@ -136,13 +137,14 @@ class _BooksFetcher extends Fetcher<List<Book>> {
           status = BookStatus.unknown;
           break;
       }
+
       return Book(
-        SourceIdentity.values.indexOf(source.identity),
-        '/comic/${obj['id']}.json',
+        sourceIdentity: source.identity,
+        url: '/comic/${obj['id']}.json',
         title: obj['title'],
         author: obj['authors'],
         thumbnailUrl: utils.fixScheme(obj['cover']),
-        bookStatusIndex: BookStatus.values.indexOf(status),
+        bookStatus: status,
         description: obj['description'],
       );
     }).toList();
@@ -226,12 +228,15 @@ class _BookFetcher extends Fetcher<Book> {
         status = BookStatus.unknown;
         break;
     }
-    return book.clone(
+
+    return Book(
+      sourceIdentity: book.sourceIdentity,
+      url: book.url,
       title: obj['title'],
       thumbnailUrl: obj['cover'],
       author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
       genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-      bookStatusIndex: BookStatus.values.indexOf(status),
+      bookStatus: status,
       description: obj['description'],
     );
   }
@@ -306,14 +311,17 @@ class _BookAndChaptersFetcher extends Fetcher<Pair<Book, List<Chapter>>> {
         status = BookStatus.unknown;
         break;
     }
-    final book = this.book.clone(
-          title: obj['title'],
-          thumbnailUrl: obj['cover'],
-          author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
-          genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
-          bookStatusIndex: BookStatus.values.indexOf(status),
-          description: obj['description'],
-        );
+
+    final book = Book(
+      sourceIdentity: this.book.sourceIdentity,
+      url: this.book.url,
+      title: obj['title'],
+      thumbnailUrl: obj['cover'],
+      author: obj['authors'].map((sub) => sub['tag_name']).join(', '),
+      genre: obj['types'].map((sub) => sub['tag_name']).join(', '),
+      bookStatus: status,
+      description: obj['description'],
+    );
     final id = obj['id'];
     final chapterList = <Chapter>[];
     (obj['chapters'] as List).forEach((chaptersItem) {
