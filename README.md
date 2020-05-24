@@ -1,6 +1,6 @@
 # fomic
 
-A comic reader application developed by Flutter.
+A new Flutter project.
 
 ## Getting Started
 

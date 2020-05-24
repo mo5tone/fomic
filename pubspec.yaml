@@ -1,5 +1,9 @@
 name: fomic
-description: A comic reader application developed by Flutter.
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -14,72 +18,45 @@ description: A comic reader application developed by Flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  # Network
-  dio: ^2.1.13
-  cached_network_image: ^1.1.0
-  http_server: ^0.9.8+3
-  connectivity: ^0.4.3+7
-  # en/decryption
-  crypto: ^2.0.6
-  # Date format
-  intl: ^0.15.8
-  # Image zoom
-  photo_view: ^0.4.2
-  # BloC
-  flutter_bloc: ^0.20.0
-  # key/value store
-  shared_preferences: ^0.5.3+4
-  # local path
-  path_provider: ^1.2.0
-  # device info
-  device_info: ^0.4.0+2
-  # database
-  moor_flutter: ^1.7.0
+  cupertino_icons: ^0.1.3
+  flutter_localizations:
+    sdk: flutter
+  provider: ^4.1.2
+  sqflite: ^1.3.0+1
+  cached_network_image: ^2.2.0+1
+  google_fonts: ^1.1.0
+  dio: ^3.0.9
+  injector: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # build runner
-  build_runner: ^1.6.6
-  # generator
-  moor_generator: ^1.7.0
-
+  pedantic: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/html/index.html
-    - images/acfun/
-    - images/acfun/2.0x/
-    - images/acfun/3.0x/
-  #  - images/a_dot_ham.jpeg
-
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -99,3 +76,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true
