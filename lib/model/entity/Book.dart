@@ -1,1 +1,3 @@
-class Book {}
+class Book {
+  final String url = '';
+}

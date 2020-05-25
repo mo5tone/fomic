@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      title: 'Flutter Demo',
+      title: 'Fomic',
       theme: ThemeData(
         // This is the theme of your application.
         //
