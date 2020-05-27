@@ -35,6 +35,7 @@ dependencies:
   google_fonts: ^1.1.0
   dio: ^3.0.9
   injector: ^1.0.8
+  rxdart: ^0.24.1
 
 dev_dependencies:
   flutter_test:
