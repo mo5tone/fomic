@@ -9,5 +9,13 @@ class Book {
   final String genre;
   final String description;
 
-  Book({this.url, this.title, this.thumbnailUrl, this.author, this.status = 2, this.genre, this.description});
+  Book({
+    this.url,
+    this.title,
+    this.thumbnailUrl,
+    this.author,
+    this.status = 2,
+    this.genre,
+    this.description,
+  });
 }

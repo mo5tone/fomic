@@ -2,7 +2,7 @@ enum SourceName {
   dmzj,
 }
 
-extension SourceNameExtension on SourceName {
+extension Extension on SourceName {
   String get title {
     switch (this) {
       case SourceName.dmzj:

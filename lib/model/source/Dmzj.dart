@@ -19,7 +19,10 @@ class Dmzj extends Source {
     RequestOptions options;
     if (query != null && query.isNotEmpty) {
       path = 'http://s.acg.dmzj.com/comicsum/search.php';
-      options = RequestOptions(method: 'GET', queryParameters: {'s': query});
+      options = RequestOptions(
+          method: 'GET',
+          queryParameters: {'s': query},
+          responseType: ResponseType.plain);
     } else {
       path = 'http://v2.api.dmzj.com/classify/0/1/$page.json';
       options = RequestOptions(method: 'GET');
@@ -49,38 +52,42 @@ class Dmzj extends Source {
   }
 
   List<Book> _booksFrom(Response response) {
-    final body = response.data as String;
-    final regExp = RegExp(r'^var g_search_data =([\s\S]+);$');
-    final match = regExp.firstMatch(body);
-    List<Map<String, dynamic>> arr;
-    if (match != null) {
-      arr = jsonDecode(match.group(1));
+    if (response.request.responseType == ResponseType.plain) {
+      String body = response.data;
+      final regExp = RegExp(r'^var g_search_data =([\s\S]+);$');
+      final match = regExp.firstMatch(body);
+      List arr = jsonDecode(match.group(1));
       return arr.map((ele) {
-        String id = ele['id'];
+        int id = ele['id'];
         String title = ele['comic_name'];
         String thumbnailUrl = ele['comic_cover'];
         String author = ele['comic_author'];
         final url = '/comic/comic_$id.json?version=2.7.019';
-        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author);
-      });
+        return Book(
+            url: url, title: title, thumbnailUrl: thumbnailUrl, author: author);
+      }).toList();
     } else {
-      arr = jsonDecode(body);
+      List arr = response.data;
       return arr.map((ele) {
-        String id = ele['id'];
+        int id = ele['id'];
         String title = ele['title'];
         String thumbnailUrl = ele['cover'];
         String author = ele['authors'];
         final url = '/comic/comic_$id.json?version=2.7.019';
         var status = ele['status'];
         status = status == '已完结' ? 2 : status == '连载中' ? 1 : 0;
-        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author, status: status);
-      });
+        return Book(
+            url: url,
+            title: title,
+            thumbnailUrl: thumbnailUrl,
+            author: author,
+            status: status);
+      }).toList();
     }
   }
 
   Book _bookFrom(Response response) {
-    String body = response.data;
-    Map<String, dynamic> obj = jsonDecode(body);
+    Map<String, dynamic> obj = response.data;
     String title = obj['title'];
     String thumbnailUrl = obj['cover'];
     List<Map<String, dynamic>> arr = obj['authors'];
@@ -90,12 +97,19 @@ class Dmzj extends Source {
     int status = obj['status'][0]['tag_id'];
     status -= 2308;
     String description = obj['description'];
-    return Book(url: response.request.path, title: title, thumbnailUrl: thumbnailUrl, author: authors, status: status, genre: genre, description: description);
+    return Book(
+      url: response.request.path,
+      title: title,
+      thumbnailUrl: thumbnailUrl,
+      author: authors,
+      status: status,
+      genre: genre,
+      description: description,
+    );
   }
 
   List<Chapter> _chaptersFrom(Response response) {
-    String body = response.data;
-    Map<String, dynamic> obj = jsonDecode(body);
+    Map<String, dynamic> obj = response.data;
     String id = obj['id'];
     List<Map<String, dynamic>> arr = obj['chapters'];
     final result = arr.map((ele) {
@@ -106,8 +120,8 @@ class Dmzj extends Source {
         int updatedAt = ele1['updatetime'];
         updatedAt *= 1000;
         String chapterId = ele1['chapter_id'];
-        // final url = '/chapter/$id/$chapterId.json';
-        final url = 'http://m.dmzj.com/chapinfo/$id/$chapterId.html';
+        final url = '/chapter/$id/$chapterId.json';
+        // final url = 'http://m.dmzj.com/chapinfo/$id/$chapterId.html';
         return Chapter(url: url, name: name, updatedAt: updatedAt);
       });
     });
@@ -115,8 +129,7 @@ class Dmzj extends Source {
   }
 
   List<Page> _pagesFrom(Response response) {
-    String body = response.data;
-    Map<String, dynamic> obj = jsonDecode(body);
+    Map<String, dynamic> obj = response.data;
     List<String> arr = obj['page_url'];
     final result = <Page>[];
     for (var i = 0; i < arr.length; i++) {
