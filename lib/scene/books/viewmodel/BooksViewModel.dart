@@ -21,8 +21,7 @@ class BooksViewModel with ChangeNotifier {
     }
   }
 
-  BooksViewModel({@required SourceName sourceName})
-      : _source = Source.of(sourceName);
+  BooksViewModel(SourceName sourceName) : _source = Source.of(sourceName);
 
   void load() {
     if (loading) return;

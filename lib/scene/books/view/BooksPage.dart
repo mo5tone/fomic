@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class BooksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _viewmodel = BooksViewModel(sourceName: SourceName.dmzj);
+    final _viewmodel = BooksViewModel(SourceName.dmzj);
     _viewmodel.refresh();
     return Scaffold(
       appBar: AppBar(

@@ -5,11 +5,11 @@ import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/source/Dmzj.dart';
-import 'package:injector/injector.dart';
+import 'package:get_it/get_it.dart';
 
 abstract class Source {
   @protected
-  final dio = Injector.appInstance.getDependency<Dio>();
+  final dio = GetIt.I.get<Dio>();
 
   SourceName get name;
   Future<List<Book>> fetchBooks({int page = 0, String query});

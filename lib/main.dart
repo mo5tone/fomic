@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:injector/injector.dart';
 
 import 'injector/Injector.dart';
 import 'generated/l10n.dart';
 import 'scene/books/view/BooksPage.dart';
 
 void main() {
-  Injector.appInstance.registerDependencies();
+  Injector.setup();
   runApp(MyApp());
 }
 

@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:injector/injector.dart';
+import 'package:get_it/get_it.dart';
 
-extension RegisterDependencies on Injector {
-  void registerDependencies() {
-    if (!exists<Dio>()) {
+class Injector {
+  static GetIt get _getter => GetIt.I;
+
+  static void setup() {
+    if (!_getter.isRegistered<Dio>()) {
       const agents = [
         'Mozilla/5.0 (X11; Linux x86_64)',
         'AppleWebKit/537.36 (KHTML, like Gecko)',
@@ -17,7 +19,7 @@ extension RegisterDependencies on Injector {
         },
         validateStatus: (status) => 199 < status && status < 300,
       );
-      registerSingleton((_) => Dio(options));
+      _getter.registerLazySingleton(() => Dio(options));
     }
   }
 }
