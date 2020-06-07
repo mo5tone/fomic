@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fomic/model/constant/SourceName.dart';
 
 import 'injector/Injector.dart';
 import 'generated/l10n.dart';
-import 'scene/books/view/BooksPage.dart';
+import 'scene/books/view/BooksView.dart';
 
 void main() {
   Injector.setup();
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BooksPage(),
+      home: BooksView(sourceName: SourceName.dmzj),
     );
   }
 }
