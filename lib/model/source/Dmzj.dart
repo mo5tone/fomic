@@ -19,10 +19,7 @@ class Dmzj extends Source {
     RequestOptions options;
     if (query != null && query.isNotEmpty) {
       path = 'http://s.acg.dmzj.com/comicsum/search.php';
-      options = RequestOptions(
-          method: 'GET',
-          queryParameters: {'s': query},
-          responseType: ResponseType.plain);
+      options = RequestOptions(method: 'GET', queryParameters: {'s': query}, responseType: ResponseType.plain);
     } else {
       path = 'http://v2.api.dmzj.com/classify/0/1/$page.json';
       options = RequestOptions(method: 'GET');
@@ -63,8 +60,7 @@ class Dmzj extends Source {
         String thumbnailUrl = ele['comic_cover'];
         String author = ele['comic_author'];
         final url = '/comic/comic_$id.json?version=2.7.019';
-        return Book(
-            url: url, title: title, thumbnailUrl: thumbnailUrl, author: author);
+        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author);
       }).toList();
     } else {
       List arr = response.data;
@@ -76,12 +72,7 @@ class Dmzj extends Source {
         final url = '/comic/comic_$id.json?version=2.7.019';
         var status = ele['status'];
         status = status == '已完结' ? 2 : status == '连载中' ? 1 : 0;
-        return Book(
-            url: url,
-            title: title,
-            thumbnailUrl: thumbnailUrl,
-            author: author,
-            status: status);
+        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author, status: status);
       }).toList();
     }
   }

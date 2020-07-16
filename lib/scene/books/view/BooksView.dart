@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/constant/SourceName.dart';
 import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/scene/books/view/BookWidget.dart';
+import 'package:fomic/scene/books/widget/BookWidget.dart';
 import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
 import 'package:provider/provider.dart';
 
