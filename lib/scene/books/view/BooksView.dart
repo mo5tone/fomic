@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/constant/SourceName.dart';
+import 'package:fomic/model/constant/SourceID.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/scene/books/widget/BookWidget.dart';
 import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class BooksView extends StatelessWidget {
-  final SourceName sourceName;
+  final SourceID sourceID;
 
-  const BooksView({Key key, this.sourceName}) : super(key: key);
+  const BooksView({Key key, this.sourceID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final viewmodel = BooksViewModel(sourceName);
+    final viewmodel = GetIt.I.get<BooksViewModel>(param1: sourceID);
     viewmodel.refresh();
     final scrollController = ScrollController();
     scrollController.addListener(() {
@@ -25,7 +26,7 @@ class BooksView extends StatelessWidget {
       value: viewmodel,
       builder: (ctx, child) => Scaffold(
         appBar: AppBar(
-          title: Text(sourceName.title),
+          title: Text(sourceID.name),
         ),
         body: RefreshIndicator(
             child: Stack(

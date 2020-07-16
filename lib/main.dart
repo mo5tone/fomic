@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'model/constant/SourceName.dart';
+import 'model/constant/SourceID.dart';
 import 'injector/Injector.dart';
 import 'scene/books/view/BooksView.dart';
 
 void main() {
   Injector.setup();
-  runApp(MyApp());
+  runApp(Fomic());
 }
 
-class MyApp extends StatelessWidget {
+class Fomic extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BooksView(sourceName: SourceName.dmzj),
+      home: BooksView(sourceID: SourceID.dmzj),
     );
   }
 }

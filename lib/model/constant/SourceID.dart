@@ -1,11 +1,11 @@
-enum SourceName {
+enum SourceID {
   dmzj,
 }
 
-extension Extension on SourceName {
-  String get title {
+extension Extension on SourceID {
+  String get name {
     switch (this) {
-      case SourceName.dmzj:
+      case SourceID.dmzj:
         return '动漫之家';
       default:
         return null;

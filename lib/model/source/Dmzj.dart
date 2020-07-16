@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/SourceName.dart';
+import 'package:fomic/model/constant/SourceID.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
@@ -11,7 +11,7 @@ class Dmzj extends Source {
   final _baseUrl = 'http://v3api.dmzj.com';
 
   @override
-  SourceName get name => SourceName.dmzj;
+  SourceID get id => SourceID.dmzj;
 
   @override
   Future<List<Book>> fetchBooks({int page = 0, String query}) {

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Page;
-import 'package:fomic/model/constant/SourceName.dart';
+import 'package:fomic/model/constant/SourceID.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Page.dart';
@@ -11,7 +11,7 @@ abstract class Source {
   @protected
   final dio = GetIt.I.get<Dio>();
 
-  SourceName get name;
+  SourceID get id;
   Future<List<Book>> fetchBooks({int page = 0, String query});
   Future<Book> fetchBook(Book book);
   Future<List<Chapter>> fetchChapters(Book book);
@@ -19,9 +19,9 @@ abstract class Source {
 
   Source();
 
-  factory Source.of(SourceName name) {
-    switch (name) {
-      case SourceName.dmzj:
+  factory Source.of(SourceID id) {
+    switch (id) {
+      case SourceID.dmzj:
         return Dmzj();
       default:
         return null;
