@@ -1,11 +1,11 @@
-import 'package:fomic/model/entity/ImageRequest.dart';
+import 'package:dio/dio.dart';
 
 enum SerializingStatus { unknown, ongoing, done }
 
 class Book {
   final String url;
   final String title;
-  final ImageRequest thumbnailRequest;
+  final RequestOptions thumbnail;
   final String author;
   final SerializingStatus status;
   final String genre;
@@ -14,7 +14,7 @@ class Book {
   Book({
     this.url,
     this.title,
-    this.thumbnailRequest,
+    this.thumbnail,
     this.author,
     this.status = SerializingStatus.done,
     this.genre,
@@ -25,7 +25,7 @@ class Book {
     return Book(
       url: url ?? other.url,
       title: title ?? other.title,
-      thumbnailRequest: thumbnailRequest ?? other.thumbnailRequest,
+      thumbnail: thumbnail ?? other.thumbnail,
       author: author ?? other.author,
       status: status ?? other.status,
       genre: genre ?? other.genre,

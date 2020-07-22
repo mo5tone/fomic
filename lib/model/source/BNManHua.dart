@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:fomic/model/entity/ImageRequest.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
@@ -10,17 +9,16 @@ import 'package:fomic/model/source/Source.dart';
 import 'package:html/parser.dart';
 
 class BNManHua extends Source {
-  final _baseURL = 'https://m.bnmanhua.com';
-  Map<String, String> get _headers => {
-        'Referer': _baseURL,
-      };
+  final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
   SourceID get id => SourceID.bnmanhua;
 
   @override
   BaseOptions get baseOptions => BaseOptions(
-        headers: _headers,
+        headers: {
+          'Referer': _baseUrl,
+        },
       );
 
   @override
@@ -31,22 +29,22 @@ class BNManHua extends Source {
           queryParameters: {
             'm': 'vod-search-pg-$page-wd-$query.html',
           },
-          baseUrl: _baseURL,
+          baseUrl: _baseUrl,
         )
       : RequestOptions(
           method: 'GET',
           path: '/page/hot/$page.html',
-          baseUrl: _baseURL,
+          baseUrl: _baseUrl,
         );
 
   @override
-  RequestOptions bookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseURL);
+  RequestOptions bookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions chaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseURL);
+  RequestOptions chaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions pagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseURL);
+  RequestOptions pagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
 
   @override
   List<Book> booksFromResponse(Response response) {
@@ -57,11 +55,15 @@ class BNManHua extends Source {
       final url = aEle.attributes['href'];
       final title = aEle.attributes['title'].trim();
       final imgEle = ele.querySelector('mip-img');
-      final thumbnailRequest = ImageRequest(
-        imgEle.attributes['src'],
-        headers: _headers,
+      return Book(
+        url: url,
+        title: title,
+        thumbnail: RequestOptions(
+          path: imgEle.attributes['src'],
+          baseUrl: _baseUrl,
+          headers: baseOptions.headers,
+        ),
       );
-      return Book(url: url, title: title, thumbnailRequest: thumbnailRequest);
     }).toList();
   }
 
@@ -100,7 +102,12 @@ class BNManHua extends Source {
     final List<String> codes = jsonDecode(imageCodes);
     var pages = <Page>[];
     for (var i = 0; i < codes.length; i++) {
-      pages.add(Page(index: i, imageUrl: '$baseImageURL${codes[i]}'));
+      final imageReq = RequestOptions(
+        path: '$baseImageURL${codes[i]}',
+        baseUrl: _baseUrl,
+        headers: baseOptions.headers,
+      );
+      pages.add(Page(index: i, image: imageReq));
     }
     return pages;
   }

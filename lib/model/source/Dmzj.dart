@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/model/constant/SourceID.dart';
-import 'package:fomic/model/entity/ImageRequest.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
@@ -68,7 +67,11 @@ class DMZJ extends Source {
         return Book(
           url: url,
           title: title,
-          thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
+          thumbnail: RequestOptions(
+            path: thumbnailUrl,
+            baseUrl: _baseUrl,
+            headers: baseOptions.headers,
+          ),
           author: author,
         );
       }).toList();
@@ -83,7 +86,11 @@ class DMZJ extends Source {
         return Book(
           url: url,
           title: title,
-          thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
+          thumbnail: RequestOptions(
+            path: thumbnailUrl,
+            baseUrl: _baseUrl,
+            headers: baseOptions.headers,
+          ),
           author: author,
           status: _statusFrom(ele['status']),
         );
@@ -104,7 +111,11 @@ class DMZJ extends Source {
     return Book(
       url: response.request.path,
       title: title,
-      thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
+      thumbnail: RequestOptions(
+        path: thumbnailUrl,
+        baseUrl: _baseUrl,
+        headers: baseOptions.headers,
+      ),
       author: authors,
       status: _statusFrom(obj['status'][0]['tag_id']),
       genre: genre,
@@ -139,7 +150,12 @@ class DMZJ extends Source {
     List<String> arr = obj['page_url'];
     final result = <Page>[];
     for (var i = 0; i < arr.length; i++) {
-      result.add(Page(index: i, imageUrl: arr[i]));
+      final imageReq = RequestOptions(
+        path: arr[i],
+        baseUrl: _baseUrl,
+        headers: baseOptions.headers,
+      );
+      result.add(Page(index: i, image: imageReq));
     }
     return result;
   }

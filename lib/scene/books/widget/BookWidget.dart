@@ -17,13 +17,18 @@ class BookWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         verticalDirection: VerticalDirection.down,
         children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: book.thumbnailRequest.url,
-            fit: BoxFit.cover,
-            httpHeaders: book.thumbnailRequest.headers,
-            errorWidget: (context, url, error) => Icon(Icons.broken_image),
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: book.thumbnail.uri.toString(),
+              fit: BoxFit.cover,
+              httpHeaders: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+              errorWidget: (context, url, error) => Icon(Icons.broken_image),
+            ),
           ),
-          Text(book.title),
+          Text(
+            book.title,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
+
 class Page {
   final int index;
-  final String imageUrl;
+  final RequestOptions image;
 
-  Page({this.index, this.imageUrl});
+  Page({this.index, this.image});
 }
