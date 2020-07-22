@@ -45,7 +45,7 @@ class BooksView extends StatelessWidget {
                           childCount: value.length,
                         ),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                         ),
                       ),
                     ],

@@ -2,53 +2,55 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/model/constant/SourceID.dart';
+import 'package:fomic/model/entity/ImageRequest.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/source/Source.dart';
 
-class Dmzj extends Source {
+class DMZJ extends Source {
   final _baseUrl = 'http://v3api.dmzj.com';
 
   @override
   SourceID get id => SourceID.dmzj;
 
   @override
-  Future<List<Book>> fetchBooks({int page = 0, String query}) {
-    String path;
-    RequestOptions options;
-    if (query != null && query.isNotEmpty) {
-      path = 'http://s.acg.dmzj.com/comicsum/search.php';
-      options = RequestOptions(method: 'GET', queryParameters: {'s': query}, responseType: ResponseType.plain);
-    } else {
-      path = 'http://v2.api.dmzj.com/classify/0/1/$page.json';
-      options = RequestOptions(method: 'GET');
-    }
-    return dio.request(path, options: options).then(_booksFrom);
-  }
+  BaseOptions get baseOptions => BaseOptions(
+        headers: {
+          'User-Agent': const <String>[
+            'Mozilla/5.0 (X11; Linux x86_64)',
+            'AppleWebKit/537.36 (KHTML, like Gecko)',
+            'Chrome/56.0.2924.87',
+            'Safari/537.36',
+            'Fomic/1.0',
+          ].join(' '),
+        },
+      );
 
   @override
-  Future<Book> fetchBook(Book book) {
-    final path = book.url;
-    final options = RequestOptions(method: 'GET', baseUrl: _baseUrl);
-    return dio.request(path, options: options).then(_bookFrom);
-  }
+  RequestOptions booksRequest({int page = 0, String query}) => query == null || query.isEmpty
+      ? RequestOptions(
+          method: 'GET',
+          path: 'http://v2.api.dmzj.com/classify/0/1/$page.json',
+        )
+      : RequestOptions(
+          method: 'GET',
+          path: 'http://s.acg.dmzj.com/comicsum/search.php',
+          queryParameters: {'s': query},
+          responseType: ResponseType.plain,
+        );
 
   @override
-  Future<List<Chapter>> fetchChapters(Book book) {
-    final path = book.url;
-    final options = RequestOptions(method: 'GET', baseUrl: _baseUrl);
-    return dio.request(path, options: options).then(_chaptersFrom);
-  }
+  RequestOptions bookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  Future<List<Page>> fetchPages(Chapter chapter) {
-    final path = chapter.url;
-    final options = RequestOptions(method: 'GET', baseUrl: _baseUrl);
-    return dio.request(path, options: options).then(_pagesFrom);
-  }
+  RequestOptions chaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
-  List<Book> _booksFrom(Response response) {
+  @override
+  RequestOptions pagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+
+  @override
+  List<Book> booksFromResponse(Response response) {
     if (response.request.responseType == ResponseType.plain) {
       String body = response.data;
       final regExp = RegExp(r'^var g_search_data =([\s\S]+);$');
@@ -58,9 +60,17 @@ class Dmzj extends Source {
         int id = ele['id'];
         String title = ele['comic_name'];
         String thumbnailUrl = ele['comic_cover'];
+        if (thumbnailUrl.startsWith('//')) {
+          thumbnailUrl = 'http:$thumbnailUrl';
+        }
         String author = ele['comic_author'];
         final url = '/comic/comic_$id.json?version=2.7.019';
-        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author);
+        return Book(
+          url: url,
+          title: title,
+          thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
+          author: author,
+        );
       }).toList();
     } else {
       List arr = response.data;
@@ -70,14 +80,19 @@ class Dmzj extends Source {
         String thumbnailUrl = ele['cover'];
         String author = ele['authors'];
         final url = '/comic/comic_$id.json?version=2.7.019';
-        var status = ele['status'];
-        status = status == '已完结' ? 2 : status == '连载中' ? 1 : 0;
-        return Book(url: url, title: title, thumbnailUrl: thumbnailUrl, author: author, status: status);
+        return Book(
+          url: url,
+          title: title,
+          thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
+          author: author,
+          status: _statusFrom(ele['status']),
+        );
       }).toList();
     }
   }
 
-  Book _bookFrom(Response response) {
+  @override
+  Book bookFromResponse(Response response) {
     Map<String, dynamic> obj = response.data;
     String title = obj['title'];
     String thumbnailUrl = obj['cover'];
@@ -85,21 +100,20 @@ class Dmzj extends Source {
     final authors = arr.map((ele) => ele['tag_name'] as String).join(', ');
     arr = obj['types'];
     final genre = arr.map((ele) => ele['tag_name'] as String).join(', ');
-    int status = obj['status'][0]['tag_id'];
-    status -= 2308;
     String description = obj['description'];
     return Book(
       url: response.request.path,
       title: title,
-      thumbnailUrl: thumbnailUrl,
+      thumbnailRequest: ImageRequest(thumbnailUrl, headers: baseOptions.headers),
       author: authors,
-      status: status,
+      status: _statusFrom(obj['status'][0]['tag_id']),
       genre: genre,
       description: description,
     );
   }
 
-  List<Chapter> _chaptersFrom(Response response) {
+  @override
+  List<Chapter> chaptersFromResponse(Response response) {
     Map<String, dynamic> obj = response.data;
     String id = obj['id'];
     List<Map<String, dynamic>> arr = obj['chapters'];
@@ -119,7 +133,8 @@ class Dmzj extends Source {
     return result.reduce((value, element) => [...value, ...element]);
   }
 
-  List<Page> _pagesFrom(Response response) {
+  @override
+  List<Page> pagesFromResponse(Response response) {
     Map<String, dynamic> obj = response.data;
     List<String> arr = obj['page_url'];
     final result = <Page>[];
@@ -127,5 +142,33 @@ class Dmzj extends Source {
       result.add(Page(index: i, imageUrl: arr[i]));
     }
     return result;
+  }
+
+  SerializingStatus _statusFrom(dynamic value) {
+    var status = SerializingStatus.unknown;
+    if (value is String) {
+      switch (value) {
+        case '已完结':
+          status = SerializingStatus.done;
+          break;
+        case '连载中':
+          status = SerializingStatus.ongoing;
+          break;
+        default:
+          break;
+      }
+    } else if (value is int) {
+      switch (value) {
+        case 2310:
+          status = SerializingStatus.done;
+          break;
+        case 2309:
+          status = SerializingStatus.ongoing;
+          break;
+        default:
+          break;
+      }
+    }
+    return status;
   }
 }
