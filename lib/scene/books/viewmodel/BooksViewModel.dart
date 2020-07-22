@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:fomic/model/constant/SourceID.dart';
+import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/source/Source.dart';
 
@@ -23,7 +23,7 @@ class BooksViewModel with ChangeNotifier {
     }
   }
 
-  BooksViewModel(SourceID sourceID) : _source = Source.of(sourceID);
+  BooksViewModel(SourceId sourceId) : _source = Source.of(sourceId);
 
   Future<void> load() {
     if (loading) return Future.value();

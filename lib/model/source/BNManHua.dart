@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/constant/SourceID.dart';
+import 'package:fomic/model/constant/SourceId.dart';
 import 'package:dio/dio.dart';
 import 'package:fomic/model/source/Source.dart';
 import 'package:html/parser.dart';
@@ -12,7 +12,7 @@ class BNManHua extends Source {
   final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
-  SourceID get id => SourceID.bnmanhua;
+  SourceId get id => SourceId.bnmanhua;
 
   @override
   BaseOptions get baseOptions => BaseOptions(

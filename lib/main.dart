@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'model/constant/SourceID.dart';
+import 'model/constant/SourceId.dart';
 import 'utils/Injector.dart';
 import 'scene/books/view/BooksView.dart';
 
@@ -19,7 +19,7 @@ class Fomic extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BooksView(sourceID: SourceID.bnmanhua),
+      home: BooksView(sourceID: SourceId.bnmanhua),
     );
   }
 }

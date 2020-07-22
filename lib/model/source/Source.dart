@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/SourceID.dart';
+import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Page.dart';
@@ -14,7 +14,7 @@ abstract class Source {
     return _dio;
   }
 
-  SourceID get id;
+  SourceId get id;
   BaseOptions get baseOptions;
 
   RequestOptions booksRequest({int page = 0, String query});
@@ -49,11 +49,11 @@ abstract class Source {
 
   Source();
 
-  factory Source.of(SourceID id) {
+  factory Source.of(SourceId id) {
     switch (id) {
-      case SourceID.dmzj:
+      case SourceId.dmzj:
         return DMZJ();
-      case SourceID.bnmanhua:
+      case SourceId.bnmanhua:
         return BNManHua();
       default:
         return null;
