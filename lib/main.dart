@@ -19,7 +19,7 @@ class Fomic extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BooksView(sourceID: SourceId.bnmanhua),
+      home: BooksView(sourceId: SourceId.bnmanhua),
     );
   }
 }

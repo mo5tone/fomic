@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/SourceID.dart';
+import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Page.dart';
 import 'package:fomic/model/entity/Chapter.dart';
 import 'package:fomic/model/entity/Book.dart';
@@ -11,7 +11,7 @@ class DMZJ extends Source {
   final _baseUrl = 'http://v3api.dmzj.com';
 
   @override
-  SourceID get id => SourceID.dmzj;
+  SourceId get id => SourceId.dmzj;
 
   @override
   BaseOptions get baseOptions => BaseOptions(

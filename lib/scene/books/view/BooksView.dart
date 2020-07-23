@@ -3,6 +3,7 @@ import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/scene/books/widget/BookWidget.dart';
 import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
+import 'package:fomic/scene/common/view/BooksSearchView.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
@@ -27,40 +28,52 @@ class BooksView extends StatelessWidget {
       builder: (ctx, child) => Scaffold(
         appBar: AppBar(
           title: Text(sourceId.name),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => showSearch(
+                context: ctx,
+                delegate: GetIt.I.get<BooksSearchView>(param1: sourceId),
+              ),
+            ),
+          ],
         ),
         body: RefreshIndicator(
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Selector<BooksViewModel, List<Book>>(
-                  selector: (ctx, value) => value.books,
-                  builder: (ctx, value, child) => CustomScrollView(
-                    controller: scrollController,
-                    slivers: <Widget>[
-                      SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (ctx, idx) => BookWidget(
-                            book: value[idx],
-                          ),
-                          childCount: value.length,
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Selector<BooksViewModel, List<Book>>(
+                selector: (ctx, value) => value.books,
+                builder: (ctx, value, child) => CustomScrollView(
+                  controller: scrollController,
+                  slivers: <Widget>[
+                    SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (ctx, idx) => BookWidget(
+                          book: value[idx],
                         ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
+                        childCount: value.length,
                       ),
-                    ],
-                  ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                      ),
+                    ),
+                  ],
                 ),
-                Selector<BooksViewModel, bool>(
-                  selector: (ctx, value) => value.loading,
-                  builder: (ctx, value, child) => Container(
-                    child: value ? CircularProgressIndicator() : null,
-                    margin: EdgeInsets.all(8),
-                  ),
+              ),
+              Selector<BooksViewModel, bool>(
+                selector: (ctx, value) => value.loading,
+                builder: (ctx, value, child) => Container(
+                  child: value ? CircularProgressIndicator() : null,
+                  margin: EdgeInsets.all(8),
                 ),
-              ],
-            ),
-            onRefresh: () => viewmodel.refresh()),
+              ),
+            ],
+          ),
+          onRefresh: () => viewmodel.refresh(),
+        ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.search),
           onPressed: () => null,

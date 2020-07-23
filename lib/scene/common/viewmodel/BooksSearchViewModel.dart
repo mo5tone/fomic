@@ -1,12 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/model/source/Source.dart';
 
-class BooksViewModel with ChangeNotifier {
+class BooksSearchViewModel with ChangeNotifier {
   final Source _source;
+  var _query = '';
   var _page = 0;
   var _loading = false;
   var _books = <Book>[];
@@ -22,27 +21,21 @@ class BooksViewModel with ChangeNotifier {
 
   List<Book> get books => _books;
 
-  BooksViewModel(SourceId sourceId) : _source = Source.of(sourceId);
+  BooksSearchViewModel(SourceId sourceId) : _source = Source.of(sourceId);
 
-  Future<void> load() {
+  Future<void> search(String query) {
     if (loading) return Future.value();
+    if (_query != query) {
+      _page = 0;
+      _books = [];
+    }
     _setLoading(true);
     return _source
-        .fetchBooks(page: _page)
+        .fetchBooks(page: _page, query: query)
         .then((value) => _books += value)
         .then((_) => notifyListeners())
         .then((_) => _page += 1)
-        .whenComplete(() => _setLoading(false));
-  }
-
-  Future<void> refresh() {
-    if (loading) return Future.value();
-    _setLoading(true);
-    return _source
-        .fetchBooks(page: 0)
-        .then((value) => _books = value)
-        .then((_) => notifyListeners())
-        .then((_) => _page = 0)
+        .then((_) => _query = query)
         .whenComplete(() => _setLoading(false));
   }
 }

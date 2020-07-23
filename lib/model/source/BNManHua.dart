@@ -25,15 +25,18 @@ class BNManHua extends Source {
   RequestOptions booksRequest({int page = 0, String query}) => query == null || query.isEmpty
       ? RequestOptions(
           method: 'GET',
-          path: '/index.php',
-          queryParameters: {
-            'm': 'vod-search-pg-$page-wd-$query.html',
-          },
+          path: '/page/hot/$page.html',
           baseUrl: _baseUrl,
         )
       : RequestOptions(
-          method: 'GET',
-          path: '/page/hot/$page.html',
+          // method: 'GET',
+          // path: '/index.php',
+          // queryParameters: {
+          //   'm': 'vod-search-pg-$page-wd-$query.html',
+          // },
+          method: 'POST',
+          path: '/index.php/search.html',
+          data: {'keyword': query},
           baseUrl: _baseUrl,
         );
 
