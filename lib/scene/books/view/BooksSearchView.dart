@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/scene/books/widget/BookWidget.dart';
-import 'package:fomic/scene/common/viewmodel/BooksSearchViewModel.dart';
+import 'package:fomic/scene/books/viewmodel/BooksSearchViewModel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
@@ -77,13 +77,6 @@ class BooksSearchView extends SearchDelegate<String> {
                   ),
                 ),
               ],
-            ),
-          ),
-          Selector<BooksSearchViewModel, bool>(
-            selector: (ctx, value) => value.loading,
-            builder: (ctx, value, child) => Container(
-              child: value ? CircularProgressIndicator() : null,
-              margin: EdgeInsets.all(8),
             ),
           ),
         ],

@@ -29,11 +29,6 @@ class BNManHua extends Source {
           baseUrl: _baseUrl,
         )
       : RequestOptions(
-          // method: 'GET',
-          // path: '/index.php',
-          // queryParameters: {
-          //   'm': 'vod-search-pg-$page-wd-$query.html',
-          // },
           method: 'POST',
           path: '/index.php/search.html',
           data: {'keyword': query},

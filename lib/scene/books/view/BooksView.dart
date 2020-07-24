@@ -3,7 +3,7 @@ import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
 import 'package:fomic/scene/books/widget/BookWidget.dart';
 import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
-import 'package:fomic/scene/common/view/BooksSearchView.dart';
+import 'package:fomic/scene/books/view/BooksSearchView.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +33,7 @@ class BooksView extends StatelessWidget {
               icon: Icon(Icons.search),
               onPressed: () => showSearch(
                 context: ctx,
-                delegate: GetIt.I.get<BooksSearchView>(param1: sourceId),
+                delegate: BooksSearchView(sourceId),
               ),
             ),
           ],
@@ -61,13 +61,6 @@ class BooksView extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-              Selector<BooksViewModel, bool>(
-                selector: (ctx, value) => value.loading,
-                builder: (ctx, value, child) => Container(
-                  child: value ? CircularProgressIndicator() : null,
-                  margin: EdgeInsets.all(8),
                 ),
               ),
             ],
