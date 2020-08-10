@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/scene/ViewModel.dart';
-import 'package:fomic/utils/widget/ListenableWidget.dart';
+import 'package:fomic/scene/view_model.dart';
+import 'package:fomic/utils/widget/listenable_widget.dart';
 
 class ListenablePreferredSizeWidget<VM extends ViewModel> extends ListenableWidget implements PreferredSizeWidget {
   @override

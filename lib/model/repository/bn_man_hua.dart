@@ -1,18 +1,18 @@
 import 'dart:convert';
 
-import 'package:fomic/model/entity/Page.dart';
-import 'package:fomic/model/entity/Chapter.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/constant/SourceId.dart';
+import 'package:fomic/model/entity/page.dart';
+import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/constant/repository_id.dart';
 import 'package:dio/dio.dart';
-import 'package:fomic/model/source/Source.dart';
+import 'package:fomic/model/repository/repository.dart';
 import 'package:html/parser.dart';
 
-class BNManHua extends Source {
+class BNManHua extends Repository {
   final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
-  SourceId get id => SourceId.bnmanhua;
+  RepositoryID get id => RepositoryID.bnmanhua;
 
   @override
   BaseOptions get baseOptions => BaseOptions(

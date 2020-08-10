@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/source/Source.dart';
-import 'package:fomic/scene/books/widget/BooksWidget.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/scene/books/widget/books_widget.dart';
 
 class BooksSearchDelegate extends SearchDelegate {
-  final Source source;
+  final Repository source;
   final void Function(BuildContext context, Book book) didTapOn;
 
   var _loading = false;

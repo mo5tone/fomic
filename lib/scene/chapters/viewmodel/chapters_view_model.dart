@@ -1,19 +1,19 @@
-import 'package:fomic/model/constant/SourceId.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/entity/Chapter.dart';
-import 'package:fomic/model/source/Source.dart';
-import 'package:fomic/scene/ViewModel.dart';
+import 'package:fomic/model/constant/repository_id.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/scene/view_model.dart';
 
 class ChaptersViewModel extends ViewModel {
-  final Source _source;
+  final Repository _source;
   Book _book;
   var _chapters = <Chapter>[];
 
   Book get book => _book;
   List<Chapter> get chapters => _chapters;
 
-  ChaptersViewModel(SourceId sourceId, Book book)
-      : _source = Source.of(sourceId),
+  ChaptersViewModel(RepositoryID sourceId, Book book)
+      : _source = Repository.of(sourceId),
         _book = book;
 
   Future<void> fetch() {

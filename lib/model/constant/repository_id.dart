@@ -1,14 +1,14 @@
-enum SourceId {
+enum RepositoryID {
   dmzj,
   bnmanhua,
 }
 
-extension SourceIdEx on SourceId {
+extension RepositoryIDEx on RepositoryID {
   String get name {
     switch (this) {
-      case SourceId.dmzj:
+      case RepositoryID.dmzj:
         return '动漫之家';
-      case SourceId.bnmanhua:
+      case RepositoryID.bnmanhua:
         return '百年漫画';
       default:
         return null;

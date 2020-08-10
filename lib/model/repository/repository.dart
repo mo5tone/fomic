@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/SourceId.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/entity/Chapter.dart';
-import 'package:fomic/model/entity/Page.dart';
-import 'package:fomic/model/source/BNManHua.dart';
-import 'package:fomic/model/source/DMZJ.dart';
+import 'package:fomic/model/constant/repository_id.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/model/entity/page.dart';
+import 'package:fomic/model/repository/bn_man_hua.dart';
+import 'package:fomic/model/repository/dmzj.dart';
 import 'package:get_it/get_it.dart';
 
-abstract class Source {
+abstract class Repository {
   Dio _dio;
   Dio get dio {
     _dio ??= GetIt.I.get(param1: baseOptions);
     return _dio;
   }
 
-  SourceId get id;
+  RepositoryID get id;
   BaseOptions get baseOptions;
   bool get searchAll => true;
 
@@ -48,13 +48,13 @@ abstract class Source {
     return dio.request(req.path, options: req).then(pagesFromResponse);
   }
 
-  Source();
+  Repository();
 
-  factory Source.of(SourceId id) {
+  factory Repository.of(RepositoryID id) {
     switch (id) {
-      case SourceId.dmzj:
+      case RepositoryID.dmzj:
         return DMZJ();
-      case SourceId.bnmanhua:
+      case RepositoryID.bnmanhua:
         return BNManHua();
       default:
         return null;

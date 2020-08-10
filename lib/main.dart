@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
+import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import 'model/constant/SourceId.dart';
-import 'utils/Injector.dart';
-import 'scene/books/view/BooksView.dart';
+import 'model/constant/repository_id.dart';
+import 'utils/injector.dart';
+import 'scene/books/view/books_view.dart';
 
 void main() {
   Injector.setup();
@@ -23,7 +23,7 @@ class Fomic extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: ChangeNotifierProvider(
-        create: (ctx) => GetIt.I.get<BooksViewModel>(param1: SourceId.bnmanhua),
+        create: (ctx) => GetIt.I.get<BooksViewModel>(param1: RepositoryID.bnmanhua),
         builder: (ctx, child) => BooksView(),
       ),
     );

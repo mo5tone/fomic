@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:fomic/model/constant/SourceId.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/model/source/Source.dart';
-import 'package:fomic/scene/ViewModel.dart';
+import 'package:fomic/model/constant/repository_id.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/scene/view_model.dart';
 
 class BooksViewModel extends ViewModel {
-  final Source source;
+  final Repository source;
   var _page = 0;
   var _books = <Book>[];
 
@@ -14,7 +14,7 @@ class BooksViewModel extends ViewModel {
 
   List<Book> get books => _books;
 
-  BooksViewModel(SourceId sourceId) : source = Source.of(sourceId);
+  BooksViewModel(RepositoryID sourceId) : source = Repository.of(sourceId);
 
   Future<void> load() {
     if (loading ?? false) return Future.value();

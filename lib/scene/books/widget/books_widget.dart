@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/scene/books/widget/BookWidget.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/scene/books/widget/book_widget.dart';
 
 class BooksWidget extends StatelessWidget {
   final List<Book> books;

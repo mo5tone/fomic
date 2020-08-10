@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
-import 'package:fomic/scene/books/widget/BooksWidget.dart';
-import 'package:fomic/utils/BooksSearchDelegate.dart';
-import 'package:fomic/utils/widget/ListenablePreferredSizeWidget.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
+import 'package:fomic/scene/books/widget/books_widget.dart';
+import 'package:fomic/utils/books_search_delegate.dart';
+import 'package:fomic/utils/widget/listenable_preferred_size_widget.dart';
 import 'package:provider/provider.dart';
 
 class BooksView extends StatefulWidget {

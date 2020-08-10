@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/SourceId.dart';
-import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
+import 'package:fomic/model/constant/repository_id.dart';
+import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
 import 'package:get_it/get_it.dart';
 
 class Injector {
@@ -19,7 +19,7 @@ class Injector {
 
   static void _viewmodels() {
     if (!_getter.isRegistered<BooksViewModel>()) {
-      _getter.registerFactoryParam<BooksViewModel, SourceId, void>((id, _) => BooksViewModel(id));
+      _getter.registerFactoryParam<BooksViewModel, RepositoryID, void>((id, _) => BooksViewModel(id));
     }
   }
 }

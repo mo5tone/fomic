@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/scene/ViewModel.dart';
-import 'package:fomic/utils/Dialogs.dart';
+import 'package:fomic/scene/view_model.dart';
+import 'package:fomic/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 
 class ListenableWidget<VM extends ViewModel> extends StatefulWidget {
