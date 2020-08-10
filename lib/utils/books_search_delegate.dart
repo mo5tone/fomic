@@ -4,7 +4,7 @@ import 'package:fomic/model/repository/repository.dart';
 import 'package:fomic/scene/books/widget/books_widget.dart';
 
 class BooksSearchDelegate extends SearchDelegate {
-  final Repository source;
+  final Repository repository;
   final void Function(BuildContext context, Book book) didTapOn;
 
   var _loading = false;
@@ -12,7 +12,7 @@ class BooksSearchDelegate extends SearchDelegate {
   var _keyword = '';
   var _books = <Book>[];
 
-  BooksSearchDelegate(this.source, {this.didTapOn, String hint}) : super(searchFieldLabel: hint);
+  BooksSearchDelegate(this.repository, {this.didTapOn, String hint}) : super(searchFieldLabel: hint);
 
   Future<List<Book>> _search(String keyword) {
     if (keyword == null || keyword.isEmpty || _loading) return Future.value([]);
@@ -21,7 +21,7 @@ class BooksSearchDelegate extends SearchDelegate {
       _page = 0;
       _books = [];
     }
-    return source.fetchBooks(page: _page, query: keyword).then((value) {
+    return repository.fetchBooks(page: _page, query: keyword).then((value) {
       _page += 1;
       _keyword = keyword;
       _books += value;

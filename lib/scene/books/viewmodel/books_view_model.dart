@@ -6,20 +6,20 @@ import 'package:fomic/model/repository/repository.dart';
 import 'package:fomic/scene/view_model.dart';
 
 class BooksViewModel extends ViewModel {
-  final Repository source;
+  final Repository repository;
   var _page = 0;
   var _books = <Book>[];
 
-  String get title => source.id.name;
+  String get title => repository.id.name;
 
   List<Book> get books => _books;
 
-  BooksViewModel(RepositoryID sourceId) : source = Repository.of(sourceId);
+  BooksViewModel(RepositoryID repositoryID) : repository = Repository.of(repositoryID);
 
   Future<void> load() {
     if (loading ?? false) return Future.value();
     loading = true;
-    return source
+    return repository
         .fetchBooks(page: _page)
         .then((value) => _books += value)
         .then((_) => notifyListeners())
@@ -31,7 +31,7 @@ class BooksViewModel extends ViewModel {
   Future<void> refresh() {
     if (loading ?? false) return Future.value();
     loading = true;
-    return source
+    return repository
         .fetchBooks(page: 0)
         .then((value) => _books = value)
         .then((_) => notifyListeners())

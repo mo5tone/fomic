@@ -5,22 +5,22 @@ import 'package:fomic/model/repository/repository.dart';
 import 'package:fomic/scene/view_model.dart';
 
 class ChaptersViewModel extends ViewModel {
-  final Repository _source;
+  final Repository _repository;
   Book _book;
   var _chapters = <Chapter>[];
 
   Book get book => _book;
   List<Chapter> get chapters => _chapters;
 
-  ChaptersViewModel(RepositoryID sourceId, Book book)
-      : _source = Repository.of(sourceId),
+  ChaptersViewModel(RepositoryID repositoryID, Book book)
+      : _repository = Repository.of(repositoryID),
         _book = book;
 
   Future<void> fetch() {
     if (loading) return Future.value();
     loading = true;
-    final futureBook = _source.fetchBook(_book);
-    final futureChapters = _source.fetchChapters(_book);
+    final futureBook = _repository.fetchBook(_book);
+    final futureChapters = _repository.fetchChapters(_book);
     return Future.wait<dynamic>([futureBook, futureChapters])
         .then((value) {
           _book = _book.merge(value[0]);

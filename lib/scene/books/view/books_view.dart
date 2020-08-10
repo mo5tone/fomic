@@ -45,7 +45,7 @@ class _BooksViewState extends State<BooksView> {
               onPressed: () => showSearch(
                 context: context,
                 delegate: BooksSearchDelegate(
-                  viewmodel.source,
+                  viewmodel.repository,
                   didTapOn: _didTapOn,
                 ),
               ),
