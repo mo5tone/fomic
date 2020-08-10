@@ -16,6 +16,7 @@ abstract class Source {
 
   SourceId get id;
   BaseOptions get baseOptions;
+  bool get searchAll => true;
 
   RequestOptions booksRequest({int page = 0, String query});
   RequestOptions bookRequest(Book book);

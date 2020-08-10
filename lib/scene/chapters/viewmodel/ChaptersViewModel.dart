@@ -17,14 +17,17 @@ class ChaptersViewModel extends ViewModel {
         _book = book;
 
   Future<void> fetch() {
-    if (loading.value) return Future.value();
-    loading.value = true;
+    if (loading) return Future.value();
+    loading = true;
     final futureBook = _source.fetchBook(_book);
     final futureChapters = _source.fetchChapters(_book);
-    return Future.wait<dynamic>([futureBook, futureChapters]).then((value) {
-      _book = _book.merge(value[0]);
-      _chapters = value[1];
-      notifyListeners();
-    }).whenComplete(() => loading.value = false);
+    return Future.wait<dynamic>([futureBook, futureChapters])
+        .then((value) {
+          _book = _book.merge(value[0]);
+          _chapters = value[1];
+          notifyListeners();
+        })
+        .catchError((err) => message = err.toString())
+        .whenComplete(() => loading = false);
   }
 }

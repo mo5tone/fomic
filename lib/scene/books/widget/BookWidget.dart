@@ -10,7 +10,7 @@ class BookWidget extends StatelessWidget {
   final Book book;
   final void Function() onTap;
 
-  const BookWidget({Key key, this.book, this.onTap}) : super(key: key);
+  const BookWidget(this.book, {Key key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

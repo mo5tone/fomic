@@ -30,7 +30,7 @@ class BNManHua extends Source {
         )
       : RequestOptions(
           method: 'POST',
-          path: '/index.php/search.html',
+          path: '/search.html',
           data: {'keyword': query},
           baseUrl: _baseUrl,
         );

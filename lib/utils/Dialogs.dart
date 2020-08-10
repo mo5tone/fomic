@@ -11,7 +11,11 @@ class Dialogs {
           backgroundColor: Colors.black54,
           children: <Widget>[
             Center(
-              child: CircularProgressIndicator(),
+              child: SizedBox(
+                width: 48,
+                height: 48,
+                child: CircularProgressIndicator(),
+              ),
             ),
           ],
         ),

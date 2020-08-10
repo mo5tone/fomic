@@ -1,76 +1,72 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:fomic/model/constant/SourceId.dart';
 import 'package:fomic/model/entity/Book.dart';
-import 'package:fomic/scene/books/widget/BookWidget.dart';
 import 'package:fomic/scene/books/viewmodel/BooksViewModel.dart';
-import 'package:fomic/scene/books/view/BooksSearchView.dart';
-import 'package:get_it/get_it.dart';
+import 'package:fomic/scene/books/widget/BooksWidget.dart';
+import 'package:fomic/utils/BooksSearchDelegate.dart';
+import 'package:fomic/utils/widget/ListenablePreferredSizeWidget.dart';
 import 'package:provider/provider.dart';
 
-class BooksView extends StatelessWidget {
-  final SourceId sourceId;
+class BooksView extends StatefulWidget {
+  @override
+  _BooksViewState createState() => _BooksViewState();
+}
 
-  const BooksView({Key key, this.sourceId}) : super(key: key);
+class _BooksViewState extends State<BooksView> {
+  BooksViewModel viewmodel;
+
+  void _didTapOn(BuildContext context, Book book) {
+    log('didTapOn ${book.title}');
+  }
+
+  void _onScroll(ScrollNotification notification) {
+    final metrics = notification.metrics;
+    if (metrics.pixels == metrics.maxScrollExtent) {
+      viewmodel.load();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    viewmodel = Provider.of<BooksViewModel>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final viewmodel = GetIt.I.get<BooksViewModel>(param1: sourceId);
-    viewmodel.refresh();
-    final scrollController = ScrollController();
-    scrollController.addListener(() {
-      final position = scrollController.position;
-      if (position.pixels == position.maxScrollExtent) {
-        viewmodel.load();
-      }
-    });
-    return ChangeNotifierProvider.value(
-      value: viewmodel,
-      builder: (ctx, child) => Scaffold(
-        appBar: AppBar(
-          title: Text(sourceId.name),
+    return Scaffold(
+      appBar: ListenablePreferredSizeWidget<BooksViewModel>(
+        child: AppBar(
+          title: Text(viewmodel.title),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () => showSearch(
-                context: ctx,
-                delegate: BooksSearchView(sourceId),
+                context: context,
+                delegate: BooksSearchDelegate(
+                  viewmodel.source,
+                  didTapOn: _didTapOn,
+                ),
               ),
             ),
           ],
         ),
-        body: RefreshIndicator(
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Selector<BooksViewModel, List<Book>>(
-                selector: (ctx, value) => value.books,
-                builder: (ctx, value, child) => CustomScrollView(
-                  controller: scrollController,
-                  slivers: <Widget>[
-                    SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (ctx, idx) => BookWidget(
-                          book: value[idx],
-                        ),
-                        childCount: value.length,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      ),
+      body: Selector<BooksViewModel, List<Book>>(
+        selector: (ctx, viewmodel) => viewmodel.books,
+        builder: (ctx, books, child) => RefreshIndicator(
+          child: BooksWidget(
+            books,
+            onScroll: _onScroll,
+            didTapOn: (book) => _didTapOn(ctx, book),
           ),
           onRefresh: () => viewmodel.refresh(),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.search),
-          onPressed: () => null,
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.favorite),
+        onPressed: () => viewmodel.favorite(),
       ),
     );
   }
