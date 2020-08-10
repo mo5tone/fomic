@@ -22,7 +22,6 @@ class BooksViewModel extends ViewModel {
     return repository
         .fetchBooks(page: _page)
         .then((value) => _books += value)
-        .then((_) => notifyListeners())
         .then((_) => _page = _page + 1)
         .catchError((err) => message = err.toString())
         .whenComplete(() => loading = false);
@@ -34,7 +33,6 @@ class BooksViewModel extends ViewModel {
     return repository
         .fetchBooks(page: 0)
         .then((value) => _books = value)
-        .then((_) => notifyListeners())
         .then((_) => _page = 0)
         .catchError((err) => message = err.toString())
         .whenComplete(() => loading = false);

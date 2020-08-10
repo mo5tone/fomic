@@ -25,7 +25,6 @@ class ChaptersViewModel extends ViewModel {
         .then((value) {
           _book = _book.merge(value[0]);
           _chapters = value[1];
-          notifyListeners();
         })
         .catchError((err) => message = err.toString())
         .whenComplete(() => loading = false);
