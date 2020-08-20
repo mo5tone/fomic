@@ -14,25 +14,29 @@ class BooksViewModel extends ViewModel {
 
   List<Book> get books => _books;
 
-  BooksViewModel(RepositoryID repositoryID) : repository = Repository.of(repositoryID);
+  BooksViewModel(RepositoryID repositoryID) : repository = Repository.of(repositoryID) {
+    refresh();
+  }
 
   Future<void> load() {
-    if (loading ?? false) return Future.value();
+    if (loading) return Future.value();
     loading = true;
     return repository
         .fetchBooks(page: _page)
         .then((value) => _books += value)
+        .then((_) => notifyListeners())
         .then((_) => _page = _page + 1)
         .catchError((err) => message = err.toString())
         .whenComplete(() => loading = false);
   }
 
   Future<void> refresh() {
-    if (loading ?? false) return Future.value();
+    if (loading) return Future.value();
     loading = true;
     return repository
         .fetchBooks(page: 0)
         .then((value) => _books = value)
+        .then((_) => notifyListeners())
         .then((_) => _page = 0)
         .catchError((err) => message = err.toString())
         .whenComplete(() => loading = false);

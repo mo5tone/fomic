@@ -2,15 +2,50 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fomic/model/entity/book.dart';
 
-class BookWidget extends StatelessWidget {
+class BooksGallery extends StatelessWidget {
+  final List<Book> books;
+  final void Function(ScrollNotification notification) onScroll;
+  final void Function(BuildContext context, Book book) didTapOn;
+
+  const BooksGallery(this.books, {Key key, this.onScroll, this.didTapOn}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        onScroll(notification);
+        return false;
+      },
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (ctx, idx) => _Cell(
+                books[idx],
+                onTap: () => didTapOn(ctx, books[idx]),
+              ),
+              childCount: books.length,
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Cell extends StatelessWidget {
   final radius = 10.0;
   final Book book;
   final void Function() onTap;
 
-  const BookWidget(this.book, {Key key, this.onTap}) : super(key: key);
+  const _Cell(this.book, {Key key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

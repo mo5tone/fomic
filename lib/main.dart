@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'model/constant/repository_id.dart';
@@ -8,7 +8,7 @@ import 'utils/injector.dart';
 import 'scene/books/view/books_view.dart';
 
 void main() {
-  Injector.setup();
+  Injector.register();
   runApp(Fomic());
 }
 
@@ -22,9 +22,14 @@ class Fomic extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ChangeNotifierProvider(
-        create: (ctx) => GetIt.I.get<BooksViewModel>(param1: RepositoryID.bnmanhua),
-        builder: (ctx, child) => BooksView(),
+      builder: (ctx, child) => Material(
+        type: MaterialType.transparency,
+        child: FlutterEasyLoading(
+          child: ChangeNotifierProvider(
+            create: (_) => BooksViewModel(RepositoryID.bnmanhua),
+            child: BooksView(),
+          ),
+        ),
       ),
     );
   }
