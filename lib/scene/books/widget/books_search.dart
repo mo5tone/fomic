@@ -3,16 +3,23 @@ import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/repository/repository.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 
-class BooksSearchDelegate extends SearchDelegate {
+class BooksSearch extends SearchDelegate {
   final Repository repository;
-  final void Function(BuildContext context, Book book) didTapOn;
+  final _scrollController = ScrollController();
 
   var _loading = false;
   var _page = 0;
   var _keyword = '';
   var _books = <Book>[];
 
-  BooksSearchDelegate(this.repository, {this.didTapOn, String hint}) : super(searchFieldLabel: hint);
+  BooksSearch(this.repository, {String hint = '关键字'}) : super(searchFieldLabel: hint) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _scrollController.addListener(() {
+        final position = _scrollController.position;
+        if (position.pixels > position.maxScrollExtent + 30) _search(query);
+      });
+    });
+  }
 
   Future<List<Book>> _search(String keyword) {
     if (keyword == null || keyword.isEmpty || _loading) return Future.value([]);
@@ -34,13 +41,6 @@ class BooksSearchDelegate extends SearchDelegate {
     }).whenComplete(() {
       _loading = false;
     });
-  }
-
-  void _onScroll(ScrollNotification notification) {
-    final metrics = notification.metrics;
-    if (metrics.pixels == metrics.maxScrollExtent) {
-      _search(query);
-    }
   }
 
   @override
@@ -65,7 +65,7 @@ class BooksSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: AnimatedIcon(icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+      icon: Icon(Icons.arrow_back),
       onPressed: () {
         query = '';
         close(context, null);
@@ -80,8 +80,8 @@ class BooksSearchDelegate extends SearchDelegate {
       initialData: <Book>[],
       builder: (ctx, snapshot) => BooksGallery(
         snapshot.data,
-        onScroll: _onScroll,
-        didTapOn: didTapOn,
+        scrollController: _scrollController,
+        didTapOn: close,
       ),
     );
   }

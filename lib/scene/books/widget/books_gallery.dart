@@ -6,49 +6,40 @@ import 'package:fomic/model/entity/book.dart';
 
 class BooksGallery extends StatelessWidget {
   final List<Book> books;
-  final void Function(ScrollNotification notification) onScroll;
+  final ScrollController scrollController;
   final void Function(BuildContext context, Book book) didTapOn;
 
-  const BooksGallery(this.books, {Key key, this.onScroll, this.didTapOn}) : super(key: key);
+  const BooksGallery(this.books, {Key key, this.scrollController, this.didTapOn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        onScroll(notification);
-        return false;
-      },
+    final sizeDisplayed = MediaQuery.of(context).size;
+    final childAspectRatio = sizeDisplayed.width / sizeDisplayed.height;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: CustomScrollView(
+        controller: scrollController,
         slivers: <Widget>[
           SliverGrid(
             delegate: SliverChildBuilderDelegate(
-              (ctx, idx) => _Cell(
-                books[idx],
-                onTap: () => didTapOn(ctx, books[idx]),
-              ),
+              _cellBuilder,
               childCount: books.length,
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5,
+              crossAxisCount: 3,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: childAspectRatio,
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class _Cell extends StatelessWidget {
-  final radius = 10.0;
-  final Book book;
-  final void Function() onTap;
-
-  const _Cell(this.book, {Key key, this.onTap}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _cellBuilder(BuildContext context, int index) {
+    final book = books[index];
+    final radius = 8.0;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -69,6 +60,7 @@ class _Cell extends StatelessWidget {
           verticalDirection: VerticalDirection.down,
           children: <Widget>[
             Expanded(
+              flex: 23,
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(radius),
@@ -82,13 +74,22 @@ class _Cell extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              book.title,
-              textAlign: TextAlign.center,
+            Expanded(
+              flex: 5,
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: Text(
+                  book.title,
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
             ),
           ],
         ),
-        onTap: onTap ?? () => log('Tap on ${book.title}'),
+        onTap: () => didTapOn(context, book),
       ),
     );
   }

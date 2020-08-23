@@ -7,10 +7,20 @@ import 'package:fomic/scene/view_model.dart';
 
 class BooksViewModel extends ViewModel {
   final Repository repository;
+  var _scrollToTop = false;
   var _page = 0;
   var _books = <Book>[];
 
   String get title => repository.id.name;
+
+  bool get scrollToTop => _scrollToTop;
+
+  set scrollToTop(bool value) {
+    if (value != _scrollToTop) {
+      _scrollToTop = value;
+      notifyListeners();
+    }
+  }
 
   List<Book> get books => _books;
 
@@ -19,7 +29,7 @@ class BooksViewModel extends ViewModel {
   }
 
   Future<void> load() {
-    if (loading) return Future.value();
+    if (loading || books.isEmpty) return Future.value();
     loading = true;
     return repository
         .fetchBooks(page: _page)

@@ -26,7 +26,7 @@ class Fomic extends StatelessWidget {
         primaryTextTheme: GoogleFonts.maShanZhengTextTheme(Theme.of(context).primaryTextTheme),
         accentTextTheme: GoogleFonts.maShanZhengTextTheme(Theme.of(context).accentTextTheme),
       ),
-      builder: (ctx, child) => Material(
+      home: Material(
         type: MaterialType.transparency,
         child: FlutterEasyLoading(
           child: ChangeNotifierProvider(
