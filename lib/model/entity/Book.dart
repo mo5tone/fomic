@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:fomic/model/constant/app.i18n.dart';
 
 class Book {
   static const unknown = 0;
   static const ongoing = 1;
-  static const done = 2;
+  static const completed = 2;
   static const licensed = 3;
 
   final String url;
@@ -50,13 +51,13 @@ extension BookStatusEx on int {
   String get description {
     switch (this) {
       case 1:
-        return '连载中';
+        return 'Ongoing'.i18n;
       case 2:
-        return '已完结';
+        return 'Completed'.i18n;
       case 3:
-        return '未许可';
+        return 'Licensed'.i18n;
       default:
-        return '未知';
+        return 'Unknown'.i18n;
     }
   }
 }

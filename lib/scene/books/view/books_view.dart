@@ -24,7 +24,7 @@ class _View extends View<BooksViewModel, BooksView> {
   void _didScroll() {
     final minOffset = 30.0;
     final position = _scrollController.position;
-    vm.scrollToTop = position.pixels > position.minScrollExtent + minOffset;
+    vm.toTop = position.pixels > position.minScrollExtent + minOffset;
     if (position.pixels > position.maxScrollExtent + minOffset) vm.load();
   }
 
@@ -64,7 +64,7 @@ class _View extends View<BooksViewModel, BooksView> {
         },
       ),
       floatingActionButton: Selector<BooksViewModel, bool>(
-        selector: (ctx, value) => value.scrollToTop,
+        selector: (ctx, value) => value.toTop,
         builder: (ctx, value, child) => Row(
           mainAxisSize: MainAxisSize.min,
           children: [

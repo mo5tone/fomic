@@ -23,15 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^1.1.0
-  get_it: ^4.0.2
-  provider: ^4.1.2
+  flutter_localizations:
+    sdk: flutter
   animations: ^1.1.2
-  flutter_easyloading: ^1.1.3
-  http: ^0.12.2
-  dio: ^3.0.9
   cached_network_image: ^2.2.0+1
+  dio: ^3.0.9
+  flutter_easyloading: ^1.1.3
+  get_it: ^4.0.2
+  google_fonts: ^1.1.0
   html: ^0.14.0+3
+  http: ^0.12.2
+  i18n_extension: ^1.4.2
+  provider: ^4.1.2
 
 dev_dependencies:
   flutter_test:

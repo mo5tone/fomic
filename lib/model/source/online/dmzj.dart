@@ -168,7 +168,7 @@ class DMZJ extends OnlineSource {
     if (value is String) {
       switch (value) {
         case '已完结':
-          status = Book.done;
+          status = Book.completed;
           break;
         case '连载中':
           status = Book.ongoing;
@@ -179,7 +179,7 @@ class DMZJ extends OnlineSource {
     } else if (value is int) {
       switch (value) {
         case 2310:
-          status = Book.done;
+          status = Book.completed;
           break;
         case 2309:
           status = Book.ongoing;
