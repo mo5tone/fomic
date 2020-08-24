@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/constant/repository_id.dart';
 import 'package:dio/dio.dart';
-import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/model/source/online_source.dart';
 import 'package:html/parser.dart';
 
-class BNManHua extends Repository {
+class BNManHua extends OnlineSource {
   final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
-  RepositoryID get id => RepositoryID.bnmanhua;
+  String get languageCode => 'zh';
+
+  @override
+  String get name => '百年漫画';
 
   @override
   BaseOptions get baseOptions => BaseOptions(
@@ -22,7 +24,7 @@ class BNManHua extends Repository {
       );
 
   @override
-  RequestOptions booksRequest({int page = 0, String query}) => query == null || query.isEmpty
+  RequestOptions fetchBooksRequest({int page = 0, String query}) => query == null || query.isEmpty
       ? RequestOptions(
           method: 'GET',
           path: '/page/hot/$page.html',
@@ -36,16 +38,17 @@ class BNManHua extends Repository {
         );
 
   @override
-  RequestOptions bookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchBookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions chaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchChaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions pagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+  RequestOptions fetchPagesRequest(Chapter chapter) =>
+      RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
 
   @override
-  List<Book> booksFromResponse(Response response) {
+  List<Book> booksParser(Response response) {
     final doc = parse(response.data);
     final elements = doc.querySelectorAll('ul.tbox_m>li.vbox');
     return elements.map((ele) {
@@ -66,7 +69,7 @@ class BNManHua extends Repository {
   }
 
   @override
-  Book bookFromResponse(Response response) {
+  Book bookParser(Response response) {
     final doc = parse(response.data);
     final element = doc.querySelector('div.data');
     return Book(
@@ -76,7 +79,7 @@ class BNManHua extends Repository {
   }
 
   @override
-  List<Chapter> chaptersFromResponse(Response response) {
+  List<Chapter> chaptersParser(Response response) {
     final doc = parse(response.data);
     final elements = doc.querySelectorAll('ul.list_block>li');
     return elements.map((ele) {
@@ -86,7 +89,7 @@ class BNManHua extends Repository {
   }
 
   @override
-  List<Page> pagesFromResponse(Response response) {
+  List<Page> pagesParser(Response response) {
     final String body = response.data;
     var regExp = RegExp(r"^var z_yurl='(.*?)';$");
     var match = regExp.firstMatch(body);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fomic/model/constant/sources.dart';
 import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'model/constant/repository_id.dart';
 import 'utils/injector.dart';
 import 'scene/books/view/books_view.dart';
 
@@ -30,7 +30,7 @@ class Fomic extends StatelessWidget {
         type: MaterialType.transparency,
         child: FlutterEasyLoading(
           child: ChangeNotifierProvider(
-            create: (_) => BooksViewModel(RepositoryID.bnmanhua),
+            create: (_) => BooksViewModel(Sources.bnManHua),
             child: BooksView(),
           ),
         ),

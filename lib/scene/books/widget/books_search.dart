@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/model/source/source.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 
 class BooksSearch extends SearchDelegate {
-  final Repository repository;
+  final Source source;
   final _scrollController = ScrollController();
 
   var _loading = false;
@@ -12,7 +12,7 @@ class BooksSearch extends SearchDelegate {
   var _keyword = '';
   var _books = <Book>[];
 
-  BooksSearch(this.repository, {String hint = '关键字'}) : super(searchFieldLabel: hint) {
+  BooksSearch(this.source, {String hint = '关键字'}) : super(searchFieldLabel: hint) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _scrollController.addListener(() {
         final position = _scrollController.position;
@@ -28,7 +28,7 @@ class BooksSearch extends SearchDelegate {
       _page = 0;
       _books = [];
     }
-    return repository.fetchBooks(page: _page, query: keyword).then((value) {
+    return source.fetchBooks(page: _page, query: keyword).then((value) {
       _page += 1;
       _keyword = keyword;
       _books += value;

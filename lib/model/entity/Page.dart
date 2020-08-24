@@ -4,5 +4,5 @@ class Page {
   final int index;
   final RequestOptions image;
 
-  Page({this.index, this.image});
+  Page({this.index = -1, this.image});
 }

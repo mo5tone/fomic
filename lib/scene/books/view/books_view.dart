@@ -17,7 +17,7 @@ class _View extends View<BooksViewModel, BooksView> {
   final _scrollController = ScrollController();
 
   void _didTapOn(BuildContext context, Book book) {
-    // TODO: - Navigate to book detail
+    // TODO: navigate to book detail
     log('didTapOn ${book.title}');
   }
 
@@ -44,7 +44,7 @@ class _View extends View<BooksViewModel, BooksView> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => showSearch(context: context, delegate: BooksSearch(vm.repository))
+            onPressed: () => showSearch(context: context, delegate: BooksSearch(vm.source))
                 .then((value) => _didTapOn(context, value))
                 .catchError((err) => null),
           ),

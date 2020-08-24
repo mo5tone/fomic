@@ -1,17 +1,19 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/repository_id.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/repository/repository.dart';
+import 'package:fomic/model/source/online_source.dart';
 
-class DMZJ extends Repository {
+class DMZJ extends OnlineSource {
   final _baseUrl = 'http://v3api.dmzj.com';
 
   @override
-  RepositoryID get id => RepositoryID.dmzj;
+  String get languageCode => 'zh';
+
+  @override
+  String get name => '动漫之家';
 
   @override
   BaseOptions get baseOptions => BaseOptions(
@@ -27,7 +29,7 @@ class DMZJ extends Repository {
       );
 
   @override
-  RequestOptions booksRequest({int page = 0, String query}) => query == null || query.isEmpty
+  RequestOptions fetchBooksRequest({int page = 0, String query}) => query == null || query.isEmpty
       ? RequestOptions(
           method: 'GET',
           path: 'http://v2.api.dmzj.com/classify/0/1/$page.json',
@@ -40,16 +42,17 @@ class DMZJ extends Repository {
         );
 
   @override
-  RequestOptions bookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchBookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions chaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchChaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions pagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+  RequestOptions fetchPagesRequest(Chapter chapter) =>
+      RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
 
   @override
-  List<Book> booksFromResponse(Response response) {
+  List<Book> booksParser(Response response) {
     if (response.request.responseType == ResponseType.plain) {
       String body = response.data;
       final regExp = RegExp(r'^var g_search_data =([\s\S]+);$');
@@ -99,7 +102,7 @@ class DMZJ extends Repository {
   }
 
   @override
-  Book bookFromResponse(Response response) {
+  Book bookParser(Response response) {
     Map<String, dynamic> obj = response.data;
     String title = obj['title'];
     String thumbnailUrl = obj['cover'];
@@ -124,7 +127,7 @@ class DMZJ extends Repository {
   }
 
   @override
-  List<Chapter> chaptersFromResponse(Response response) {
+  List<Chapter> chaptersParser(Response response) {
     Map<String, dynamic> obj = response.data;
     String id = obj['id'];
     List<Map<String, dynamic>> arr = obj['chapters'];
@@ -145,7 +148,7 @@ class DMZJ extends Repository {
   }
 
   @override
-  List<Page> pagesFromResponse(Response response) {
+  List<Page> pagesParser(Response response) {
     Map<String, dynamic> obj = response.data;
     List<String> arr = obj['page_url'];
     final result = <Page>[];
@@ -160,15 +163,15 @@ class DMZJ extends Repository {
     return result;
   }
 
-  SerializingStatus _statusFrom(dynamic value) {
-    var status = SerializingStatus.unknown;
+  int _statusFrom(dynamic value) {
+    var status = Book.unknown;
     if (value is String) {
       switch (value) {
         case '已完结':
-          status = SerializingStatus.done;
+          status = Book.done;
           break;
         case '连载中':
-          status = SerializingStatus.ongoing;
+          status = Book.ongoing;
           break;
         default:
           break;
@@ -176,10 +179,10 @@ class DMZJ extends Repository {
     } else if (value is int) {
       switch (value) {
         case 2310:
-          status = SerializingStatus.done;
+          status = Book.done;
           break;
         case 2309:
-          status = SerializingStatus.ongoing;
+          status = Book.ongoing;
           break;
         default:
           break;

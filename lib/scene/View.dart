@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:fomic/scene/view_model.dart';
 
-abstract class View<VM extends ViewModel, W extends StatefulWidget> extends State<W> {
+abstract class View<VM extends ViewModel, SW extends StatefulWidget> extends State<SW> {
   @protected
   VM vm;
 
