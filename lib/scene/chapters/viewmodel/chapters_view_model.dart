@@ -7,9 +7,20 @@ class ChaptersViewModel extends ViewModel {
   final Source source;
   Book _book;
   var _chapters = <Chapter>[];
+  bool _favorited = false;
 
   Book get book => _book;
+
   List<Chapter> get chapters => _chapters;
+
+  bool get favorited => _favorited;
+
+  set favorited(bool value) {
+    if (value != _favorited) {
+      _favorited = value;
+      notifyListeners();
+    }
+  }
 
   void _setBookAndChapters(List<dynamic> result) {
     if (result[0] is Book && result[1] is List<Chapter>) {
@@ -34,6 +45,7 @@ class ChaptersViewModel extends ViewModel {
 
   Future<void> favorite() {
     // TODO: implement favorite
+    favorited = !favorited;
     return Future.value();
   }
 

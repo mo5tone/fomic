@@ -6,20 +6,10 @@ import 'package:fomic/scene/view_model.dart';
 
 class BooksViewModel extends ViewModel {
   final Source source;
-  var _toTop = false;
   var _page = 0;
   var _books = <Book>[];
 
   String get title => source.name;
-
-  bool get toTop => _toTop;
-
-  set toTop(bool value) {
-    if (value != _toTop) {
-      _toTop = value;
-      notifyListeners();
-    }
-  }
 
   List<Book> get books => _books;
 

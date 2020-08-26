@@ -11,10 +11,10 @@ class BooksGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeDisplayed = MediaQuery.of(context).size;
-    final childAspectRatio = sizeDisplayed.width / sizeDisplayed.height;
+    final space = 8.0;
+    // final childAspectRatio = MediaQuery.of(context).size.aspectRatio;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: EdgeInsets.all(space),
       child: CustomScrollView(
         controller: scrollController,
         slivers: <Widget>[
@@ -25,9 +25,9 @@ class BooksGallery extends StatelessWidget {
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: childAspectRatio,
+              mainAxisSpacing: space,
+              crossAxisSpacing: space,
+              childAspectRatio: 3 / 4,
             ),
           ),
         ],
@@ -40,11 +40,11 @@ class BooksGallery extends StatelessWidget {
     final radius = 8.0;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(radius),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Theme.of(context).backgroundColor.withOpacity(0.5),
             blurRadius: 2,
             offset: Offset(1, 1),
           ),
@@ -58,7 +58,7 @@ class BooksGallery extends StatelessWidget {
           verticalDirection: VerticalDirection.down,
           children: <Widget>[
             Expanded(
-              flex: 23,
+              flex: 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(radius),
@@ -73,15 +73,13 @@ class BooksGallery extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 5,
               child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   book.title,
                   maxLines: 2,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
             ),

@@ -7,7 +7,7 @@ abstract class Source {
 
   String get name;
 
-  bool get hasMoreBooks => true;
+  bool get moreBooks => true;
 
   Future<List<Book>> fetchBooks({int page = 0, String query});
 
