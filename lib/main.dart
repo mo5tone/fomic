@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fomic/scene/common/view/bottom_navigation_view.dart';
-import 'package:fomic/scene/common/view_model/bottom_navigation_view_model.dart';
+import 'package:fomic/scene/common/view/tab_navigation_view.dart';
+import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -44,8 +44,8 @@ class _Fomic extends StatelessWidget {
       ],
       theme: ThemeData.light(),
       home: ChangeNotifierProvider(
-        create: (_) => BottomNavigationViewModel(),
-        child: BottomNavigationView(),
+        create: (_) => TabNavigationViewModel(),
+        child: TabNavigationView(),
       ),
     );
   }
