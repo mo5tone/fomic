@@ -8,16 +8,15 @@ import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:fomic/model/constant/app.i18n.dart';
-import 'package:fomic/scene/common/view_model/bottom_navigation_view_model.dart';
+import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/view.dart';
 
-class BottomNavigationView extends StatefulWidget {
+class TabNavigationView extends StatefulWidget {
   @override
-  _BottomNavigationViewState createState() => _BottomNavigationViewState();
+  _View createState() => _View();
 }
 
-class _BottomNavigationViewState extends View<BottomNavigationViewModel, BottomNavigationView>
-    with SingleTickerProviderStateMixin {
+class _View extends View<TabNavigationViewModel, TabNavigationView> with SingleTickerProviderStateMixin {
   final _pageController = PageController(initialPage: 0);
 
   void _onPageChanged(int index) {}
@@ -54,7 +53,7 @@ class _BottomNavigationViewState extends View<BottomNavigationViewModel, BottomN
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = context.select((BottomNavigationViewModel value) => value.currentIndex);
+    final currentIndex = context.select((TabNavigationViewModel value) => value.currentIndex);
     return Scaffold(
       body: PageView.builder(
         controller: _pageController,

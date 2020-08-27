@@ -4,7 +4,7 @@ import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/source/source.dart';
 import 'package:fomic/scene/view_model.dart';
 
-class BooksViewModel extends ViewModel {
+class ExploreViewModel extends ViewModel {
   final Source source;
   var _page = 0;
   var _books = <Book>[];
@@ -13,7 +13,7 @@ class BooksViewModel extends ViewModel {
 
   List<Book> get books => _books;
 
-  BooksViewModel(this.source) {
+  ExploreViewModel(this.source) {
     refresh();
   }
 

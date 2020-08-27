@@ -7,6 +7,8 @@ extension I18n on String {
     'Ongoing': 'Ongoing',
     'Completed': 'Completed',
     'Licensed': 'Licensed',
+    'Explore': 'Explore',
+    'Setting': 'Setting',
   };
 
   static const Map<String, String> _zh = {
@@ -15,6 +17,8 @@ extension I18n on String {
     'Ongoing': '连载中',
     'Completed': '已完结',
     'Licensed': '未许可',
+    'Explore': '逛逛',
+    'Setting': '设置',
   };
 
   static final _translations = Translations.byLocale('en') + {'en': _en, 'zh': _zh};
