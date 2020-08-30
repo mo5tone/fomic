@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
+import 'package:fomic/scene/books/view_model/books_view_model.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/view.dart';
@@ -14,7 +14,7 @@ class BooksView extends StatefulWidget {
   _View createState() => _View();
 }
 
-class _View extends View<ExploreViewModel, BooksView> with AutomaticKeepAliveClientMixin {
+class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClientMixin {
   final minOffset = 30.0;
   final scrollController = ScrollController();
 
@@ -62,7 +62,7 @@ class _View extends View<ExploreViewModel, BooksView> with AutomaticKeepAliveCli
           ),
         ],
       ),
-      body: Selector<ExploreViewModel, List<Book>>(
+      body: Selector<BooksViewModel, List<Book>>(
         selector: (ctx, value) => value.books,
         builder: (ctx, books, child) {
           return RefreshIndicator(
