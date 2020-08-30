@@ -1,3 +1,4 @@
+import 'package:fomic/model/constant/source_id.dart';
 import 'package:fomic/model/source/local_source.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
@@ -10,16 +11,24 @@ class Injector {
     if (!getIt.isRegistered<Dio>()) {
       getIt.registerFactoryParam<Dio, BaseOptions, void>((options, _) => Dio(options));
     }
-    // Local Source
-    if (!getIt.isRegistered<LocalSource>()) {
-      getIt.registerLazySingleton(() => LocalSource());
-    }
-    // Online sources
-    if (!getIt.isRegistered<DMZJ>()) {
-      getIt.registerLazySingleton(() => DMZJ());
-    }
-    if (!getIt.isRegistered<BNManHua>()) {
-      getIt.registerLazySingleton(() => BNManHua());
-    }
+    SourceID.values.forEach((id) {
+      switch (id) {
+        case SourceID.local:
+          if (!getIt.isRegistered<LocalSource>()) {
+            getIt.registerLazySingleton(() => LocalSource());
+          }
+          break;
+        case SourceID.dmzj:
+          if (!getIt.isRegistered<DMZJ>()) {
+            getIt.registerLazySingleton(() => DMZJ());
+          }
+          break;
+        case SourceID.bnManHua:
+          if (!getIt.isRegistered<BNManHua>()) {
+            getIt.registerLazySingleton(() => BNManHua());
+          }
+          break;
+      }
+    });
   }
 }

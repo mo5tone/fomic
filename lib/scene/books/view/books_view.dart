@@ -2,19 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/scene/books/viewmodel/explore_view_model.dart';
+import 'package:fomic/scene/books/viewmodel/books_view_model.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/view.dart';
-import 'package:fomic/scene/books/widget/explore_searcher.dart';
+import 'package:fomic/scene/books/widget/books_searcher.dart';
 import 'package:provider/provider.dart';
 
-class ExploreView extends StatefulWidget {
+class BooksView extends StatefulWidget {
   @override
   _View createState() => _View();
 }
 
-class _View extends View<ExploreViewModel, ExploreView> with AutomaticKeepAliveClientMixin {
+class _View extends View<ExploreViewModel, BooksView> with AutomaticKeepAliveClientMixin {
   final minOffset = 30.0;
   final scrollController = ScrollController();
 
@@ -58,9 +58,7 @@ class _View extends View<ExploreViewModel, ExploreView> with AutomaticKeepAliveC
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => showSearch(context: context, delegate: ExploreSearcher(vm.source))
-                .then((value) => didTapOn(context, value))
-                .catchError((err) => null),
+            onPressed: () => showSearch(context: context, delegate: BooksSearcher(vm.source)).then((value) => didTapOn(context, value)).catchError((err) => null),
           ),
         ],
       ),

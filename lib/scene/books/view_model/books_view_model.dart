@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:fomic/model/constant/source_id.dart';
 import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/source/source.dart';
 import 'package:fomic/scene/view_model.dart';
 
-class ExploreViewModel extends ViewModel {
+class BooksViewModel extends ViewModel {
   final Source source;
   var _page = 0;
   var _books = <Book>[];
@@ -13,7 +14,7 @@ class ExploreViewModel extends ViewModel {
 
   List<Book> get books => _books;
 
-  ExploreViewModel(this.source) {
+  BooksViewModel(SourceID id) : source = Source.of(id) {
     refresh();
   }
 

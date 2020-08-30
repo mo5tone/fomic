@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fomic/model/constant/source_id.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/book.dart';
@@ -11,10 +12,7 @@ class BNManHua extends OnlineSource {
   final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
-  String get languageCode => 'zh';
-
-  @override
-  String get name => '百年漫画';
+  SourceID get id => SourceID.bnManHua;
 
   @override
   BaseOptions get baseOptions => BaseOptions(
@@ -44,8 +42,7 @@ class BNManHua extends OnlineSource {
   RequestOptions fetchChaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions fetchPagesRequest(Chapter chapter) =>
-      RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+  RequestOptions fetchPagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
 
   @override
   List<Book> booksParser(Response response) {

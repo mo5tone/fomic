@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/constant/sources.dart';
-import 'package:fomic/scene/books/view/explore_view.dart';
-import 'package:fomic/scene/books/viewmodel/explore_view_model.dart';
+import 'package:fomic/model/constant/source_id.dart';
+import 'package:fomic/scene/books/view/books_view.dart';
+import 'package:fomic/scene/books/view_model/books_view_model.dart';
 import 'package:fomic/scene/setting/view/setting_view.dart';
 import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
 
@@ -26,8 +26,8 @@ class _View extends View<TabNavigationViewModel, TabNavigationView> with SingleT
     switch (index) {
       case 0:
         child = ChangeNotifierProvider(
-          create: (_) => ExploreViewModel(Sources.bnManHua),
-          child: ExploreView(),
+          create: (_) => BooksViewModel(SourceID.bnManHua),
+          child: BooksView(),
         );
         break;
       case 1:

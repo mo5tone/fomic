@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fomic/model/constant/source_id.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/book.dart';
@@ -10,10 +11,7 @@ class DMZJ extends OnlineSource {
   final _baseUrl = 'http://v3api.dmzj.com';
 
   @override
-  String get languageCode => 'zh';
-
-  @override
-  String get name => '动漫之家';
+  SourceID get id => SourceID.dmzj;
 
   @override
   BaseOptions get baseOptions => BaseOptions(
@@ -48,8 +46,7 @@ class DMZJ extends OnlineSource {
   RequestOptions fetchChaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
 
   @override
-  RequestOptions fetchPagesRequest(Chapter chapter) =>
-      RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+  RequestOptions fetchPagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
 
   @override
   List<Book> booksParser(Response response) {
