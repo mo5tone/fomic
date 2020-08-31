@@ -22,12 +22,10 @@ class _View extends View<ExploreViewModel, ExploreView> {
         itemBuilder: (ctx, idx) {
           final sourceId = vm.sourceIds[idx];
           final selected = selectedSourceId == sourceId;
-          return InkWell(
-            child: ListTile(
-              title: Text('${sourceId.name}'),
-              subtitle: Text('${sourceId.languageCode}'),
-              trailing: Icon(selected ? Icons.check : Icons.chevron_right),
-            ),
+          return ListTile(
+            title: Text('${sourceId.name}'),
+            subtitle: Text('${sourceId.languageCode}'),
+            trailing: Icon(selected ? Icons.check : Icons.chevron_right),
             onTap: () {
               Navigator.of(ctx).pushName(
                 RouteName.books,
