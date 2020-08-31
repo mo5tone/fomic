@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fomic/scene/common/view/tab_navigation_view.dart';
+import 'package:fomic/model/constant/route_name.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:i18n_extension/i18n_widget.dart';
+import 'package:fomic/utils/injector.dart';
 import 'package:provider/provider.dart';
-
-import 'utils/injector.dart';
 
 void main() {
   Injector.register();
@@ -21,14 +20,21 @@ class Fomic extends StatelessWidget {
       child: Material(
         type: MaterialType.transparency,
         child: FlutterEasyLoading(
-          child: _Fomic(),
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => TabNavigationViewModel(),
+              ),
+            ],
+            child: _App(),
+          ),
         ),
       ),
     );
   }
 }
 
-class _Fomic extends StatelessWidget {
+class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,10 +49,7 @@ class _Fomic extends StatelessWidget {
         Locale('zh'),
       ],
       theme: ThemeData.light(),
-      home: ChangeNotifierProvider(
-        create: (_) => TabNavigationViewModel(),
-        child: TabNavigationView(),
-      ),
+      routes: Map.fromEntries(RouteName.values.map((e) => e.route)),
     );
   }
 }

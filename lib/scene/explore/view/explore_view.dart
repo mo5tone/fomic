@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fomic/model/constant/route_name.dart';
 import 'package:provider/provider.dart';
 import 'package:fomic/scene/View.dart';
 import 'package:fomic/scene/explore/view_model/explore_view_model.dart';
@@ -27,7 +28,13 @@ class _View extends View<ExploreViewModel, ExploreView> {
               subtitle: Text('${sourceId.languageCode}'),
               trailing: Icon(selected ? Icons.check : Icons.chevron_right),
             ),
-            onTap: () => vm.selectedSourceId = sourceId,
+            onTap: () {
+              Navigator.of(ctx).pushName(
+                RouteName.books,
+                arguments: sourceId,
+              );
+              vm.selectedSourceId = sourceId;
+            },
           );
         },
         separatorBuilder: (ctx, idx) => Divider(
