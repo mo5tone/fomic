@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fomic/model/constant/route_name.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
-import 'package:fomic/scene/setting/view_model/brightness_change_notifier.dart';
+import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:fomic/utils/injector.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class Fomic extends StatelessWidget {
           child: MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                create: (_) => BrightnessChangeNotifier(),
+                create: (_) => ThemeChangeNotifier(),
               ),
               ChangeNotifierProvider(
                 create: (_) => TabNavigationViewModel(),
@@ -41,7 +41,8 @@ class Fomic extends StatelessWidget {
 class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final brightness = context.select((BrightnessChangeNotifier value) => value.brightness);
+    final theme = context.select((ThemeChangeNotifier value) => value.theme);
+    final darkTheme = context.select((ThemeChangeNotifier value) => value.darkTheme);
     return MaterialApp(
       title: 'Fomic',
       localizationsDelegates: [
@@ -53,10 +54,8 @@ class _App extends StatelessWidget {
         Locale('en'),
         Locale('zh'),
       ],
-      theme: ThemeData(
-        brightness: brightness ?? Brightness.light,
-      ),
-      darkTheme: brightness == null ? ThemeData.dark() : null,
+      theme: theme,
+      darkTheme: darkTheme,
       routes: Map.fromEntries(RouteName.values.map((e) => e.route)),
     );
   }

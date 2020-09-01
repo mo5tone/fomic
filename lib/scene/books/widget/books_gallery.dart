@@ -12,7 +12,6 @@ class BooksGallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final space = 8.0;
-    // final childAspectRatio = MediaQuery.of(context).size.aspectRatio;
     return Container(
       margin: EdgeInsets.all(space),
       child: CustomScrollView(
@@ -24,7 +23,7 @@ class BooksGallery extends StatelessWidget {
               childCount: books.length,
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
               mainAxisSpacing: space,
               crossAxisSpacing: space,
               childAspectRatio: 3 / 4,
@@ -38,13 +37,14 @@ class BooksGallery extends StatelessWidget {
   Widget _cellBuilder(BuildContext context, int index) {
     final book = books[index];
     final radius = 8.0;
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(radius),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).backgroundColor.withOpacity(0.5),
+            color: theme.backgroundColor.withOpacity(0.5),
             blurRadius: 2,
             offset: Offset(1, 1),
           ),
@@ -74,12 +74,36 @@ class BooksGallery extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 4),
-                child: Text(
-                  book.title,
-                  maxLines: 2,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.subtitle1,
+                margin: EdgeInsets.only(top: 4),
+                child: Stack(
+                  children: [
+                    Text(
+                      book.title,
+                      maxLines: 2,
+                      textAlign: TextAlign.start,
+                      style: theme.textTheme.headline6,
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.secondary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(radius),
+                            bottomRight: Radius.circular(radius),
+                          ),
+                        ),
+                        child: Text(
+                          '${book.status.description}',
+                          style: theme.textTheme.subtitle1.copyWith(
+                            color: theme.colorScheme.onSecondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
