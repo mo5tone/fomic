@@ -84,7 +84,9 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
                     child: primarySwatch == color
                         ? Icon(
                             Icons.check,
-                            color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                            color: ColorScheme.fromSwatch(
+                              primarySwatch: color,
+                            ).onPrimary,
                           )
                         : null,
                   ),
