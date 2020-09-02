@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fomic/model/constant/route_name.dart';
+import 'package:fomic/model/constant/routing.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:i18n_extension/i18n_widget.dart';
@@ -56,7 +56,7 @@ class _App extends StatelessWidget {
       ],
       theme: theme,
       darkTheme: darkTheme,
-      routes: Map.fromEntries(RouteName.values.map((e) => e.route)),
+      routes: Map.fromEntries(Routing.values.map((e) => e.route)),
     );
   }
 }

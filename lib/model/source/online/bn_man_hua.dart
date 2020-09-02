@@ -36,13 +36,25 @@ class BNManHua extends OnlineSource {
         );
 
   @override
-  RequestOptions fetchBookRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchBookRequest(Book book) => RequestOptions(
+        method: 'GET',
+        path: book.url,
+        baseUrl: _baseUrl,
+      );
 
   @override
-  RequestOptions fetchChaptersRequest(Book book) => RequestOptions(method: 'GET', path: book.url, baseUrl: _baseUrl);
+  RequestOptions fetchChaptersRequest(Book book) => RequestOptions(
+        method: 'GET',
+        path: book.url,
+        baseUrl: _baseUrl,
+      );
 
   @override
-  RequestOptions fetchPagesRequest(Chapter chapter) => RequestOptions(method: 'GET', path: chapter.url, baseUrl: _baseUrl);
+  RequestOptions fetchPagesRequest(Chapter chapter) => RequestOptions(
+        method: 'GET',
+        path: chapter.url,
+        baseUrl: _baseUrl,
+      );
 
   @override
   List<Book> booksParser(Response response) {
