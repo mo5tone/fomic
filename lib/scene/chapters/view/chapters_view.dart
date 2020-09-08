@@ -35,23 +35,6 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                   pinned: true,
                   expandedHeight: expandedHeight,
                   stretch: true,
-                  actions: [
-                    // IconButton(
-                    //   icon: Icon(Icons.swap_vert),
-                    //   onPressed: () {
-                    //     final maxScrollExtent = _scrollController.position.maxScrollExtent;
-                    //     final minScrollExtent = _scrollController.position.minScrollExtent;
-                    //     final pixels = _scrollController.position.pixels;
-                    //     _scrollController.animateTo(
-                    //       pixels - minScrollExtent > maxScrollExtent - pixels ? minScrollExtent : maxScrollExtent,
-                    //       duration: Duration(
-                    //         milliseconds: 300,
-                    //       ),
-                    //       curve: Curves.easeInOut,
-                    //     );
-                    //   },
-                    // ),
-                  ],
                   flexibleSpace: FlexibleSpaceBar(
                     background: CachedNetworkImage(
                       imageUrl: book.thumbnail.uri.toString(),
