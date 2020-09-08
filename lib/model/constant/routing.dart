@@ -18,14 +18,9 @@ enum Routing {
 
 extension RoutingEx on Routing {
   String get name {
-    var name = '/error';
-    switch (this) {
-      case Routing.initial:
-        name = '/';
-        break;
-      default:
-        name = '/${describeEnum(this)}';
-        break;
+    var name = '/${describeEnum(this)}';
+    if (this == Routing.initial) {
+      name = '/';
     }
     return name;
   }

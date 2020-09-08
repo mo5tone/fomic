@@ -26,6 +26,7 @@ class ChaptersViewModel extends ViewModel {
     if (result[0] is Book && result[1] is List<Chapter>) {
       _book = result[0];
       _chapters = result[1];
+      _chapters.sort((c0, c1) => c0.index.compareTo(c1.index));
       notifyListeners();
     }
   }

@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:fomic/model/constant/routing.dart';
 import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/scene/books/view_model/books_view_model.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
@@ -15,19 +14,24 @@ class BooksView extends StatefulWidget {
 }
 
 class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClientMixin {
-  final minOffset = 30.0;
-  final scrollController = ScrollController();
+  final _minOffset = 30.0;
+  final _scrollController = ScrollController();
 
-  ScrollPosition get scrollPosition => scrollController.position;
+  ScrollPosition get scrollPosition => _scrollController.position;
 
-  void didTapOn(BuildContext context, Book book) {
-    // TODO: navigate to book detail
-    log('didTapOn ${book.title}');
+  void _didTapOn(BuildContext context, Book book) {
+    Routing.chapters.push(
+      context,
+      arguments: {
+        'source': vm.source,
+        'book': book,
+      },
+    );
   }
 
-  void didScroll() {
-    final position = scrollController.position;
-    if (position.pixels > position.maxScrollExtent + minOffset) vm.load();
+  void _didScroll() {
+    final position = _scrollController.position;
+    if (position.pixels > position.maxScrollExtent + _minOffset) vm.load();
   }
 
   @override
@@ -37,12 +41,12 @@ class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClien
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.addListener(didScroll);
+      _scrollController.addListener(_didScroll);
       final bottomNavigationViewModel = context.read<TabNavigationViewModel>();
       bottomNavigationViewModel.addReTappedIndexListener(() {
-        final position = scrollController.position;
-        if (bottomNavigationViewModel.reTappedIndex == 0 && position.pixels > position.minScrollExtent + minOffset) {
-          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.ease);
+        final position = _scrollController.position;
+        if (bottomNavigationViewModel.reTappedIndex == 0 && position.pixels > position.minScrollExtent + _minOffset) {
+          _scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.ease);
         }
         bottomNavigationViewModel.reTappedIndex = null;
       });
@@ -58,7 +62,9 @@ class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClien
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => showSearch(context: context, delegate: BooksSearcher(vm.source)).then((value) => didTapOn(context, value)).catchError((err) => null),
+            onPressed: () => showSearch(context: context, delegate: BooksSearcher(vm.source))
+                .then((value) => _didTapOn(context, value))
+                .catchError((err) => null),
           ),
         ],
       ),
@@ -68,8 +74,8 @@ class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClien
           return RefreshIndicator(
             child: BooksGallery(
               books,
-              scrollController: scrollController,
-              didTapOn: didTapOn,
+              scrollController: _scrollController,
+              didTapOn: _didTapOn,
             ),
             onRefresh: () => vm.refresh(),
           );
