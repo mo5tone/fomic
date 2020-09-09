@@ -53,9 +53,7 @@ class BooksGallery extends StatelessWidget {
       child: InkWell(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          verticalDirection: VerticalDirection.down,
           children: <Widget>[
             Expanded(
               flex: 3,

@@ -63,8 +63,78 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
               Selector<ChaptersViewModel, Book>(
                 key: PageStorageKey(_tabs[0]),
                 selector: (_, value) => value.book,
-                builder: (_, book, __) => Center(
-                  child: Text('${book.description}'),
+                builder: (ctx, book, __) => CustomScrollView(
+                  slivers: [
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(ctx),
+                    ),
+                    SliverToBoxAdapter(
+                      child: AspectRatio(
+                        aspectRatio: mediaQueryData.size.aspectRatio * 2,
+                        child: Card(
+                          elevation: 16.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                          margin: EdgeInsets.all(8),
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    child: CachedNetworkImage(
+                                      imageUrl: book.thumbnail.uri.toString(),
+                                      fit: BoxFit.cover,
+                                      httpHeaders: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                                      errorWidget: (context, url, error) => Icon(Icons.broken_image),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      left: 8,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${book.description}${book.description}${book.description}${book.description}${book.description}${book.description}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 20,
+                                        ),
+                                        if ((book.genre ?? '').isNotEmpty)
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                                            textBaseline: TextBaseline.alphabetic,
+                                            children: [
+                                              Text('Genre: '),
+                                              Text('${book.genre}'),
+                                            ],
+                                          ),
+                                        if ((book.author ?? '').isNotEmpty)
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                                            textBaseline: TextBaseline.alphabetic,
+                                            children: [
+                                              Text('Author: '),
+                                              Text('${book.author}'),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Selector<ChaptersViewModel, List<Chapter>>(
