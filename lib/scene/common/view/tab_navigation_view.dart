@@ -3,10 +3,7 @@ import 'package:fomic/scene/explore/view/explore_view.dart';
 import 'package:fomic/scene/explore/view_model/explore_view_model.dart';
 import 'package:fomic/scene/setting/view/setting_view.dart';
 import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
-
 import 'package:provider/provider.dart';
-
-import 'package:fomic/model/constant/app.i18n.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/view.dart';
 
@@ -65,11 +62,11 @@ class _View extends View<TabNavigationViewModel, TabNavigationView> with SingleT
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
-            title: Text('Explore'.i18n),
+            title: Text('Explore'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('Setting'.i18n),
+            title: Text('Setting'),
           ),
         ],
         onTap: _onTap,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/constant/app.i18n.dart';
 import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
 import 'package:fomic/scene/view.dart';
@@ -135,7 +134,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting'.i18n),
+        title: Text('Setting'),
       ),
       body: ListView.separated(
         itemBuilder: _itemBuilder,

@@ -16,6 +16,14 @@ class ChaptersView extends StatefulWidget {
 class _View extends View<ChaptersViewModel, ChaptersView> {
   final _tabs = ['Introduction', 'Chapters'];
 
+  void _read(Chapter chapter) {
+    // TODO:
+  }
+
+  void _favorite() {
+    // TODO:
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -79,6 +87,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                             return ListTile(
                               title: Text('${chapter.name}'),
                               subtitle: chapter.updatedAt > 0 ? Text('${formatter.format(updatedAt)}') : null,
+                              onTap: () => _read(chapter),
                             );
                           },
                           childCount: chapters.length,
@@ -94,9 +103,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.favorite),
-        onPressed: () {
-          // TODO:
-        },
+        onPressed: _favorite,
       ),
     );
   }

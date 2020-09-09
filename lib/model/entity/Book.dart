@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:fomic/model/constant/app.i18n.dart';
 
 class Book {
   static const unknown = 0;
@@ -51,13 +50,13 @@ extension BookStatusEx on int {
   String get description {
     switch (this) {
       case 1:
-        return 'Ongoing'.i18n;
+        return 'Ongoing';
       case 2:
-        return 'Completed'.i18n;
+        return 'Completed';
       case 3:
-        return 'Licensed'.i18n;
+        return 'Licensed';
       default:
-        return 'Unknown'.i18n;
+        return 'Unknown';
     }
   }
 }
