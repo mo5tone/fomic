@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/constant/routing.dart';
 import 'package:provider/provider.dart';
-import 'package:fomic/scene/View.dart';
+import 'package:fomic/scene/view.dart';
 import 'package:fomic/scene/explore/view_model/explore_view_model.dart';
 import 'package:fomic/model/constant/source_id.dart';
 

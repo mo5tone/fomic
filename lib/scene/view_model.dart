@@ -9,11 +9,13 @@ class ViewModel with ChangeNotifier, DiagnosticableTreeMixin {
 
   @protected
   set loading(bool value) {
+    print('loading: $value');
     _loading.value = value;
   }
 
   @protected
   set message(String value) {
+    print('message: $value');
     _message.value = value;
     _message.value = null;
   }

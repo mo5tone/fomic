@@ -2,18 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/constant/source_id.dart';
 import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/source/source.dart';
 import 'package:fomic/scene/books/view/books_view.dart';
 import 'package:fomic/scene/books/view_model/books_view_model.dart';
 import 'package:fomic/scene/chapters/view/chapters_view.dart';
 import 'package:fomic/scene/chapters/view_model/chapters_view_model.dart';
 import 'package:fomic/scene/common/view/tab_navigation_view.dart';
+import 'package:fomic/scene/pages/view/pages_view.dart';
+import 'package:fomic/scene/pages/view_model/pages_view_model.dart';
 import 'package:provider/provider.dart';
 
 enum Routing {
   initial,
   books,
   chapters,
+  pages,
 }
 
 extension RoutingEx on Routing {
@@ -51,6 +55,21 @@ extension RoutingEx on Routing {
           return ChangeNotifierProvider(
             create: (_) => ChaptersViewModel(source, book),
             builder: (_, child) => ChaptersView(),
+          );
+        };
+        break;
+      case Routing.pages:
+        value = (context) {
+          final arguments = ModalRoute.of(context).settings.arguments as Map;
+          final source = arguments['source'];
+          final book = arguments['book'];
+          final chapter = arguments['chapter'];
+          assert(source is Source);
+          assert(book is Book);
+          assert(chapter is Chapter);
+          return ChangeNotifierProvider(
+            create: (_) => PagesViewModel(source, book, chapter),
+            builder: (_, child) => PagesView(),
           );
         };
         break;

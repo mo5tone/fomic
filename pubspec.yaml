@@ -21,8 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  cached_network_image: ^2.2.0+1
   dio: ^3.0.10
+  extended_image: ^1.1.1
   flutter:
     sdk: flutter
   flutter_easyloading: ^1.1.3

@@ -1,5 +1,6 @@
+import 'package:extended_image/extended_image.dart';
+import 'package:fomic/model/constant/routing.dart';
 import 'package:intl/intl.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fomic/model/entity/book.dart';
@@ -14,10 +15,22 @@ class ChaptersView extends StatefulWidget {
 }
 
 class _View extends View<ChaptersViewModel, ChaptersView> {
-  final _tabs = ['Introduction', 'Chapters'];
+  final _tabs = [
+    Tab(
+      icon: Icon(Icons.info),
+    ),
+    Tab(
+      icon: Icon(Icons.list),
+    ),
+  ];
 
-  void _read(Chapter chapter) {
-    // TODO:
+  void _read(BuildContext context, Chapter chapter) {
+    final arguments = {
+      'source': vm.source,
+      'book': vm.book,
+      'chapter': chapter,
+    };
+    Routing.pages.push(context, arguments: arguments);
   }
 
   void _favorite() {
@@ -44,15 +57,22 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                   expandedHeight: expandedHeight,
                   stretch: true,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: CachedNetworkImage(
-                      imageUrl: book.thumbnail.uri.toString(),
+                    background: ExtendedImage.network(
+                      book.thumbnail.uri.toString(),
                       fit: BoxFit.cover,
-                      httpHeaders: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                      errorWidget: (ctx, url, error) => Icon(Icons.broken_image),
+                      headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                      loadStateChanged: (state) {
+                        switch (state.extendedImageLoadState) {
+                          case LoadState.failed:
+                            return Icon(Icons.broken_image);
+                          default:
+                            return null;
+                        }
+                      },
                     ),
                   ),
                   bottom: TabBar(
-                    tabs: _tabs.map((name) => Tab(text: name)).toList(),
+                    tabs: _tabs,
                   ),
                 ),
               ),
@@ -61,7 +81,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
           body: TabBarView(
             children: [
               Selector<ChaptersViewModel, Book>(
-                key: PageStorageKey(_tabs[0]),
+                key: PageStorageKey(0),
                 selector: (_, value) => value.book,
                 builder: (ctx, book, __) => CustomScrollView(
                   slivers: [
@@ -85,11 +105,18 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                 Expanded(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                                    child: CachedNetworkImage(
-                                      imageUrl: book.thumbnail.uri.toString(),
+                                    child: ExtendedImage.network(
+                                      book.thumbnail.uri.toString(),
                                       fit: BoxFit.cover,
-                                      httpHeaders: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                                      errorWidget: (context, url, error) => Icon(Icons.broken_image),
+                                      headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                                      loadStateChanged: (state) {
+                                        switch (state.extendedImageLoadState) {
+                                          case LoadState.failed:
+                                            return Icon(Icons.broken_image);
+                                          default:
+                                            return null;
+                                        }
+                                      },
                                     ),
                                   ),
                                 ),
@@ -141,7 +168,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                 ),
               ),
               Selector<ChaptersViewModel, List<Chapter>>(
-                key: PageStorageKey(_tabs[1]),
+                key: PageStorageKey(1),
                 selector: (_, value) => value.chapters,
                 builder: (ctx, chapters, __) => CustomScrollView(
                   slivers: [
@@ -160,7 +187,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                             return ListTile(
                               title: Text('${chapter.name}'),
                               subtitle: chapter.updatedAt > 0 ? Text('${formatter.format(updatedAt)}') : null,
-                              onTap: () => _read(chapter),
+                              onTap: () => _read(ctx, chapter),
                             );
                           },
                           childCount: chapters.length,

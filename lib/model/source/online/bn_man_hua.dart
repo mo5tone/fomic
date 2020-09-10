@@ -99,6 +99,7 @@ class BNManHua extends OnlineSource {
 
   @override
   List<Page> pagesParser(Response response) {
+    var pages = <Page>[];
     final String body = response.data;
     var regExp = RegExp(r"^var z_yurl='(.*?)';$");
     var match = regExp.firstMatch(body);
@@ -106,18 +107,16 @@ class BNManHua extends OnlineSource {
     regExp = RegExp(r"^var z_img='(.*?)';$");
     match = regExp.firstMatch(body);
     final imageCodes = match.group(1);
-    if (imageCodes == null) {
-      return [];
-    }
-    final List<String> codes = jsonDecode(imageCodes);
-    var pages = <Page>[];
-    for (var i = 0; i < codes.length; i++) {
-      final imageReq = RequestOptions(
-        path: '$baseImageURL${codes[i]}',
-        baseUrl: _baseUrl,
-        headers: baseOptions.headers,
-      );
-      pages.add(Page(index: i, image: imageReq));
+    if (imageCodes != null) {
+      final List<String> codes = jsonDecode(imageCodes);
+      for (var i = 0; i < codes.length; i++) {
+        final imageReq = RequestOptions(
+          path: '$baseImageURL${codes[i]}',
+          baseUrl: _baseUrl,
+          headers: baseOptions.headers,
+        );
+        pages.add(Page(index: i, image: imageReq));
+      }
     }
     return pages;
   }

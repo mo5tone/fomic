@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
 
@@ -62,11 +62,18 @@ class BooksGallery extends StatelessWidget {
                   top: Radius.circular(radius),
                   bottom: Radius.zero,
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: book.thumbnail.uri.toString(),
+                child: ExtendedImage.network(
+                  book.thumbnail.uri.toString(),
                   fit: BoxFit.cover,
-                  httpHeaders: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                  errorWidget: (context, url, error) => Icon(Icons.broken_image),
+                  headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                  loadStateChanged: (state) {
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.failed:
+                        return Icon(Icons.broken_image);
+                      default:
+                        return null;
+                    }
+                  },
                 ),
               ),
             ),
