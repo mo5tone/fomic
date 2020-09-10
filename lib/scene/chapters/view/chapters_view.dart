@@ -101,10 +101,13 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          '${book.description}${book.description}${book.description}${book.description}${book.description}${book.description}',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 20,
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Text(
+                                              '${book.description}',
+                                            ),
+                                          ),
                                         ),
                                         if ((book.genre ?? '').isNotEmpty)
                                           Row(
