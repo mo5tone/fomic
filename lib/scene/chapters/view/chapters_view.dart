@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:fomic/model/constant/routing.dart';
+import 'package:fomic/utils/networking_image.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -57,18 +58,11 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                   expandedHeight: expandedHeight,
                   stretch: true,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: ExtendedImage.network(
+                    background: NetworkingImage(
                       book.thumbnail.uri.toString(),
                       fit: BoxFit.cover,
                       headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                      loadStateChanged: (state) {
-                        switch (state.extendedImageLoadState) {
-                          case LoadState.failed:
-                            return Icon(Icons.broken_image);
-                          default:
-                            return null;
-                        }
-                      },
+                      retries: 0,
                     ),
                   ),
                   bottom: TabBar(
@@ -105,18 +99,11 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                 Expanded(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                                    child: ExtendedImage.network(
+                                    child: NetworkingImage(
                                       book.thumbnail.uri.toString(),
                                       fit: BoxFit.cover,
                                       headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                                      loadStateChanged: (state) {
-                                        switch (state.extendedImageLoadState) {
-                                          case LoadState.failed:
-                                            return Icon(Icons.broken_image);
-                                          default:
-                                            return null;
-                                        }
-                                      },
+                                      retries: 0,
                                     ),
                                   ),
                                 ),

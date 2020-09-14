@@ -9,7 +9,14 @@ class Injector {
   static void register() {
     final getIt = GetIt.I;
     if (!getIt.isRegistered<Dio>()) {
-      getIt.registerFactoryParam<Dio, BaseOptions, void>((options, _) => Dio(options));
+      getIt.registerFactoryParam<Dio, BaseOptions, void>((options, abc) {
+        final opts = options.merge(
+          connectTimeout: 5000,
+          receiveTimeout: 3000,
+          sendTimeout: 3000,
+        );
+        return Dio(opts);
+      });
     }
     SourceID.values.forEach((id) {
       switch (id) {

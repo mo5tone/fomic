@@ -19,15 +19,6 @@ abstract class View<VM extends ViewModel, SW extends StatefulWidget> extends Sta
     if (vm.message != null && vm.message.isNotEmpty) EasyLoading.showToast(vm.message);
   }
 
-  @protected
-  T read<T>(BuildContext context) => context.read<T>();
-
-  @protected
-  T watch<T>(BuildContext context) => context.watch<T>();
-
-  @protected
-  R select<T, R>(BuildContext context, R Function(T) selector) => context.select<T, R>(selector);
-
   @override
   void initState() {
     super.initState();

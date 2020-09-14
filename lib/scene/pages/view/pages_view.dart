@@ -1,5 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fomic/utils/networking_image.dart';
+import 'package:provider/provider.dart';
 import 'package:fomic/scene/pages/view_model/pages_view_model.dart';
 import 'package:fomic/scene/view.dart';
 
@@ -26,7 +28,7 @@ class _View extends View<PagesViewModel, PagesView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final pages = select(context, (PagesViewModel value) => value.pages);
+    final pages = context.select((PagesViewModel value) => value.pages);
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -53,7 +55,7 @@ class _View extends View<PagesViewModel, PagesView> {
         itemCount: pages.length,
         itemBuilder: (ctx, idx) {
           final page = pages[idx];
-          return ExtendedImage.network(
+          return NetworkingImage(
             page.image.uri.toString(),
             headers: page.image.headers.map((key, value) => MapEntry(key, '$value')),
             fit: BoxFit.contain,
