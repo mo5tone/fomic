@@ -15,6 +15,7 @@ class Fomic extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    EasyLoading.instance..maskType = EasyLoadingMaskType.clear;
     return Material(
       type: MaterialType.transparency,
       child: FlutterEasyLoading(

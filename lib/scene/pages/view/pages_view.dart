@@ -55,7 +55,7 @@ class _View extends View<PagesViewModel, PagesView> {
           final page = pages[idx];
           return ExtendedImage.network(
             page.image.uri.toString(),
-            headers: page.image.headers,
+            headers: page.image.headers.map((key, value) => MapEntry(key, '$value')),
             fit: BoxFit.contain,
             mode: ExtendedImageMode.gesture,
             initGestureConfigHandler: (state) => GestureConfig(

@@ -101,18 +101,19 @@ class BNManHua extends OnlineSource {
   List<Page> pagesParser(Response response) {
     var pages = <Page>[];
     final String body = response.data;
-    var regExp = RegExp(r"^var z_yurl='(.*?)';$");
-    var match = regExp.firstMatch(body);
-    final baseImageURL = match.group(1);
-    regExp = RegExp(r"^var z_img='(.*?)';$");
-    match = regExp.firstMatch(body);
-    final imageCodes = match.group(1);
+    // var regExp = RegExp(r"^var z_yurl='(.*?)';$");
+    // var match = regExp.firstMatch(body);
+    // final baseImageURL = match.group(1);
+    final baseImageURL = 'https://img.yaoyaoliao.com/'; // match.group(1);
+    final regExp = RegExp(r"var z_img='(.*?)';");
+    final match = regExp.firstMatch(body);
+    final imageCodes = match?.group(1);
     if (imageCodes != null) {
-      final List<String> codes = jsonDecode(imageCodes);
+      final List codes = jsonDecode(imageCodes);
       for (var i = 0; i < codes.length; i++) {
         final imageReq = RequestOptions(
-          path: '$baseImageURL${codes[i]}',
-          baseUrl: _baseUrl,
+          path: '${codes[i]}',
+          baseUrl: baseImageURL,
           headers: baseOptions.headers,
         );
         pages.add(Page(index: i, image: imageReq));
