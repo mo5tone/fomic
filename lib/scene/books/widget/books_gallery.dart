@@ -1,7 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/utils/networking_image.dart';
+import 'package:fomic/utils/extended_image_state.dart';
 
 class BooksGallery extends StatelessWidget {
   final List<Book> books;
@@ -63,11 +63,11 @@ class BooksGallery extends StatelessWidget {
                   top: Radius.circular(radius),
                   bottom: Radius.zero,
                 ),
-                child: NetworkingImage(
+                child: ExtendedImage.network(
                   book.thumbnail.uri.toString(),
                   fit: BoxFit.cover,
                   headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                  retries: 0,
+                  loadStateChanged: (state) => state.loadStateWidget(),
                 ),
               ),
             ),

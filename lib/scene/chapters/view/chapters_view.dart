@@ -1,6 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:fomic/model/constant/routing.dart';
-import 'package:fomic/utils/networking_image.dart';
+import 'package:fomic/utils/extended_image_state.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -58,11 +58,11 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                   expandedHeight: expandedHeight,
                   stretch: true,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: NetworkingImage(
+                    background: ExtendedImage.network(
                       book.thumbnail.uri.toString(),
                       fit: BoxFit.cover,
                       headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                      retries: 0,
+                      loadStateChanged: (state) => state.loadStateWidget(),
                     ),
                   ),
                   bottom: TabBar(
@@ -99,11 +99,11 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                 Expanded(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                                    child: NetworkingImage(
+                                    child: ExtendedImage.network(
                                       book.thumbnail.uri.toString(),
                                       fit: BoxFit.cover,
                                       headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
-                                      retries: 0,
+                                      loadStateChanged: (state) => state.loadStateWidget(),
                                     ),
                                   ),
                                 ),
