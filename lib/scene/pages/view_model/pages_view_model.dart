@@ -10,13 +10,21 @@ class PagesViewModel extends ViewModel {
   final Book book;
   final Chapter chapter;
 
+  int _index;
   var _pages = <Page>[];
 
+  int get index => _index;
   List<Page> get pages => _pages;
 
   @protected
   set pages(List<Page> value) {
     _pages = value ?? [];
+    if (_pages.isNotEmpty) _index = 0;
+    notifyListeners();
+  }
+
+  set index(int value) {
+    _index = value;
     notifyListeners();
   }
 
@@ -27,10 +35,6 @@ class PagesViewModel extends ViewModel {
   Future<void> fetch() {
     if (loading) return Future.value();
     loading = true;
-    return source
-        .fetchPages(chapter)
-        .then((value) => pages = value)
-        .catchError((err) => message = err.toString())
-        .whenComplete(() => loading = false);
+    return source.fetchPages(chapter).then((value) => pages = value).catchError((err) => message = err.toString()).whenComplete(() => loading = false);
   }
 }

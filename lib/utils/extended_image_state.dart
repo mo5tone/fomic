@@ -2,7 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 extension ExtendedImageStateEx on ExtendedImageState {
-  Widget loadStateWidget([bool reload = false]) {
+  Widget loadStateWidget([bool reloadable = false]) {
     final size = 100.0;
     Widget result;
     switch (extendedImageLoadState) {
@@ -11,7 +11,7 @@ extension ExtendedImageStateEx on ExtendedImageState {
       case LoadState.completed:
         break;
       case LoadState.failed:
-        result = reload
+        result = reloadable
             ? GestureDetector(
                 child: Icon(
                   Icons.refresh,

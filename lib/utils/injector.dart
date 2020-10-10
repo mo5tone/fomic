@@ -9,7 +9,7 @@ class Injector {
   static void register() {
     final getIt = GetIt.I;
     if (!getIt.isRegistered<Dio>()) {
-      getIt.registerFactoryParam<Dio, BaseOptions, void>((options, abc) {
+      getIt.registerFactoryParam<Dio, BaseOptions, void>((options, _) {
         final opts = options.merge(
           connectTimeout: 5000,
           receiveTimeout: 3000,

@@ -45,29 +45,47 @@ class _View extends View<PagesViewModel, PagesView> {
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              // TODO:
+            },
           ),
         ],
       ),
-      body: ExtendedImageGesturePageView.builder(
-        scrollDirection: Axis.horizontal,
-        controller: _pageController,
-        itemCount: pages.length,
-        itemBuilder: (ctx, idx) {
-          final page = pages[idx];
-          return ExtendedImage.network(
-            page.image.uri.toString(),
-            headers: page.image.headers.map((key, value) => MapEntry(key, '$value')),
-            fit: BoxFit.contain,
-            mode: ExtendedImageMode.gesture,
-            loadStateChanged: (state) => state.loadStateWidget(true),
-            initGestureConfigHandler: (state) => GestureConfig(
-              inPageView: true,
-              initialScale: 1,
-              cacheGesture: false,
+      body: Stack(
+        children: [
+          ExtendedImageGesturePageView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
+            itemCount: pages.length,
+            onPageChanged: (value) => vm.index = value,
+            itemBuilder: (ctx, idx) {
+              final page = pages[idx];
+              return ExtendedImage.network(
+                page.image.uri.toString(),
+                headers: page.image.headers.map((key, value) => MapEntry(key, '$value')),
+                fit: BoxFit.contain,
+                mode: ExtendedImageMode.gesture,
+                loadStateChanged: (state) => state.loadStateWidget(true),
+                initGestureConfigHandler: (state) => GestureConfig(
+                  inPageView: true,
+                  initialScale: 1,
+                  cacheGesture: false,
+                ),
+              );
+            },
+          ),
+          Selector<PagesViewModel, int>(
+            selector: (_, value) => value.index,
+            builder: (_, index, __) => Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  index == null ? '' : '${index + 1} / ${pages.length + 1}',
+                ),
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

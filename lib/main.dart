@@ -16,21 +16,16 @@ class Fomic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EasyLoading.instance..maskType = EasyLoadingMaskType.clear;
-    return Material(
-      type: MaterialType.transparency,
-      child: FlutterEasyLoading(
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) => ThemeChangeNotifier(),
-            ),
-            ChangeNotifierProvider(
-              create: (_) => TabNavigationViewModel(),
-            ),
-          ],
-          child: _App(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeChangeNotifier(),
         ),
-      ),
+        ChangeNotifierProvider(
+          create: (_) => TabNavigationViewModel(),
+        ),
+      ],
+      child: _App(),
     );
   }
 }
@@ -45,6 +40,12 @@ class _App extends StatelessWidget {
       theme: theme,
       darkTheme: darkTheme,
       routes: Map.fromEntries(Routing.values.map((e) => e.route)),
+      builder: (context, child) => Material(
+        type: MaterialType.transparency,
+        child: FlutterEasyLoading(
+          child: child,
+        ),
+      ),
     );
   }
 }

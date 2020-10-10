@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fomic/model/constant/constant.dart';
 import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
 import 'package:fomic/scene/view.dart';
@@ -53,7 +54,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
       context: context,
       builder: (ctx) {
         final primarySwatch = ctx.select((ThemeChangeNotifier value) => value.primarySwatch);
-        final itemCount = vm.colors.length;
+        final itemCount = primarySwatchs.length;
         final column = 5;
         final row = (itemCount.toDouble() / column).ceil();
         final spacing = 8.0;
@@ -73,7 +74,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
                 crossAxisSpacing: spacing,
               ),
               itemBuilder: (ctx, idx) {
-                final color = vm.colors[idx];
+                final color = primarySwatchs[idx];
                 return InkWell(
                   child: Container(
                     decoration: BoxDecoration(
