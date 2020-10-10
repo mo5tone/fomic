@@ -20,6 +20,7 @@ class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClien
   ScrollPosition get scrollPosition => _scrollController.position;
 
   void _didTapOn(BuildContext context, Book book) {
+    if (book == null) return;
     Routing.chapters.push(
       context,
       arguments: {
@@ -62,9 +63,9 @@ class _View extends View<BooksViewModel, BooksView> with AutomaticKeepAliveClien
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => showSearch(context: context, delegate: BooksSearcher(vm.source))
-                .then((value) => _didTapOn(context, value))
-                .catchError((err) => null),
+            onPressed: () {
+              showSearch(context: context, delegate: BooksSearcher(vm.source)).then((value) => _didTapOn(context, value)).catchError((err) => null);
+            },
           ),
         ],
       ),

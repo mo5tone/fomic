@@ -12,7 +12,7 @@ class SettingView extends StatefulWidget {
 
 class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveClientMixin {
   Future<Brightness> _showBrightnessBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
+    return showModalBottomSheet<Brightness>(
       context: context,
       isDismissible: false,
       builder: (ctx) {
@@ -50,7 +50,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
   }
 
   Future<ColorSwatch> _showColorBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
+    return showModalBottomSheet<ColorSwatch>(
       context: context,
       builder: (ctx) {
         final primarySwatch = ctx.select((ThemeChangeNotifier value) => value.primarySwatch);

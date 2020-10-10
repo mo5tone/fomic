@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/constant/constant.dart';
-import 'package:fomic/model/preference/preferences.dart';
+import 'package:fomic/model/storage/key_values.dart';
 
 class ThemeChangeNotifier with ChangeNotifier {
   Brightness _brightness;
   ColorSwatch _primarySwatch = Colors.blue;
 
   ThemeChangeNotifier() {
-    Preferences.shared.brightness.then((value) {
-      Brightness newValue;
-      if (value > -1 && value < Brightness.values.length) {
-        newValue = Brightness.values[value];
-      }
-      if (_brightness != newValue) {
-        _brightness = newValue;
+    KeyValues.shared.isReady.then((_) {
+      final newBrightness = KeyValues.shared.brightness;
+      if (_brightness != newBrightness) {
+        _brightness = newBrightness;
         notifyListeners();
       }
-    });
-    Preferences.shared.primarySwatch.then((value) {
-      final newValue = primarySwatchs[value];
-      if (newValue != null && _primarySwatch != newValue) {
-        _primarySwatch = newValue;
+      final newPrimarySwatch = KeyValues.shared.primarySwatch;
+      if (newPrimarySwatch != null && _primarySwatch != newPrimarySwatch) {
+        _primarySwatch = newPrimarySwatch;
         notifyListeners();
       }
     });
@@ -44,7 +38,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != _brightness) {
       _brightness = value;
       notifyListeners();
-      Preferences.shared.brightness = Future(() => value == null ? 2 : Brightness.values.indexOf(value));
+      KeyValues.shared.brightness = value;
     }
   }
 
@@ -54,7 +48,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != null && value != _primarySwatch) {
       _primarySwatch = value;
       notifyListeners();
-      Preferences.shared.primarySwatch = Future(() => primarySwatchs.indexOf(value));
+      KeyValues.shared.primarySwatch = value;
     }
   }
 }

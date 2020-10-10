@@ -8,7 +8,12 @@ class BooksGallery extends StatelessWidget {
   final ScrollController scrollController;
   final void Function(BuildContext context, Book book) didTapOn;
 
-  const BooksGallery(this.books, {Key key, this.scrollController, this.didTapOn}) : super(key: key);
+  const BooksGallery(
+    this.books, {
+    Key key,
+    this.scrollController,
+    this.didTapOn,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -45,11 +45,7 @@ class BooksSearcher extends SearchDelegate {
 
   @override
   ThemeData appBarTheme(BuildContext context) {
-    final theme = Theme.of(context);
-    return theme.copyWith(
-      primaryColor: Colors.blue,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-    );
+    return Theme.of(context);
   }
 
   @override
@@ -65,7 +61,7 @@ class BooksSearcher extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: Icon(TargetPlatform.android == Theme.of(context).platform ? Icons.arrow_back : Icons.arrow_back_ios),
       onPressed: () {
         query = '';
         close(context, null);

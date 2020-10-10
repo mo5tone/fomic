@@ -118,9 +118,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                         Expanded(
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.vertical,
-                                            child: Text(
-                                              '${book.description}',
-                                            ),
+                                            child: Text('${book.description ?? ''}'),
                                           ),
                                         ),
                                         if ((book.genre ?? '').isNotEmpty)
@@ -172,7 +170,7 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                             final formatter = DateFormat('yyyy/MM/dd HH:mm:ss');
                             final updatedAt = DateTime.fromMillisecondsSinceEpoch(chapter.updatedAt);
                             return ListTile(
-                              title: Text('${chapter.name}'),
+                              title: Text('${chapter.name ?? idx}'),
                               subtitle: chapter.updatedAt > 0 ? Text('${formatter.format(updatedAt)}') : null,
                               onTap: () => _read(ctx, chapter),
                             );

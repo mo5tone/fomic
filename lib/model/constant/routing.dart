@@ -77,14 +77,12 @@ extension RoutingEx on Routing {
     return MapEntry(name, value);
   }
 
-  Future<T> push<T extends Object>(BuildContext context, {Object arguments}) =>
-      Navigator.of(context).pushNamed(name, arguments: arguments);
+  Future<T> push<T extends Object>(BuildContext context, {Object arguments}) => Navigator.of(context).pushNamed(name, arguments: arguments);
 
   Future<T> popAndPush<T extends Object, TO extends Object>(BuildContext context, {TO result, Object arguments}) =>
       Navigator.of(context).popAndPushNamed(name, result: result, arguments: arguments);
 
-  Future<T> pushAndRemoveUntil<T extends Object>(BuildContext context, bool Function(Route<dynamic>) predicate,
-          {Object arguments}) =>
+  Future<T> pushAndRemoveUntil<T extends Object>(BuildContext context, bool Function(Route<dynamic>) predicate, {Object arguments}) =>
       Navigator.of(context).pushNamedAndRemoveUntil(name, predicate, arguments: arguments);
 
   Future<T> pushReplacement<T extends Object, TO extends Object>(BuildContext context, {TO result, Object arguments}) =>

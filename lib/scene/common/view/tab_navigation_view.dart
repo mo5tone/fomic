@@ -62,11 +62,11 @@ class _View extends View<TabNavigationViewModel, TabNavigationView> with SingleT
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
-            title: Text('Explore'),
+            label: 'Explore',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('Setting'),
+            label: 'Setting',
           ),
         ],
         onTap: _onTap,

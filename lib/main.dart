@@ -40,12 +40,11 @@ class _App extends StatelessWidget {
       theme: theme,
       darkTheme: darkTheme,
       routes: Map.fromEntries(Routing.values.map((e) => e.route)),
-      builder: (context, child) => Material(
-        type: MaterialType.transparency,
-        child: FlutterEasyLoading(
+      builder: (context, child) {
+        return FlutterEasyLoading(
           child: child,
-        ),
-      ),
+        );
+      },
     );
   }
 }
