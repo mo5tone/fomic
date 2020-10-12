@@ -54,7 +54,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
       context: context,
       builder: (ctx) {
         final primarySwatch = ctx.select((ThemeChangeNotifier value) => value.primarySwatch);
-        final itemCount = primarySwatchs.length;
+        final itemCount = primarySwatches.length;
         final column = 5;
         final row = (itemCount.toDouble() / column).ceil();
         final spacing = 8.0;
@@ -74,7 +74,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
                 crossAxisSpacing: spacing,
               ),
               itemBuilder: (ctx, idx) {
-                final color = primarySwatchs[idx];
+                final color = primarySwatches[idx];
                 return InkWell(
                   child: Container(
                     decoration: BoxDecoration(

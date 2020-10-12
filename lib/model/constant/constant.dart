@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primarySwatchs = <ColorSwatch>[
+const primarySwatches = <ColorSwatch>[
   Colors.red,
   Colors.pink,
   Colors.purple,

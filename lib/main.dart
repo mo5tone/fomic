@@ -4,11 +4,15 @@ import 'package:fomic/model/constant/routing.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:fomic/utils/injector.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   Injector.register();
-  runApp(Fomic());
+  Hive.initFlutter().then((_) {
+    runApp(Fomic());
+  });
 }
 
 class Fomic extends StatelessWidget {

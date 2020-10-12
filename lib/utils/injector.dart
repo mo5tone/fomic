@@ -4,14 +4,10 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:fomic/model/source/online/bn_man_hua.dart';
 import 'package:fomic/model/source/online/dmzj.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Injector {
   static void register() {
     final getIt = GetIt.I;
-    if (!getIt.isRegistered<SharedPreferences>()) {
-      getIt.registerLazySingletonAsync(() => SharedPreferences.getInstance());
-    }
     if (!getIt.isRegistered<Dio>()) {
       getIt.registerFactoryParam<Dio, BaseOptions, void>((options, _) {
         final opts = options.merge(

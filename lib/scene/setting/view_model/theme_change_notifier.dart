@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/storage/key_values.dart';
+import 'package:fomic/model/entity/setting.dart';
 
 class ThemeChangeNotifier with ChangeNotifier {
   Brightness _brightness;
   ColorSwatch _primarySwatch = Colors.blue;
 
   ThemeChangeNotifier() {
-    KeyValues.shared.isReady.then((_) {
-      final newBrightness = KeyValues.shared.brightness;
+    Setting.instance().then((setting) {
+      final newBrightness = setting.brightness;
       if (_brightness != newBrightness) {
         _brightness = newBrightness;
         notifyListeners();
       }
-      final newPrimarySwatch = KeyValues.shared.primarySwatch;
+      final newPrimarySwatch = setting.primarySwatch;
       if (newPrimarySwatch != null && _primarySwatch != newPrimarySwatch) {
         _primarySwatch = newPrimarySwatch;
         notifyListeners();
@@ -38,7 +38,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != _brightness) {
       _brightness = value;
       notifyListeners();
-      KeyValues.shared.brightness = value;
+      Setting.instance().then((setting) => setting.brightness = value);
     }
   }
 
@@ -48,7 +48,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != null && value != _primarySwatch) {
       _primarySwatch = value;
       notifyListeners();
-      KeyValues.shared.primarySwatch = value;
+      Setting.instance().then((setting) => setting.primarySwatch = value);
     }
   }
 }
