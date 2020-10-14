@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
-
 class Page {
   final int index;
-  final RequestOptions image;
+  final String imageUrl;
+  final Map<String, dynamic> imageHeaders;
 
-  Page({this.index = -1, this.image});
+  Page({this.index = -1, this.imageUrl, this.imageHeaders});
 }

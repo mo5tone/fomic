@@ -69,9 +69,9 @@ class BooksGallery extends StatelessWidget {
                   bottom: Radius.zero,
                 ),
                 child: ExtendedImage.network(
-                  book.thumbnail.uri.toString(),
+                  book.thumbnailUrl,
                   fit: BoxFit.cover,
-                  headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                  headers: book.thumbnailHeaders.map((key, value) => MapEntry(key, '$value')),
                   loadStateChanged: (state) => state.loadStateWidget(),
                 ),
               ),

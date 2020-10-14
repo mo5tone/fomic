@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fomic/model/entity/setting.dart';
+import 'package:fomic/model/storage/setting.dart';
 
 class ThemeChangeNotifier with ChangeNotifier {
   Brightness _brightness;
@@ -38,7 +38,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != _brightness) {
       _brightness = value;
       notifyListeners();
-      Setting.instance().then((setting) => setting.brightness = value);
+      Setting.instance().then((instance) => instance.brightness = value);
     }
   }
 
@@ -48,7 +48,7 @@ class ThemeChangeNotifier with ChangeNotifier {
     if (value != null && value != _primarySwatch) {
       _primarySwatch = value;
       notifyListeners();
-      Setting.instance().then((setting) => setting.primarySwatch = value);
+      Setting.instance().then((instance) => instance.primarySwatch = value);
     }
   }
 }

@@ -45,24 +45,28 @@ abstract class OnlineSource extends Source {
   @override
   Future<List<Book>> fetchBooks({int page = 0, String query}) {
     final req = fetchBooksRequest(page: page, query: query);
+    req.extra = {'page': page, 'query': query};
     return dio.request(req.path, options: req).then(booksParser);
   }
 
   @override
   Future<Book> fetchBook(Book book) {
     final req = fetchBookRequest(book);
-    return dio.request(req.path, options: req).then(bookParser).then((value) => book.copyWith(other: value));
+    req.extra = {'book': book};
+    return dio.request(req.path, options: req).then(bookParser);
   }
 
   @override
   Future<List<Chapter>> fetchChapters(Book book) {
     final req = fetchChaptersRequest(book);
+    req.extra = {'book': book};
     return dio.request(req.path, options: req).then(chaptersParser);
   }
 
   @override
   Future<List<Page>> fetchPages(Chapter chapter) {
     final req = fetchPagesRequest(chapter);
+    req.extra = {'chapter': chapter};
     return dio.request(req.path, options: req).then(pagesParser);
   }
 }

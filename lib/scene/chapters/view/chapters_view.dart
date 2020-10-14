@@ -34,10 +34,6 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
     Routing.pages.push(context, arguments: arguments);
   }
 
-  void _favorite() {
-    // TODO:
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -59,9 +55,9 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                   stretch: true,
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      book.thumbnail.uri.toString(),
+                      book.thumbnailUrl,
                       fit: BoxFit.cover,
-                      headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                      headers: book.thumbnailHeaders.map((key, value) => MapEntry(key, '$value')),
                       loadStateChanged: (state) => state.loadStateWidget(),
                     ),
                   ),
@@ -100,9 +96,9 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.all(Radius.circular(8)),
                                     child: ExtendedImage.network(
-                                      book.thumbnail.uri.toString(),
+                                      book.thumbnailUrl,
                                       fit: BoxFit.cover,
-                                      headers: book.thumbnail.headers.map((key, value) => MapEntry(key, '$value')),
+                                      headers: book.thumbnailHeaders.map((key, value) => MapEntry(key, '$value')),
                                       loadStateChanged: (state) => state.loadStateWidget(),
                                     ),
                                   ),
@@ -187,8 +183,11 @@ class _View extends View<ChaptersViewModel, ChaptersView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.favorite),
-        onPressed: _favorite,
+        child: Selector<ChaptersViewModel, bool>(
+          selector: (_, value) => value.favorited,
+          builder: (_, value, __) => Icon(value ? Icons.favorite : Icons.favorite_border),
+        ),
+        onPressed: () => vm.favorite(),
       ),
     );
   }

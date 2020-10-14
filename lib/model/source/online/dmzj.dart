@@ -27,7 +27,7 @@ class DMZJ extends OnlineSource {
       );
 
   @override
-  RequestOptions fetchBooksRequest({int page = 0, String query}) => query == null || query.isEmpty
+  RequestOptions fetchBooksRequest({int page = 0, String query}) => (query?.isEmpty ?? true)
       ? RequestOptions(
           method: 'GET',
           path: 'http://v2.api.dmzj.com/classify/0/1/$page.json',
@@ -76,14 +76,16 @@ class DMZJ extends OnlineSource {
         }
         String author = ele['comic_author'];
         final url = '/comic/comic_$id.json?version=2.7.019';
+        final thumbnailReq = RequestOptions(
+          path: thumbnailUrl,
+          baseUrl: _baseUrl,
+          headers: baseOptions.headers,
+        );
         return Book(
-          url: url,
+          url,
           title: title,
-          thumbnail: RequestOptions(
-            path: thumbnailUrl,
-            baseUrl: _baseUrl,
-            headers: baseOptions.headers,
-          ),
+          thumbnailUrl: thumbnailReq.uri.toString(),
+          thumbnailHeaders: thumbnailReq.headers,
           author: author,
         );
       }).toList();
@@ -95,14 +97,16 @@ class DMZJ extends OnlineSource {
         String thumbnailUrl = ele['cover'];
         String author = ele['authors'];
         final url = '/comic/comic_$id.json?version=2.7.019';
+        final thumbnailReq = RequestOptions(
+          path: thumbnailUrl,
+          baseUrl: _baseUrl,
+          headers: baseOptions.headers,
+        );
         return Book(
-          url: url,
+          url,
           title: title,
-          thumbnail: RequestOptions(
-            path: thumbnailUrl,
-            baseUrl: _baseUrl,
-            headers: baseOptions.headers,
-          ),
+          thumbnailUrl: thumbnailReq.uri.toString(),
+          thumbnailHeaders: thumbnailReq.headers,
           author: author,
           status: _statusFrom(ele['status']),
         );
@@ -112,6 +116,7 @@ class DMZJ extends OnlineSource {
 
   @override
   Book bookParser(Response response) {
+    Book origin = response.request.extra['book'];
     Map<String, dynamic> obj = response.data;
     String title = obj['title'];
     String thumbnailUrl = obj['cover'];
@@ -120,19 +125,19 @@ class DMZJ extends OnlineSource {
     arr = obj['types'];
     final genre = arr.map((ele) => ele['tag_name'] as String).join(', ');
     String description = obj['description'];
-    return Book(
-      url: response.request.path,
-      title: title,
-      thumbnail: RequestOptions(
-        path: thumbnailUrl,
-        baseUrl: _baseUrl,
-        headers: baseOptions.headers,
-      ),
-      author: authors,
-      status: _statusFrom(obj['status'][0]['tag_id']),
-      genre: genre,
-      description: description,
+    final thumbnailReq = RequestOptions(
+      path: thumbnailUrl,
+      baseUrl: _baseUrl,
+      headers: baseOptions.headers,
     );
+    return origin
+      ..title = title
+      ..thumbnailUrl = thumbnailReq.uri.toString()
+      ..thumbnailHeaders = thumbnailReq.headers
+      ..author = authors
+      ..status = _statusFrom(obj['status'][0]['tag_id'])
+      ..genre = genre
+      ..description = description;
   }
 
   @override
@@ -150,7 +155,7 @@ class DMZJ extends OnlineSource {
         String chapterId = ele1['chapter_id'];
         final url = '/chapter/$id/$chapterId.json';
         // final url = 'http://m.dmzj.com/chapinfo/$id/$chapterId.html';
-        return Chapter(url: url, name: name, updatedAt: updatedAt);
+        return Chapter(url, name: name, updatedAt: updatedAt);
       });
     });
     return result.reduce((value, element) => [...value, ...element]);
@@ -167,7 +172,7 @@ class DMZJ extends OnlineSource {
         baseUrl: _baseUrl,
         headers: baseOptions.headers,
       );
-      result.add(Page(index: i, image: imageReq));
+      result.add(Page(index: i, imageUrl: imageReq.uri.toString(), imageHeaders: imageReq.headers));
     }
     return result;
   }

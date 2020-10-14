@@ -61,8 +61,8 @@ class _View extends View<PagesViewModel, PagesView> {
             itemBuilder: (ctx, idx) {
               final page = pages[idx];
               return ExtendedImage.network(
-                page.image.uri.toString(),
-                headers: page.image.headers.map((key, value) => MapEntry(key, '$value')),
+                page.imageUrl,
+                headers: page.imageHeaders.map((key, value) => MapEntry(key, '$value')),
                 fit: BoxFit.contain,
                 mode: ExtendedImageMode.gesture,
                 loadStateChanged: (state) => state.loadStateWidget(true),

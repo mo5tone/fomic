@@ -22,7 +22,7 @@ class BNManHua extends OnlineSource {
       );
 
   @override
-  RequestOptions fetchBooksRequest({int page = 0, String query}) => query == null || query.isEmpty
+  RequestOptions fetchBooksRequest({int page = 0, String query}) => (query?.isEmpty ?? true)
       ? RequestOptions(
           method: 'GET',
           path: '/page/hot/$page.html',
@@ -65,26 +65,28 @@ class BNManHua extends OnlineSource {
       final url = aEle.attributes['href'];
       final title = aEle.attributes['title'].trim();
       final imgEle = ele.querySelector('mip-img');
+      final thumbnailReq = RequestOptions(
+        path: imgEle.attributes['src'],
+        baseUrl: _baseUrl,
+        headers: baseOptions.headers,
+      );
       return Book(
-        url: url,
+        url,
         title: title,
-        thumbnail: RequestOptions(
-          path: imgEle.attributes['src'],
-          baseUrl: _baseUrl,
-          headers: baseOptions.headers,
-        ),
+        thumbnailUrl: thumbnailReq.uri.toString(),
+        thumbnailHeaders: thumbnailReq.headers,
       );
     }).toList();
   }
 
   @override
   Book bookParser(Response response) {
+    Book origin = response.request.extra['book'];
     final doc = parse(response.data);
     final element = doc.querySelector('div.data');
-    return Book(
-      author: element.querySelector('p.dir').text.substring(3).trim(),
-      description: doc.querySelector('div.tbox_js').text.trim(),
-    );
+    return origin
+      ..author = element.querySelector('p.dir').text.substring(3).trim()
+      ..description = doc.querySelector('div.tbox_js').text.trim();
   }
 
   @override
@@ -93,7 +95,7 @@ class BNManHua extends OnlineSource {
     final elements = doc.querySelectorAll('ul.list_block>li');
     return elements.map((ele) {
       final aEle = ele.querySelector('a');
-      return Chapter(url: aEle.attributes['href'], name: aEle.text.trim());
+      return Chapter(aEle.attributes['href'], name: aEle.text.trim());
     }).toList();
   }
 
@@ -116,7 +118,7 @@ class BNManHua extends OnlineSource {
           baseUrl: baseImageURL,
           headers: baseOptions.headers,
         );
-        pages.add(Page(index: i, image: imageReq));
+        pages.add(Page(index: i, imageUrl: imageReq.uri.toString(), imageHeaders: imageReq.headers));
       }
     }
     return pages;

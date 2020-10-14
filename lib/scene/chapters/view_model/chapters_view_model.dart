@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/model/storage/favorite.dart';
 import 'package:fomic/model/source/source.dart';
 import 'package:fomic/scene/view_model.dart';
 
@@ -15,6 +17,7 @@ class ChaptersViewModel extends ViewModel {
 
   bool get favorited => _favorited;
 
+  @protected
   set favorited(bool value) {
     if (value != _favorited) {
       _favorited = value;
@@ -33,6 +36,7 @@ class ChaptersViewModel extends ViewModel {
 
   ChaptersViewModel(this.source, Book book) : _book = book {
     fetch();
+    Favorite.contains(source.id, book).then((value) => favorited = value);
   }
 
   Future<void> fetch() {
@@ -45,9 +49,8 @@ class ChaptersViewModel extends ViewModel {
   }
 
   Future<void> favorite() {
-    // TODO: implement favorite
     favorited = !favorited;
-    return Future.value();
+    return Favorite.favorite(source.id, book);
   }
 
   Future<void> download() {
