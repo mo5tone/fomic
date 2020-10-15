@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fomic/model/constant/routing.dart';
+import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/scene/common/view_model/tab_navigation_view_model.dart';
 import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:fomic/utils/injector.dart';
@@ -11,6 +14,8 @@ import 'package:provider/provider.dart';
 void main() async {
   Injector.register();
   await Hive.initFlutter();
+  final adapters = [BookAdapter(), ChapterAdapter(), PageAdapter()];
+  adapters.forEach((adapter) => Hive.registerAdapter(adapter));
   runApp(Fomic());
 }
 

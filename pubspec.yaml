@@ -31,6 +31,7 @@ dependencies:
   dio: ^3.0.10 # Network helper
   html: ^0.14.0+3 # HTML parser
   extended_image: ^1.2.0 # Network image
+  equatable: ^1.2.5 # Auto implement of `==` and `hashCode`
 
 dev_dependencies:
   flutter_test:
