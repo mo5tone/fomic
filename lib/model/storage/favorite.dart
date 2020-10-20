@@ -10,7 +10,7 @@ class Favorite {
     return Hive.openBox<Book>(sourceID.boxName).then((box) => box.values.contains(book));
   }
 
-  static Future<void> next(SourceID sourceID, Book book) {
+  static Future<void> toggle(SourceID sourceID, Book book) {
     return contains(sourceID, book).then((value) async {
       final box = Hive.box<Book>(sourceID.boxName);
       if (value) {

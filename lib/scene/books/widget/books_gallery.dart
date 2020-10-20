@@ -1,7 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/utils/extended_image_state.dart';
+import 'package:fomic/utils/extension/extended_image_state.dart';
 
 class BooksGallery extends StatelessWidget {
   final List<Book> books;

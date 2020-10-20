@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/constant/constant.dart';
-import 'package:fomic/scene/setting/view_model/theme_change_notifier.dart';
 import 'package:fomic/scene/setting/view_model/setting_view_model.dart';
 import 'package:fomic/scene/view.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
       context: context,
       isDismissible: false,
       builder: (ctx) {
-        final brightness = ctx.select((ThemeChangeNotifier value) => value.brightness);
+        final brightness = ctx.select((SettingViewModel value) => value.brightness);
         return SafeArea(
           child: Container(
             child: Wrap(
@@ -53,7 +52,7 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
     return showModalBottomSheet<ColorSwatch>(
       context: context,
       builder: (ctx) {
-        final primarySwatch = ctx.select((ThemeChangeNotifier value) => value.primarySwatch);
+        final primarySwatch = ctx.select((SettingViewModel value) => value.primarySwatch);
         final itemCount = primarySwatches.length;
         final column = 5;
         final row = (itemCount.toDouble() / column).ceil();
@@ -107,20 +106,14 @@ class _View extends View<SettingViewModel, SettingView> with AutomaticKeepAliveC
         item = ListTile(
           leading: Icon(Icons.brightness_medium),
           title: Text('Brightness'),
-          onTap: () => _showBrightnessBottomSheet(context).then((value) {
-            final changeNotifier = context.read<ThemeChangeNotifier>();
-            changeNotifier.brightness = value;
-          }),
+          onTap: () => _showBrightnessBottomSheet(context).then((value) => vm.brightness = value),
         );
         break;
       case 1:
         item = ListTile(
           leading: Icon(Icons.color_lens),
           title: Text('Color'),
-          onTap: () => _showColorBottomSheet(context).then((value) {
-            final changeNotifier = context.read<ThemeChangeNotifier>();
-            changeNotifier.primarySwatch = value;
-          }),
+          onTap: () => _showColorBottomSheet(context).then((value) => vm.primarySwatch = value),
         );
         break;
     }

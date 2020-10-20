@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/model/storage/setting.dart';
 
-class ThemeChangeNotifier with ChangeNotifier {
+mixin ThemeChangeMixin on ChangeNotifier {
   Brightness _brightness;
   ColorSwatch _primarySwatch = Colors.blue;
 
-  ThemeChangeNotifier() {
-    Setting.instance().then((setting) {
-      final newBrightness = setting.brightness;
-      if (_brightness != newBrightness) {
-        _brightness = newBrightness;
-        notifyListeners();
-      }
-      final newPrimarySwatch = setting.primarySwatch;
-      if (newPrimarySwatch != null && _primarySwatch != newPrimarySwatch) {
-        _primarySwatch = newPrimarySwatch;
-        notifyListeners();
-      }
+  Future<void> initThemeChangeMixin() {
+    return Setting.instance().then((setting) {
+      brightness = setting.brightness;
+      primarySwatch = setting.primarySwatch;
     });
   }
 

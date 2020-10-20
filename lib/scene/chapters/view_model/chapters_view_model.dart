@@ -50,7 +50,7 @@ class ChaptersViewModel extends ViewModel {
 
   Future<void> favorite() {
     favorited = !favorited;
-    return Favorite.next(source.id, book);
+    return Favorite.toggle(source.id, book);
   }
 
   Future<void> download() {

@@ -30,6 +30,7 @@ class Setting {
   }
 
   set brightness(Brightness value) {
+    if (value == brightness) return;
     _box.put(_Keys.brightness.rawValue, Brightness.values.indexOf(value));
   }
 
@@ -42,6 +43,7 @@ class Setting {
   }
 
   set primarySwatch(ColorSwatch value) {
+    if (value == primarySwatch) return;
     final index = primarySwatches.indexOf(value);
     if (index > -1) {
       _box.put(_Keys.primarySwatch.rawValue, index);

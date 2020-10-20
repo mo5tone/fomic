@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fomic/scene/pages/view_model/pages_view_model.dart';
 import 'package:fomic/scene/view.dart';
-import 'package:fomic/utils/extended_image_state.dart';
+import 'package:fomic/utils/extension/extended_image_state.dart';
 
 class PagesView extends StatefulWidget {
   @override

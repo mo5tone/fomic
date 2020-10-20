@@ -27,8 +27,8 @@ class _View extends View<TabNavigationViewModel, TabNavigationView> with SingleT
         );
         break;
       case 1:
-        child = ChangeNotifierProvider(
-          create: (_) => SettingViewModel(),
+        child = ChangeNotifierProvider.value(
+          value: context.read<SettingViewModel>(),
           child: SettingView(),
         );
         break;

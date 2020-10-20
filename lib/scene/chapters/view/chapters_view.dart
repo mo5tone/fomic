@@ -1,6 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:fomic/model/constant/routing.dart';
-import 'package:fomic/utils/extended_image_state.dart';
+import 'package:fomic/utils/extension/extended_image_state.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
