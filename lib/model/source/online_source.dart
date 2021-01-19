@@ -4,14 +4,13 @@ import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/source/source.dart';
-import 'package:get_it/get_it.dart';
 
 abstract class OnlineSource extends Source {
   Dio _dio;
 
   @protected
   Dio get dio {
-    _dio ??= GetIt.I.get(param1: baseOptions);
+    _dio ??= Dio(baseOptions.merge(connectTimeout: 5000, receiveTimeout: 3000, sendTimeout: 3000));
     return _dio;
   }
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fomic/model/constant/source_id.dart';
+import 'package:fomic/common/constant/source_id.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/book.dart';
@@ -12,7 +12,7 @@ class BNManHua extends OnlineSource {
   final _baseUrl = 'https://m.bnmanhua.com';
 
   @override
-  SourceID get id => SourceID.bnManHua;
+  SourceId get id => SourceId.bnManHua;
 
   @override
   BaseOptions get baseOptions => BaseOptions(

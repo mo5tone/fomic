@@ -1,20 +1,20 @@
-import 'package:fomic/model/constant/source_id.dart';
+import 'package:fomic/common/constant/source_id.dart';
 import 'package:fomic/model/entity/book.dart';
 import 'package:fomic/model/entity/chapter.dart';
 import 'package:fomic/model/entity/page.dart';
 import 'package:fomic/model/source/local_source.dart';
 import 'package:fomic/model/source/online/bn_man_hua.dart';
 import 'package:fomic/model/source/online/dmzj.dart';
-import 'package:get_it/get_it.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final rpSource = Provider<Source>((ref) => Source.of(ref.watch(rpSourceId).state));
 
 abstract class Source {
-  SourceID get id;
+  SourceId get id;
 
   String get languageCode => id.languageCode;
 
   String get name => id.name;
-
-  bool get moreBooks => true;
 
   Future<List<Book>> fetchBooks({int page = 0, String query});
 
@@ -26,17 +26,17 @@ abstract class Source {
 
   Source();
 
-  factory Source.of(SourceID id) {
+  factory Source.of(SourceId id) {
     Source source;
     switch (id) {
-      case SourceID.local:
-        source = GetIt.I.get<LocalSource>();
+      case SourceId.local:
+        source = LocalSource();
         break;
-      case SourceID.dmzj:
-        source = GetIt.I.get<DMZJ>();
+      case SourceId.dmzj:
+        source = DMZJ();
         break;
-      case SourceID.bnManHua:
-        source = GetIt.I.get<BNManHua>();
+      case SourceId.bnManHua:
+        source = BNManHua();
         break;
     }
     return source;
