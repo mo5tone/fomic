@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/common/constant/routing.dart';
-import 'package:fomic/common/constant/source_id.dart';
+import 'package:fomic/constant/routing.dart';
+import 'package:fomic/constant/source_id.dart';
 import 'package:hooks_riverpod/all.dart';
 
 class ExploreScreen extends HookWidget {

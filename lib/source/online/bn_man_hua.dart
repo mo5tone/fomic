@@ -1,12 +1,4 @@
-import 'dart:convert';
-
-import 'package:fomic/common/constant/source_id.dart';
-import 'package:fomic/model/entity/page.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:dio/dio.dart';
-import 'package:fomic/model/source/online_source.dart';
-import 'package:html/parser.dart';
+part of '../online_source.dart';
 
 class BNManHua extends OnlineSource {
   final _baseUrl = 'https://m.bnmanhua.com';

@@ -1,13 +1,18 @@
+import 'package:equatable/equatable.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/common/extension/extended_image_state_x.dart';
-import 'package:fomic/scene/chapters/notifier.dart';
+import 'package:fomic/extension/extended_image_state_x.dart';
+import 'package:fomic/notifier/hud_state_notifier.dart';
+import 'package:fomic/source/source.dart';
+import 'package:fomic/storage/favorite.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/model/chapter.dart';
+
+part './notifier.dart';
 
 class ChaptersScreen extends HookWidget {
   final Book book;

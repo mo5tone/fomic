@@ -1,11 +1,16 @@
+import 'package:equatable/equatable.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/scene/pages/notifier.dart';
-import 'package:fomic/common/extension/extended_image_state_x.dart';
+import 'package:fomic/notifier/hud_state_notifier.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/model/chapter.dart';
+import 'package:fomic/extension/extended_image_state_x.dart';
+import 'package:fomic/source/model/page.dart';
+import 'package:fomic/source/source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+part './notifier.dart';
 
 class PagesScreen extends HookWidget {
   final Book book;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:fomic/common/state/theme_state.dart';
-import 'package:fomic/model/constant/constant.dart';
+import 'package:fomic/notifier/theme_state_notifier.dart';
+import 'package:fomic/constant/constant.dart';
 
 class SettingScreen extends HookWidget {
   @override

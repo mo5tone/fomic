@@ -1,12 +1,16 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/common/constant/source_id.dart';
-import 'package:fomic/common/constant/routing.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/scene/books/notifier.dart';
+import 'package:fomic/constant/source_id.dart';
+import 'package:fomic/constant/routing.dart';
+import 'package:fomic/notifier/hud_state_notifier.dart';
+import 'package:fomic/source/model/book.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 import 'package:fomic/scene/books/widget/books_search/delegate.dart';
+import 'package:fomic/source/source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+part './notifier.dart';
 
 class BooksScreen extends HookWidget {
   void _didTap(BuildContext context, Book book) {

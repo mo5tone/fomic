@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/model/entity/page.dart';
-import 'package:fomic/model/source/source.dart';
+import 'package:fomic/constant/source_id.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/model/chapter.dart';
+import 'package:fomic/source/model/page.dart';
+import 'package:fomic/source/source.dart';
+import 'package:html/parser.dart';
+
+part './online/dmzj.dart';
+part './online/bn_man_hua.dart';
 
 abstract class OnlineSource extends Source {
   Dio _dio;

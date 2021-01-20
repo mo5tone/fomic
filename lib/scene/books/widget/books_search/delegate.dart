@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/common/state/hud_state.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/source/source.dart';
+import 'package:fomic/notifier/hud_state_notifier.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/source.dart';
 import 'package:fomic/scene/books/widget/books_gallery.dart';
 import 'package:hooks_riverpod/all.dart';
 

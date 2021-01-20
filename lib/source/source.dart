@@ -1,11 +1,11 @@
-import 'package:fomic/common/constant/source_id.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/model/entity/page.dart';
-import 'package:fomic/model/source/local_source.dart';
-import 'package:fomic/model/source/online/bn_man_hua.dart';
-import 'package:fomic/model/source/online/dmzj.dart';
+import 'package:fomic/constant/source_id.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/model/chapter.dart';
+import 'package:fomic/source/model/page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import './local_source.dart';
+import './online_source.dart';
 
 final rpSource = Provider<Source>((ref) => Source.of(ref.watch(rpSourceId).state));
 

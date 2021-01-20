@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/common/state/hud_state.dart';
-import 'package:fomic/common/state/theme_state.dart';
-import 'package:fomic/common/constant/routing.dart';
+import 'package:fomic/constant/routing.dart';
+import 'package:fomic/notifier/hud_state_notifier.dart';
+import 'package:fomic/notifier/theme_state_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Fomic extends HookWidget {

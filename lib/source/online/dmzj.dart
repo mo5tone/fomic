@@ -1,11 +1,4 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
-import 'package:fomic/common/constant/source_id.dart';
-import 'package:fomic/model/entity/page.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/source/online_source.dart';
+part of '../online_source.dart';
 
 class DMZJ extends OnlineSource {
   final _baseUrl = 'http://v3api.dmzj.com';

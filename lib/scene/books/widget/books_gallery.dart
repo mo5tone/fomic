@@ -1,8 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/common/extension/extended_image_state_x.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/extension/extended_image_state_x.dart';
 
 class BooksGallery extends HookWidget {
   final List<Book> books;

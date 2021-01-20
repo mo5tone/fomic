@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/common/storage/setting.dart';
+import 'package:fomic/storage/setting.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final rpThemeStateNotifier = StateNotifierProvider((ref) => ThemeStateNotifier(ref.watch(rpSetting.future)));

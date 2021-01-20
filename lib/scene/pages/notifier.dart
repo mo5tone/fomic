@@ -1,9 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:fomic/common/state/hud_state.dart';
-import 'package:fomic/model/entity/chapter.dart';
-import 'package:fomic/model/entity/page.dart';
-import 'package:fomic/model/source/source.dart';
-import 'package:hooks_riverpod/all.dart';
+part of './screen.dart';
 
 final rpPagesStateNotifier = StateNotifierProvider.family<PagesStateNotifier, Chapter>((ref, chapter) => PagesStateNotifier(ref.read, chapter));
 

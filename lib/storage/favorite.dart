@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:fomic/common/constant/source_id.dart';
-import 'package:fomic/model/entity/book.dart';
+import 'package:fomic/constant/source_id.dart';
+import 'package:fomic/source/model/book.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

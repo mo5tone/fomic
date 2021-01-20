@@ -39,9 +39,5 @@ class PageAdapter extends TypeAdapter<Page> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PageAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+  bool operator ==(Object other) => identical(this, other) || other is PageAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

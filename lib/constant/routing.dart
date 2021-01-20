@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/model/entity/book.dart';
-import 'package:fomic/model/entity/chapter.dart';
+import 'package:fomic/source/model/book.dart';
+import 'package:fomic/source/model/chapter.dart';
 import 'package:fomic/scene/books/screen.dart';
 import 'package:fomic/scene/chapters/screen.dart';
 import 'package:fomic/scene/explore/screen.dart';
