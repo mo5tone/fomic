@@ -18,28 +18,31 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^1.2.5 # Auto implement of `==` and `hashCode`
-  flutter_hooks: ^0.15.0
-  hooks_riverpod: ^0.12.2
-  flutter_easyloading: ^2.0.0 # Global overlay
-  hive: ^1.4.4+1 # Hive database
-  hive_flutter: ^0.3.1 # Hive database
-  dio: ^3.0.10 # Network helper
-  html: ^0.14.0+3 # HTML parser
-  extended_image: ^1.2.0 # Network image
+  dio: ^4.0.0
+  equatable: ^2.0.3
+  extended_image: ^4.2.1
+  flutter_easyloading: ^3.0.3
+  flutter_hooks: ^0.18.0
+  hooks_riverpod: ^1.0.0-dev.7
+  freezed_annotation: ^0.14.2
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  html: ^0.15.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.0.0
-  hive_generator: ^0.8.1 # Hive database
-  build_runner: ^1.10.3 # Hive database
+  flutter_lints: ^1.0.4
+  build_runner: ^2.1.2
+  freezed: ^0.14.2
+  hive_generator: ^1.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
