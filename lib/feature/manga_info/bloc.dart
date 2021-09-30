@@ -21,7 +21,7 @@ class MangaInfoState with _$MangaInfoState {
 }
 
 class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
-  static final family = StateNotifierProvider.family.autoDispose<MangaInfoBLoC, MangaInfoState, MangaInfo>((ref, manga) => MangaInfoBLoC._(ref, manga));
+  static final family = StateNotifierProvider.family<MangaInfoBLoC, MangaInfoState, MangaInfo>((ref, manga) => MangaInfoBLoC._(ref, manga));
 
   final HttpSource _source;
 

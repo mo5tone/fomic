@@ -9,14 +9,15 @@ import 'package:fomic/repository/source/source.dart';
 import 'package:intl/intl.dart';
 
 class MangaInfoView extends HookConsumerWidget {
-  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final MangaInfo _manga;
 
-  MangaInfoView({Key? key, required MangaInfo manga})
-      : provider = MangaInfoBLoC.family(manga),
+  const MangaInfoView({Key? key, required MangaInfo manga})
+      : _manga = manga,
         super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = MangaInfoBLoC.family(_manga);
     final mediaQueryData = MediaQuery.of(context);
     final expandedHeight = mediaQueryData.size.height / 4;
     useEffect(() {
@@ -27,7 +28,7 @@ class MangaInfoView extends HookConsumerWidget {
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
-          headerSliverBuilder: (context, isScrolled) => [
+          headerSliverBuilder: (_, innerBoxIsScrolled) => [
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: Consumer(
@@ -35,7 +36,7 @@ class MangaInfoView extends HookConsumerWidget {
                   final manga = ref.watch(provider.select((value) => value.manga));
                   return SliverAppBar(
                     title: Text(manga.title),
-                    forceElevated: isScrolled,
+                    forceElevated: innerBoxIsScrolled,
                     pinned: true,
                     expandedHeight: expandedHeight,
                     stretch: true,

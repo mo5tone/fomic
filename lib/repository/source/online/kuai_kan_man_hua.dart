@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fomic/repository/service/requisition.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/model/mangas_page.dart';
@@ -69,13 +70,13 @@ class Kuaikanmanhua extends HttpSource {
   }
 
   @override
-  RequestOptions popularMangaRequest({required int page}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=0&since=${(page - 1) * 10}');
+  Requisition popularMangaRequest({required int page}) {
+    return Requisition(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=0&since=${(page - 1) * 10}');
   }
 
   @override
   MangasPage popularMangaParser(Response response) {
-    List<Map<String, dynamic>> arr = response.data['data']['topics'];
+    List arr = response.data['data']['topics'];
     final mangas = <MangaInfo>[];
     for (final obj in arr) {
       mangas.add(MangaInfo("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
@@ -84,8 +85,8 @@ class Kuaikanmanhua extends HttpSource {
   }
 
   @override
-  RequestOptions latestUpdatesRequest({required int page}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=19&since=${(page - 1) * 10}');
+  Requisition latestUpdatesRequest({required int page}) {
+    return Requisition(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=19&since=${(page - 1) * 10}');
   }
 
   @override
@@ -94,9 +95,9 @@ class Kuaikanmanhua extends HttpSource {
   }
 
   @override
-  RequestOptions searchMangaRequest({required int page, required String query, required List<Filter> filters}) {
+  Requisition searchMangaRequest({required int page, required String query, required List<Filter> filters}) {
     if (query.isNotEmpty) {
-      return RequestOptions(path: '$_apiBaseUrl/v1/search/topic?q=$query&size=18');
+      return Requisition(path: '$_apiBaseUrl/v1/search/topic?q=$query&size=18');
     } else {
       var genre = '';
       var status = '';
@@ -110,14 +111,14 @@ class Kuaikanmanhua extends HttpSource {
           }
         }
       }
-      return RequestOptions(path: '$_apiBaseUrl/v1/search/by_tag?since=${(page - 1) * 10}&tag=$genre&sort=1&query_category=%7B%22update_status%22:$status%7D');
+      return Requisition(path: '$_apiBaseUrl/v1/search/by_tag?since=${(page - 1) * 10}&tag=$genre&sort=1&query_category=%7B%22update_status%22:$status%7D');
     }
   }
 
   @override
   MangasPage searchMangaParser(Response response) {
     final obj = response.data['data'];
-    List<Map<String, dynamic>> arr = obj['hit'] ?? obj['topics'];
+    List arr = obj['hit'] ?? obj['topics'];
     final mangas = <MangaInfo>[];
     for (final obj in arr) {
       mangas.add(MangaInfo("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
@@ -129,7 +130,7 @@ class Kuaikanmanhua extends HttpSource {
   Future<MangasPage> fetchSearchManga({required int page, required String query, required List<Filter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
-      return networker.fetch<MangasPage>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), (response) {
+      return networker.fetch<MangasPage>(Requisition(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
         final manga = mangaDetailsParser(response).copyWith(key: '/web/topic/$newQuery');
         return MangasPage(0, [manga], false);
       });
@@ -139,21 +140,21 @@ class Kuaikanmanhua extends HttpSource {
 
   @override
   MangaInfo mangaDetailsParser(Response response) {
-    Map<String, dynamic> data = response.data['data'];
+    Map data = response.data['data'];
     return MangaInfo(
       '',
       data['title'],
       cover: data['vertical_image_url'],
       author: data['user']['nickname'],
       description: data['description'],
-      status: data['update_status_code'],
+      status: MangaInfoStatus.values[data['update_status_code']],
     );
   }
 
   @override
   Future<MangaInfo> fetchMangaDetails({required MangaInfo manga}) {
     final path = '$_apiBaseUrl/v1/topics/${manga.key.split('/').last}';
-    return networker.fetch(RequestOptions(path: path), mangaDetailsParser);
+    return networker.fetch(Requisition(path: path), parser: mangaDetailsParser);
   }
 
   @override
@@ -161,9 +162,9 @@ class Kuaikanmanhua extends HttpSource {
     final chapters = <ChapterInfo>[];
     final document = html.parse(response.data);
     String script = document.getElementsByTagName('script').firstWhere((ele) => ele.innerHtml.contains('comics:')).innerHtml;
-    List<Map<String, dynamic>> comics = jsonDecode(script.allMatches(r'comics:(.*}\]),first_comic_id').first.group(1) ?? '[]');
-    final variables = script.allMatches(r'\(function\((.*)\){').first.group(1)?.split(',') ?? [];
-    final values = script.allMatches(r'}}\((.*)\)\);').first.group(1)?.split(',') ?? [];
+    List comics = json.decode(RegExp(r'comics:(.*}\]),first_comic_id').firstMatch(script)?.group(1)?.withQuotes ?? '[]');
+    final variables = RegExp(r'\(function\((.*)\){').firstMatch(script)?.group(1)?.split(',') ?? [];
+    final values = RegExp(r'}}\((.*)\)\);').firstMatch(script)?.group(1)?.split(',') ?? [];
     final elements = document.querySelectorAll('div.TopicItem');
     for (var i = 0; i < elements.length; i++) {
       final e = elements[i];
@@ -183,7 +184,7 @@ class Kuaikanmanhua extends HttpSource {
   }
 
   @override
-  RequestOptions pageListRequest({required ChapterInfo chapter}) {
+  Requisition pageListRequest({required ChapterInfo chapter}) {
     if (chapter.name.endsWith('🔒')) {
       throw '此章节为付费内容';
     }
@@ -195,7 +196,7 @@ class Kuaikanmanhua extends HttpSource {
     final pages = <Page>[];
     final document = html.parse(response.data);
     String script = document.getElementsByTagName('script').firstWhere((ele) => ele.innerHtml.contains('comicImages:')).innerHtml;
-    List<Map<String, dynamic>> images = jsonDecode(script.allMatches(r'comicImages:(.*)},nextComicInfo').first.group(1) ?? '[]');
+    List images = jsonDecode(script.allMatches(r'comicImages:(.*)},nextComicInfo').first.group(1) ?? '[]');
     final variables = script.allMatches(r'function\((.*)\){').first.group(1)?.split(',') ?? [];
     final values = script.allMatches(r'function\((.*)\){').first.group(1)?.split(',') ?? [];
     for (int i = 0; i < images.length; i++) {
@@ -208,5 +209,11 @@ class Kuaikanmanhua extends HttpSource {
   @override
   PageImageUrl imageUrlParser(Response response) {
     throw UnimplementedError();
+  }
+}
+
+extension on String {
+  String get withQuotes {
+    return replaceAllMapped(RegExp(r'[^\[\]{}:,]+'), (match) => '"${match.group(0)}"');
   }
 }

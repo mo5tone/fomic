@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fomic/repository/service/requisition.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
 
@@ -9,7 +10,6 @@ class Networker {
   static final family = Provider.autoDispose.family<Networker, BaseOptions>((ref, options) => Networker._(ref, options));
 
   final Dio _dio;
-  final HUDBLoC _hudBLoC;
 
   Networker._(ProviderRefBase ref, BaseOptions baseOptions)
       : _dio = Dio(
@@ -17,22 +17,26 @@ class Networker {
             ..connectTimeout = 5000
             ..receiveTimeout = 3000
             ..sendTimeout = 3000,
-        )..interceptors.add(_LoadingIndicator(ref)),
-        _hudBLoC = ref.read(HUDBLoC.provider.notifier);
+        )..interceptors.add(_LoadingIndicator(ref));
 
-  Future<T> fetch<T>(RequestOptions requestOptions, T Function(Response<dynamic>) parser) async {
-    _hudBLoC.add(const HUDEvent.show());
+  Future<T> fetch<T>(Requisition req, {required T Function(Response<dynamic>) parser}) async {
     return _dio
-        .fetch(requestOptions)
+        .request(
+          req.path,
+          data: req.data,
+          queryParameters: req.queryParameters,
+          cancelToken: req.cancelToken,
+          options: req.options,
+          onSendProgress: req.onSendProgress,
+          onReceiveProgress: req.onReceiveProgress,
+        )
         .then(parser)
-        .catchError((error, stackTrace) => _onError<T>(error, stackTrace))
-        .whenComplete(() => _hudBLoC.add(const HUDEvent.dismiss()));
+        .catchError((error, stackTrace) => _onError<T>(error, stackTrace));
   }
 
   FutureOr<T> _onError<T>(dynamic error, StackTrace stackTrace) {
     debugPrint('Networker.fetch.error => $error');
     debugPrint('Networker.fetch.stackTrace => $stackTrace');
-    _hudBLoC.add(HUDEvent.toast('$error'));
     throw error;
   }
 }
