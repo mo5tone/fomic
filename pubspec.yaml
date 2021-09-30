@@ -25,8 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^4.0.0
-  equatable: ^2.0.3
-  extended_image: ^4.2.1
+  cached_network_image: ^3.1.0
   flutter_easyloading: ^3.0.3
   flutter_hooks: ^0.18.0
   hooks_riverpod: ^1.0.0-dev.7

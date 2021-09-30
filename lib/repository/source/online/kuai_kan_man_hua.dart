@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 class Kuaikanmanhua extends HttpSource {
   static final provider = Provider.autoDispose((ref) => Kuaikanmanhua._(ref));
 
+  static const _lockIcon = '\uD83D\uDD12';
   static const _topicIdSearchPrefix = 'topic:';
   static const _apiBaseUrl = 'https://api.kkmh.com';
 
@@ -169,7 +170,10 @@ class Kuaikanmanhua extends HttpSource {
     for (var i = 0; i < elements.length; i++) {
       final e = elements[i];
       final id = values[variables.indexOf(comics[i]['id'])];
-      final name = e.querySelector('div.title > a')?.text ?? '';
+      var name = e.querySelector('div.title > a')?.text.trim() ?? '';
+      if (e.querySelectorAll('i.lockedIcon').isNotEmpty) {
+        name += ' $_lockIcon';
+      }
       var dateUploadString = e.querySelector('div.date > span')?.text ?? '';
       if (dateUploadString.length == 5) {
         dateUploadString = '${DateTime.now().year}-$dateUploadString';
@@ -185,7 +189,7 @@ class Kuaikanmanhua extends HttpSource {
 
   @override
   Requisition pageListRequest({required ChapterInfo chapter}) {
-    if (chapter.name.endsWith('🔒')) {
+    if (chapter.name.endsWith(_lockIcon)) {
       throw '此章节为付费内容';
     }
     return super.pageListRequest(chapter: chapter);

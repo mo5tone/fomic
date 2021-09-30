@@ -1,4 +1,4 @@
-import 'package:extended_image/extended_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/model/manga_info.dart';
@@ -88,10 +88,10 @@ class _Cell extends HookConsumerWidget {
                 ),
                 child: Consumer(
                   builder: (context, ref, child) {
-                    return ExtendedImage.network(
-                      manga.cover,
+                    return CachedNetworkImage(
+                      imageUrl: manga.cover,
+                      httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
                       fit: BoxFit.cover,
-                      headers: (ref.watch(Source.provider) as HttpSource).headers,
                     );
                   },
                 ),
