@@ -43,7 +43,7 @@ class SourceMangasView extends HookConsumerWidget {
         child: MangasGrid(
           mangas: ref.watch(SourceMangasBLoC.provider.select((value) => value.pages)).fold(<MangaInfo>[], (result, page) => result..addAll(page.mangas)),
           scrollController: scrollController,
-          didTap: (context, manga) => Navigator.of(context).push(Screen.mangaInfo(manga).route()),
+          didTap: (context, manga) => Screen.mangaInfo(manga).push(context),
         ),
         onRefresh: () => Future(() => bloc.add(const SourceMangasEvent.refresh())),
       ),

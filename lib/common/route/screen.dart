@@ -11,11 +11,14 @@ class Screen with _$Screen {
   Screen._();
   factory Screen.mangaInfo(MangaInfo manga) = ScreenMangaInfo;
 
-  Route route<T>() => MaterialPageRoute<T>(
-        builder: (context) => when(
-          mangaInfo: (manga) {
-            return MangaInfoView(manga: manga);
-          },
-        ),
-      );
+  Future<T?> push<T extends Object>(BuildContext context) {
+    final route = MaterialPageRoute<T>(
+      builder: (context) {
+        return when(
+          mangaInfo: (manga) => MangaInfoView(manga: manga),
+        );
+      },
+    );
+    return Navigator.of(context).push(route);
+  }
 }

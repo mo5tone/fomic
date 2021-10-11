@@ -23,163 +23,172 @@ class MangaInfoView extends HookConsumerWidget {
     useEffect(() {
       ref.read(provider.notifier).add(const MangaInfoEvent.refresh());
     });
-    const _tabs = [Tab(icon: Icon(Icons.info)), Tab(icon: Icon(Icons.list))];
+    final currentTabIndex = StateProvider((_) => 0);
+    const tabs = [Tab(icon: Icon(Icons.info)), Tab(icon: Icon(Icons.list))];
+    final tabController = useTabController(initialLength: tabs.length);
+    tabController.addListener(() {
+      ref.read(currentTabIndex).state = tabController.index;
+    });
     return Scaffold(
-      body: DefaultTabController(
-        length: _tabs.length,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: Consumer(
-                builder: (context, ref, child) {
-                  final manga = ref.watch(provider.select((value) => value.manga));
-                  return SliverAppBar(
-                    title: Text(manga.title),
-                    forceElevated: innerBoxIsScrolled,
-                    pinned: true,
-                    expandedHeight: expandedHeight,
-                    stretch: true,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: CachedNetworkImage(
-                        imageUrl: manga.cover,
-                        httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
-                        fit: BoxFit.cover,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: Consumer(
+              builder: (context, ref, child) {
+                final manga = ref.watch(provider.select((value) => value.manga));
+                return SliverAppBar(
+                  title: Text(manga.title),
+                  forceElevated: innerBoxIsScrolled,
+                  pinned: true,
+                  expandedHeight: expandedHeight,
+                  stretch: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: CachedNetworkImage(
+                      imageUrl: manga.cover,
+                      httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  bottom: TabBar(
+                    tabs: tabs,
+                    controller: tabController,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+        body: TabBarView(
+          controller: tabController,
+          children: [
+            Builder(builder: (context) {
+              return CustomScrollView(
+                key: const PageStorageKey(0),
+                slivers: [
+                  SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  ),
+                  SliverToBoxAdapter(
+                    child: AspectRatio(
+                      aspectRatio: mediaQueryData.size.aspectRatio * 2,
+                      child: Card(
+                        elevation: 16.0,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              final manga = ref.watch(provider.select((value) => value.manga));
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                      child: CachedNetworkImage(
+                                        imageUrl: manga.cover,
+                                        httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                        left: 8,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.vertical,
+                                              child: Text(manga.description),
+                                            ),
+                                          ),
+                                          if (manga.genres.isNotEmpty)
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                                              textBaseline: TextBaseline.alphabetic,
+                                              children: [
+                                                const Text('Genre: '),
+                                                Text(manga.genres.join(', ')),
+                                              ],
+                                            ),
+                                          if (manga.author.isNotEmpty)
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                                              textBaseline: TextBaseline.alphabetic,
+                                              children: [
+                                                const Text('Author: '),
+                                                Text(manga.author),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
-                    bottom: const TabBar(
-                      tabs: _tabs,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-          body: TabBarView(
-            children: [
-              Builder(builder: (context) {
+                  ),
+                ],
+              );
+            }),
+            Consumer(
+              builder: (context, ref, child) {
+                final chapters = ref.watch(provider.select((value) => value.chapters));
                 return CustomScrollView(
-                  key: const PageStorageKey(0),
+                  key: const PageStorageKey(1),
                   slivers: [
                     SliverOverlapInjector(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                     ),
-                    SliverToBoxAdapter(
-                      child: AspectRatio(
-                        aspectRatio: mediaQueryData.size.aspectRatio * 2,
-                        child: Card(
-                          elevation: 16.0,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Consumer(
-                              builder: (context, ref, child) {
-                                final manga = ref.watch(provider.select((value) => value.manga));
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    Expanded(
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                        child: CachedNetworkImage(
-                                          imageUrl: manga.cover,
-                                          httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                          left: 8,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: SingleChildScrollView(
-                                                scrollDirection: Axis.vertical,
-                                                child: Text(manga.description),
-                                              ),
-                                            ),
-                                            if (manga.genres.isNotEmpty)
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                                textBaseline: TextBaseline.alphabetic,
-                                                children: [
-                                                  const Text('Genre: '),
-                                                  Text(manga.genres.join(', ')),
-                                                ],
-                                              ),
-                                            if (manga.author.isNotEmpty)
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                                textBaseline: TextBaseline.alphabetic,
-                                                children: [
-                                                  const Text('Author: '),
-                                                  Text(manga.author),
-                                                ],
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
+                    SliverPadding(
+                      padding: const EdgeInsets.all(8.0),
+                      sliver: SliverFixedExtentList(
+                        itemExtent: 48,
+                        delegate: SliverChildBuilderDelegate(
+                          (_, idx) {
+                            final chapter = chapters[idx];
+                            final formatter = DateFormat('yyyy/MM/dd');
+                            final updatedAt = DateTime.fromMillisecondsSinceEpoch(chapter.dateUpload);
+                            return ListTile(
+                              title: Text(chapter.name),
+                              subtitle: chapter.dateUpload > 0 ? Text(formatter.format(updatedAt)) : null,
+                              onTap: () {},
+                            );
+                          },
+                          childCount: chapters.length,
                         ),
                       ),
                     ),
                   ],
                 );
-              }),
-              Consumer(
-                key: const PageStorageKey(1),
-                builder: (context, ref, child) {
-                  final chapters = ref.watch(provider.select((value) => value.chapters));
-                  return CustomScrollView(
-                    slivers: [
-                      SliverOverlapInjector(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                      ),
-                      SliverPadding(
-                        padding: const EdgeInsets.all(8.0),
-                        sliver: SliverFixedExtentList(
-                          itemExtent: 48,
-                          delegate: SliverChildBuilderDelegate(
-                            (_, idx) {
-                              final chapter = chapters[idx];
-                              final formatter = DateFormat('yyyy/MM/dd');
-                              final updatedAt = DateTime.fromMillisecondsSinceEpoch(chapter.dateUpload);
-                              return ListTile(
-                                title: Text(chapter.name),
-                                subtitle: chapter.dateUpload > 0 ? Text(formatter.format(updatedAt)) : null,
-                                onTap: () {},
-                              );
-                            },
-                            childCount: chapters.length,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
+              },
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Consumer(
           builder: (context, ref, child) {
+            final index = ref.watch(currentTabIndex).state;
             // TODO: implement
             final isFavorite = false;
-            return Icon(isFavorite ? Icons.favorite : Icons.favorite_border);
+            return Icon(index == 0
+                ? isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border
+                : Icons.play_arrow);
           },
         ),
         onPressed: () => ref.read(provider.notifier).add(const MangaInfoEvent.favorite()),
