@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'page.dart';
 
@@ -34,9 +36,9 @@ class _$PageTearOff {
     );
   }
 
-  PageText text(String url) {
+  PageText text(String text) {
     return PageText(
-      url,
+      text,
     );
   }
 }
@@ -51,7 +53,15 @@ mixin _$Page {
     required TResult Function(String url) url,
     required TResult Function(String url) imageUrl,
     required TResult Function(String data) imageBase64,
-    required TResult Function(String url) text,
+    required TResult Function(String text) text,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String url)? url,
+    TResult Function(String url)? imageUrl,
+    TResult Function(String data)? imageBase64,
+    TResult Function(String text)? text,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -59,7 +69,7 @@ mixin _$Page {
     TResult Function(String url)? url,
     TResult Function(String url)? imageUrl,
     TResult Function(String data)? imageBase64,
-    TResult Function(String url)? text,
+    TResult Function(String text)? text,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +79,14 @@ mixin _$Page {
     required TResult Function(PageImageUrl value) imageUrl,
     required TResult Function(PageImageBase64 value) imageBase64,
     required TResult Function(PageText value) text,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PageUrl value)? url,
+    TResult Function(PageImageUrl value)? imageUrl,
+    TResult Function(PageImageBase64 value)? imageBase64,
+    TResult Function(PageText value)? text,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -150,14 +168,14 @@ class _$PageUrl with DiagnosticableTreeMixin implements PageUrl {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PageUrl &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is PageUrl &&
+            const DeepCollectionEquality().equals(other.url, url));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(url);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(url));
 
   @JsonKey(ignore: true)
   @override
@@ -170,9 +188,20 @@ class _$PageUrl with DiagnosticableTreeMixin implements PageUrl {
     required TResult Function(String url) url,
     required TResult Function(String url) imageUrl,
     required TResult Function(String data) imageBase64,
-    required TResult Function(String url) text,
+    required TResult Function(String text) text,
   }) {
     return url(this.url);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String url)? url,
+    TResult Function(String url)? imageUrl,
+    TResult Function(String data)? imageBase64,
+    TResult Function(String text)? text,
+  }) {
+    return url?.call(this.url);
   }
 
   @override
@@ -181,7 +210,7 @@ class _$PageUrl with DiagnosticableTreeMixin implements PageUrl {
     TResult Function(String url)? url,
     TResult Function(String url)? imageUrl,
     TResult Function(String data)? imageBase64,
-    TResult Function(String url)? text,
+    TResult Function(String text)? text,
     required TResult orElse(),
   }) {
     if (url != null) {
@@ -203,6 +232,17 @@ class _$PageUrl with DiagnosticableTreeMixin implements PageUrl {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PageUrl value)? url,
+    TResult Function(PageImageUrl value)? imageUrl,
+    TResult Function(PageImageBase64 value)? imageBase64,
+    TResult Function(PageText value)? text,
+  }) {
+    return url?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PageUrl value)? url,
     TResult Function(PageImageUrl value)? imageUrl,
@@ -220,7 +260,7 @@ class _$PageUrl with DiagnosticableTreeMixin implements PageUrl {
 abstract class PageUrl implements Page {
   const factory PageUrl(String url) = _$PageUrl;
 
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @JsonKey(ignore: true)
   $PageUrlCopyWith<PageUrl> get copyWith => throw _privateConstructorUsedError;
 }
@@ -280,14 +320,14 @@ class _$PageImageUrl with DiagnosticableTreeMixin implements PageImageUrl {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PageImageUrl &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is PageImageUrl &&
+            const DeepCollectionEquality().equals(other.url, url));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(url);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(url));
 
   @JsonKey(ignore: true)
   @override
@@ -300,9 +340,20 @@ class _$PageImageUrl with DiagnosticableTreeMixin implements PageImageUrl {
     required TResult Function(String url) url,
     required TResult Function(String url) imageUrl,
     required TResult Function(String data) imageBase64,
-    required TResult Function(String url) text,
+    required TResult Function(String text) text,
   }) {
     return imageUrl(this.url);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String url)? url,
+    TResult Function(String url)? imageUrl,
+    TResult Function(String data)? imageBase64,
+    TResult Function(String text)? text,
+  }) {
+    return imageUrl?.call(this.url);
   }
 
   @override
@@ -311,7 +362,7 @@ class _$PageImageUrl with DiagnosticableTreeMixin implements PageImageUrl {
     TResult Function(String url)? url,
     TResult Function(String url)? imageUrl,
     TResult Function(String data)? imageBase64,
-    TResult Function(String url)? text,
+    TResult Function(String text)? text,
     required TResult orElse(),
   }) {
     if (imageUrl != null) {
@@ -333,6 +384,17 @@ class _$PageImageUrl with DiagnosticableTreeMixin implements PageImageUrl {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PageUrl value)? url,
+    TResult Function(PageImageUrl value)? imageUrl,
+    TResult Function(PageImageBase64 value)? imageBase64,
+    TResult Function(PageText value)? text,
+  }) {
+    return imageUrl?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PageUrl value)? url,
     TResult Function(PageImageUrl value)? imageUrl,
@@ -350,7 +412,7 @@ class _$PageImageUrl with DiagnosticableTreeMixin implements PageImageUrl {
 abstract class PageImageUrl implements Page {
   const factory PageImageUrl(String url) = _$PageImageUrl;
 
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @JsonKey(ignore: true)
   $PageImageUrlCopyWith<PageImageUrl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -413,14 +475,14 @@ class _$PageImageBase64
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PageImageBase64 &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)));
+        (other.runtimeType == runtimeType &&
+            other is PageImageBase64 &&
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(data);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
@@ -433,9 +495,20 @@ class _$PageImageBase64
     required TResult Function(String url) url,
     required TResult Function(String url) imageUrl,
     required TResult Function(String data) imageBase64,
-    required TResult Function(String url) text,
+    required TResult Function(String text) text,
   }) {
     return imageBase64(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String url)? url,
+    TResult Function(String url)? imageUrl,
+    TResult Function(String data)? imageBase64,
+    TResult Function(String text)? text,
+  }) {
+    return imageBase64?.call(data);
   }
 
   @override
@@ -444,7 +517,7 @@ class _$PageImageBase64
     TResult Function(String url)? url,
     TResult Function(String url)? imageUrl,
     TResult Function(String data)? imageBase64,
-    TResult Function(String url)? text,
+    TResult Function(String text)? text,
     required TResult orElse(),
   }) {
     if (imageBase64 != null) {
@@ -466,6 +539,17 @@ class _$PageImageBase64
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PageUrl value)? url,
+    TResult Function(PageImageUrl value)? imageUrl,
+    TResult Function(PageImageBase64 value)? imageBase64,
+    TResult Function(PageText value)? text,
+  }) {
+    return imageBase64?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PageUrl value)? url,
     TResult Function(PageImageUrl value)? imageUrl,
@@ -483,7 +567,7 @@ class _$PageImageBase64
 abstract class PageImageBase64 implements Page {
   const factory PageImageBase64(String data) = _$PageImageBase64;
 
-  String get data => throw _privateConstructorUsedError;
+  String get data;
   @JsonKey(ignore: true)
   $PageImageBase64CopyWith<PageImageBase64> get copyWith =>
       throw _privateConstructorUsedError;
@@ -493,7 +577,7 @@ abstract class PageImageBase64 implements Page {
 abstract class $PageTextCopyWith<$Res> {
   factory $PageTextCopyWith(PageText value, $Res Function(PageText) then) =
       _$PageTextCopyWithImpl<$Res>;
-  $Res call({String url});
+  $Res call({String text});
 }
 
 /// @nodoc
@@ -507,12 +591,12 @@ class _$PageTextCopyWithImpl<$Res> extends _$PageCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? url = freezed,
+    Object? text = freezed,
   }) {
     return _then(PageText(
-      url == freezed
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -521,14 +605,14 @@ class _$PageTextCopyWithImpl<$Res> extends _$PageCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PageText with DiagnosticableTreeMixin implements PageText {
-  const _$PageText(this.url);
+  const _$PageText(this.text);
 
   @override
-  final String url;
+  final String text;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Page.text(url: $url)';
+    return 'Page.text(text: $text)';
   }
 
   @override
@@ -536,20 +620,20 @@ class _$PageText with DiagnosticableTreeMixin implements PageText {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Page.text'))
-      ..add(DiagnosticsProperty('url', url));
+      ..add(DiagnosticsProperty('text', text));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PageText &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is PageText &&
+            const DeepCollectionEquality().equals(other.text, text));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(url);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(text));
 
   @JsonKey(ignore: true)
   @override
@@ -562,9 +646,20 @@ class _$PageText with DiagnosticableTreeMixin implements PageText {
     required TResult Function(String url) url,
     required TResult Function(String url) imageUrl,
     required TResult Function(String data) imageBase64,
-    required TResult Function(String url) text,
+    required TResult Function(String text) text,
   }) {
-    return text(this.url);
+    return text(this.text);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String url)? url,
+    TResult Function(String url)? imageUrl,
+    TResult Function(String data)? imageBase64,
+    TResult Function(String text)? text,
+  }) {
+    return text?.call(this.text);
   }
 
   @override
@@ -573,11 +668,11 @@ class _$PageText with DiagnosticableTreeMixin implements PageText {
     TResult Function(String url)? url,
     TResult Function(String url)? imageUrl,
     TResult Function(String data)? imageBase64,
-    TResult Function(String url)? text,
+    TResult Function(String text)? text,
     required TResult orElse(),
   }) {
     if (text != null) {
-      return text(this.url);
+      return text(this.text);
     }
     return orElse();
   }
@@ -591,6 +686,17 @@ class _$PageText with DiagnosticableTreeMixin implements PageText {
     required TResult Function(PageText value) text,
   }) {
     return text(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PageUrl value)? url,
+    TResult Function(PageImageUrl value)? imageUrl,
+    TResult Function(PageImageBase64 value)? imageBase64,
+    TResult Function(PageText value)? text,
+  }) {
+    return text?.call(this);
   }
 
   @override
@@ -610,9 +716,9 @@ class _$PageText with DiagnosticableTreeMixin implements PageText {
 }
 
 abstract class PageText implements Page {
-  const factory PageText(String url) = _$PageText;
+  const factory PageText(String text) = _$PageText;
 
-  String get url => throw _privateConstructorUsedError;
+  String get text;
   @JsonKey(ignore: true)
   $PageTextCopyWith<PageText> get copyWith =>
       throw _privateConstructorUsedError;

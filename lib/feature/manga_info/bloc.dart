@@ -25,7 +25,7 @@ class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
 
   final HttpSource _source;
 
-  MangaInfoBLoC._(ProviderRefBase ref, MangaInfo manga)
+  MangaInfoBLoC._(Ref ref, MangaInfo manga)
       : _source = ref.read(Source.provider) as HttpSource,
         super(MangaInfoState(manga: manga));
 

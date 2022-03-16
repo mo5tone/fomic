@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'screen.dart';
 
@@ -36,6 +38,11 @@ mixin _$Screen {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MangaInfo manga)? mangaInfo,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(MangaInfo manga)? mangaInfo,
     required TResult orElse(),
@@ -44,6 +51,11 @@ mixin _$Screen {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ScreenMangaInfo value) mangaInfo,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ScreenMangaInfo value)? mangaInfo,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -153,14 +165,14 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ScreenMangaInfo &&
-            (identical(other.manga, manga) ||
-                const DeepCollectionEquality().equals(other.manga, manga)));
+        (other.runtimeType == runtimeType &&
+            other is ScreenMangaInfo &&
+            const DeepCollectionEquality().equals(other.manga, manga));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(manga);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(manga));
 
   @JsonKey(ignore: true)
   @override
@@ -173,6 +185,14 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
     required TResult Function(MangaInfo manga) mangaInfo,
   }) {
     return mangaInfo(manga);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MangaInfo manga)? mangaInfo,
+  }) {
+    return mangaInfo?.call(manga);
   }
 
   @override
@@ -197,6 +217,14 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ScreenMangaInfo value)? mangaInfo,
+  }) {
+    return mangaInfo?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ScreenMangaInfo value)? mangaInfo,
     required TResult orElse(),
@@ -213,7 +241,7 @@ abstract class ScreenMangaInfo extends Screen {
   ScreenMangaInfo._() : super._();
 
   @override
-  MangaInfo get manga => throw _privateConstructorUsedError;
+  MangaInfo get manga;
   @override
   @JsonKey(ignore: true)
   $ScreenMangaInfoCopyWith<ScreenMangaInfo> get copyWith =>

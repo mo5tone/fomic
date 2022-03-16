@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
 import 'package:fomic/common/bloc/theme_bloc.dart';
 import 'package:fomic/feature/setting/view.dart';
 import 'package:fomic/feature/source/mangas/view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Fomic extends HookConsumerWidget {
   const Fomic({Key? key}) : super(key: key);
@@ -14,8 +14,8 @@ class Fomic extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     EasyLoading.instance.maskType = EasyLoadingMaskType.clear;
     final themeState = ref.watch(ThemeBLoC.provider);
-    ref.listen<HUDState>(HUDBLoC.provider, (value) {
-      value.when(toast: (message, duration) {
+    ref.listen<HUDState>(HUDBLoC.provider, (previous, next) {
+      next.when(toast: (message, duration) {
         EasyLoading.showToast(message, duration: duration);
       }, loading: () {
         EasyLoading.show();
@@ -63,10 +63,9 @@ class _Home extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = usePageController();
-    ref.listen<StateController<int>>(
-      _currentIndex,
-      (value) => pageController.animateToPage(value.state, duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
-    );
+    ref.listen<int>(_currentIndex, (previous, next) {
+      pageController.animateToPage(next, duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn);
+    });
     return Scaffold(
       body: PageView.builder(
         controller: pageController,
@@ -76,8 +75,8 @@ class _Home extends HookConsumerWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomNavigationBarItems,
-        onTap: (index) => ref.read(_currentIndex).state = index,
-        currentIndex: ref.watch(_currentIndex).state,
+        onTap: (index) => ref.read(_currentIndex.notifier).state = index,
+        currentIndex: ref.watch(_currentIndex),
       ),
     );
   }

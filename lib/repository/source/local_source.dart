@@ -1,7 +1,7 @@
+import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/chapter_info.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 
@@ -12,7 +12,10 @@ class LocalSource extends CatalogueSource {
   int get id => 0;
 
   @override
-  String get name => 'Local';
+  String get name => '本地资源';
+
+  @override
+  String get lang => 'zh';
 
   @override
   // TODO: implement supportsLatest
@@ -31,7 +34,7 @@ class LocalSource extends CatalogueSource {
   }
 
   @override
-  Future<MangasPage> fetchSearchManga({required int page, required String query, required List<Filter> filters}) {
+  Future<MangasPage> searchManga({required int page, required String query, required List<Filter> filters}) {
     // TODO: implement fetchSearchManga
     throw UnimplementedError();
   }

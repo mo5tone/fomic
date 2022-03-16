@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'hud_bloc.dart';
 
@@ -45,6 +47,13 @@ mixin _$HUDEvent {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? show,
+    TResult Function()? dismiss,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message, Duration? duration)? toast,
     TResult Function()? show,
@@ -57,6 +66,13 @@ mixin _$HUDEvent {
     required TResult Function(HUDEventToast value) toast,
     required TResult Function(HUDEventShow value) show,
     required TResult Function(HUDEventDismiss value) dismiss,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDEventToast value)? toast,
+    TResult Function(HUDEventShow value)? show,
+    TResult Function(HUDEventDismiss value)? dismiss,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -147,20 +163,17 @@ class _$HUDEventToast with DiagnosticableTreeMixin implements HUDEventToast {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is HUDEventToast &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)));
+        (other.runtimeType == runtimeType &&
+            other is HUDEventToast &&
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.duration, duration));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(duration);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(duration));
 
   @JsonKey(ignore: true)
   @override
@@ -175,6 +188,16 @@ class _$HUDEventToast with DiagnosticableTreeMixin implements HUDEventToast {
     required TResult Function() dismiss,
   }) {
     return toast(message, duration);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? show,
+    TResult Function()? dismiss,
+  }) {
+    return toast?.call(message, duration);
   }
 
   @override
@@ -203,6 +226,16 @@ class _$HUDEventToast with DiagnosticableTreeMixin implements HUDEventToast {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDEventToast value)? toast,
+    TResult Function(HUDEventShow value)? show,
+    TResult Function(HUDEventDismiss value)? dismiss,
+  }) {
+    return toast?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(HUDEventToast value)? toast,
     TResult Function(HUDEventShow value)? show,
@@ -220,8 +253,8 @@ abstract class HUDEventToast implements HUDEvent {
   const factory HUDEventToast(String message, {Duration? duration}) =
       _$HUDEventToast;
 
-  String get message => throw _privateConstructorUsedError;
-  Duration? get duration => throw _privateConstructorUsedError;
+  String get message;
+  Duration? get duration;
   @JsonKey(ignore: true)
   $HUDEventToastCopyWith<HUDEventToast> get copyWith =>
       throw _privateConstructorUsedError;
@@ -263,7 +296,8 @@ class _$HUDEventShow with DiagnosticableTreeMixin implements HUDEventShow {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is HUDEventShow);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is HUDEventShow);
   }
 
   @override
@@ -277,6 +311,16 @@ class _$HUDEventShow with DiagnosticableTreeMixin implements HUDEventShow {
     required TResult Function() dismiss,
   }) {
     return show();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? show,
+    TResult Function()? dismiss,
+  }) {
+    return show?.call();
   }
 
   @override
@@ -301,6 +345,16 @@ class _$HUDEventShow with DiagnosticableTreeMixin implements HUDEventShow {
     required TResult Function(HUDEventDismiss value) dismiss,
   }) {
     return show(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDEventToast value)? toast,
+    TResult Function(HUDEventShow value)? show,
+    TResult Function(HUDEventDismiss value)? dismiss,
+  }) {
+    return show?.call(this);
   }
 
   @override
@@ -360,7 +414,8 @@ class _$HUDEventDismiss
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is HUDEventDismiss);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is HUDEventDismiss);
   }
 
   @override
@@ -374,6 +429,16 @@ class _$HUDEventDismiss
     required TResult Function() dismiss,
   }) {
     return dismiss();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? show,
+    TResult Function()? dismiss,
+  }) {
+    return dismiss?.call();
   }
 
   @override
@@ -398,6 +463,16 @@ class _$HUDEventDismiss
     required TResult Function(HUDEventDismiss value) dismiss,
   }) {
     return dismiss(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDEventToast value)? toast,
+    TResult Function(HUDEventShow value)? show,
+    TResult Function(HUDEventDismiss value)? dismiss,
+  }) {
+    return dismiss?.call(this);
   }
 
   @override
@@ -452,6 +527,13 @@ mixin _$HUDState {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? loading,
+    TResult Function()? done,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message, Duration? duration)? toast,
     TResult Function()? loading,
@@ -464,6 +546,13 @@ mixin _$HUDState {
     required TResult Function(HUDStateToast value) toast,
     required TResult Function(HUDStateLoading value) loading,
     required TResult Function(HUDStateDone value) done,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDStateToast value)? toast,
+    TResult Function(HUDStateLoading value)? loading,
+    TResult Function(HUDStateDone value)? done,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -554,20 +643,17 @@ class _$HUDStateToast with DiagnosticableTreeMixin implements HUDStateToast {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is HUDStateToast &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)));
+        (other.runtimeType == runtimeType &&
+            other is HUDStateToast &&
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.duration, duration));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(duration);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(duration));
 
   @JsonKey(ignore: true)
   @override
@@ -582,6 +668,16 @@ class _$HUDStateToast with DiagnosticableTreeMixin implements HUDStateToast {
     required TResult Function() done,
   }) {
     return toast(message, duration);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? loading,
+    TResult Function()? done,
+  }) {
+    return toast?.call(message, duration);
   }
 
   @override
@@ -610,6 +706,16 @@ class _$HUDStateToast with DiagnosticableTreeMixin implements HUDStateToast {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDStateToast value)? toast,
+    TResult Function(HUDStateLoading value)? loading,
+    TResult Function(HUDStateDone value)? done,
+  }) {
+    return toast?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(HUDStateToast value)? toast,
     TResult Function(HUDStateLoading value)? loading,
@@ -627,8 +733,8 @@ abstract class HUDStateToast implements HUDState {
   const factory HUDStateToast(String message, {Duration? duration}) =
       _$HUDStateToast;
 
-  String get message => throw _privateConstructorUsedError;
-  Duration? get duration => throw _privateConstructorUsedError;
+  String get message;
+  Duration? get duration;
   @JsonKey(ignore: true)
   $HUDStateToastCopyWith<HUDStateToast> get copyWith =>
       throw _privateConstructorUsedError;
@@ -672,7 +778,8 @@ class _$HUDStateLoading
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is HUDStateLoading);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is HUDStateLoading);
   }
 
   @override
@@ -686,6 +793,16 @@ class _$HUDStateLoading
     required TResult Function() done,
   }) {
     return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? loading,
+    TResult Function()? done,
+  }) {
+    return loading?.call();
   }
 
   @override
@@ -710,6 +827,16 @@ class _$HUDStateLoading
     required TResult Function(HUDStateDone value) done,
   }) {
     return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDStateToast value)? toast,
+    TResult Function(HUDStateLoading value)? loading,
+    TResult Function(HUDStateDone value)? done,
+  }) {
+    return loading?.call(this);
   }
 
   @override
@@ -767,7 +894,8 @@ class _$HUDStateDone with DiagnosticableTreeMixin implements HUDStateDone {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is HUDStateDone);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is HUDStateDone);
   }
 
   @override
@@ -781,6 +909,16 @@ class _$HUDStateDone with DiagnosticableTreeMixin implements HUDStateDone {
     required TResult Function() done,
   }) {
     return done();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message, Duration? duration)? toast,
+    TResult Function()? loading,
+    TResult Function()? done,
+  }) {
+    return done?.call();
   }
 
   @override
@@ -805,6 +943,16 @@ class _$HUDStateDone with DiagnosticableTreeMixin implements HUDStateDone {
     required TResult Function(HUDStateDone value) done,
   }) {
     return done(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(HUDStateToast value)? toast,
+    TResult Function(HUDStateLoading value)? loading,
+    TResult Function(HUDStateDone value)? done,
+  }) {
+    return done?.call(this);
   }
 
   @override

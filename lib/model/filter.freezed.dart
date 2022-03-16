@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'filter.dart';
 
@@ -16,50 +18,51 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$FilterTearOff {
   const _$FilterTearOff();
 
-  FilterNote note(String name) {
-    return FilterNote(
+  FilterHeader header(String name) {
+    return FilterHeader(
       name,
     );
   }
 
-  FilterText text(String name, {String value = ''}) {
-    return FilterText(
-      name,
-      value: value,
-    );
+  FilterSeparator separator() {
+    return const FilterSeparator();
   }
 
-  FilterCheck check(String name,
-      {bool allowsExclusion = false, bool value = false}) {
-    return FilterCheck(
-      name,
-      allowsExclusion: allowsExclusion,
-      value: value,
-    );
-  }
-
-  FilterSelect select(String name, List<MapEntry<String, dynamic>> options,
-      {int value = 0}) {
+  FilterSelect select(String name, List<String> options, {int state = 0}) {
     return FilterSelect(
       name,
       options,
-      value: value,
+      state: state,
     );
   }
 
-  FilterGroup group(String name, List<Filter> filterList) {
+  FilterText text(String name, {String state = ''}) {
+    return FilterText(
+      name,
+      state: state,
+    );
+  }
+
+  FilterCheck check(String name, {bool state = false}) {
+    return FilterCheck(
+      name,
+      state: state,
+    );
+  }
+
+  FilterGroup group(String name, List<Filter> state) {
     return FilterGroup(
       name,
-      filterList,
+      state,
     );
   }
 
-  FilterSort sort(String name, List<MapEntry<String, dynamic>> options,
-      int value, bool ascending) {
+  FilterSort sort(
+      String name, List<String> options, int state, bool ascending) {
     return FilterSort(
       name,
       options,
-      value,
+      state,
       ascending,
     );
   }
@@ -70,69 +73,87 @@ const $Filter = _$FilterTearOff();
 
 /// @nodoc
 mixin _$Filter {
-  String get name => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
+        sort,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
         sort,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
     TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $FilterCopyWith<Filter> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $FilterCopyWith<$Res> {
   factory $FilterCopyWith(Filter value, $Res Function(Filter) then) =
       _$FilterCopyWithImpl<$Res>;
-  $Res call({String name});
 }
 
 /// @nodoc
@@ -142,43 +163,31 @@ class _$FilterCopyWithImpl<$Res> implements $FilterCopyWith<$Res> {
   final Filter _value;
   // ignore: unused_field
   final $Res Function(Filter) _then;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-  }) {
-    return _then(_value.copyWith(
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class $FilterNoteCopyWith<$Res> implements $FilterCopyWith<$Res> {
-  factory $FilterNoteCopyWith(
-          FilterNote value, $Res Function(FilterNote) then) =
-      _$FilterNoteCopyWithImpl<$Res>;
-  @override
+abstract class $FilterHeaderCopyWith<$Res> {
+  factory $FilterHeaderCopyWith(
+          FilterHeader value, $Res Function(FilterHeader) then) =
+      _$FilterHeaderCopyWithImpl<$Res>;
   $Res call({String name});
 }
 
 /// @nodoc
-class _$FilterNoteCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
-    implements $FilterNoteCopyWith<$Res> {
-  _$FilterNoteCopyWithImpl(FilterNote _value, $Res Function(FilterNote) _then)
-      : super(_value, (v) => _then(v as FilterNote));
+class _$FilterHeaderCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
+    implements $FilterHeaderCopyWith<$Res> {
+  _$FilterHeaderCopyWithImpl(
+      FilterHeader _value, $Res Function(FilterHeader) _then)
+      : super(_value, (v) => _then(v as FilterHeader));
 
   @override
-  FilterNote get _value => super._value as FilterNote;
+  FilterHeader get _value => super._value as FilterHeader;
 
   @override
   $Res call({
     Object? name = freezed,
   }) {
-    return _then(FilterNote(
+    return _then(FilterHeader(
       name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -189,77 +198,91 @@ class _$FilterNoteCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FilterNote with DiagnosticableTreeMixin implements FilterNote {
-  const _$FilterNote(this.name);
+class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
+  const _$FilterHeader(this.name);
 
   @override
   final String name;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.note(name: $name)';
+    return 'Filter.header(name: $name)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'Filter.note'))
+      ..add(DiagnosticsProperty('type', 'Filter.header'))
       ..add(DiagnosticsProperty('name', name));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is FilterNote &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is FilterHeader &&
+            const DeepCollectionEquality().equals(other.name, name));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(name));
 
   @JsonKey(ignore: true)
   @override
-  $FilterNoteCopyWith<FilterNote> get copyWith =>
-      _$FilterNoteCopyWithImpl<FilterNote>(this, _$identity);
+  $FilterHeaderCopyWith<FilterHeader> get copyWith =>
+      _$FilterHeaderCopyWithImpl<FilterHeader>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return note(name);
+    return header(name);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return header?.call(name);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) {
-    if (note != null) {
-      return note(name);
+    if (header != null) {
+      return header(name);
     }
     return orElse();
   }
@@ -267,162 +290,153 @@ class _$FilterNote with DiagnosticableTreeMixin implements FilterNote {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
-    return note(this);
+    return header(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return header?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterSelect value)? select,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
-    if (note != null) {
-      return note(this);
+    if (header != null) {
+      return header(this);
     }
     return orElse();
   }
 }
 
-abstract class FilterNote implements Filter {
-  const factory FilterNote(String name) = _$FilterNote;
+abstract class FilterHeader implements Filter {
+  const factory FilterHeader(String name) = _$FilterHeader;
 
-  @override
-  String get name => throw _privateConstructorUsedError;
-  @override
+  String get name;
   @JsonKey(ignore: true)
-  $FilterNoteCopyWith<FilterNote> get copyWith =>
+  $FilterHeaderCopyWith<FilterHeader> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterTextCopyWith<$Res> implements $FilterCopyWith<$Res> {
-  factory $FilterTextCopyWith(
-          FilterText value, $Res Function(FilterText) then) =
-      _$FilterTextCopyWithImpl<$Res>;
-  @override
-  $Res call({String name, String value});
+abstract class $FilterSeparatorCopyWith<$Res> {
+  factory $FilterSeparatorCopyWith(
+          FilterSeparator value, $Res Function(FilterSeparator) then) =
+      _$FilterSeparatorCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$FilterTextCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
-    implements $FilterTextCopyWith<$Res> {
-  _$FilterTextCopyWithImpl(FilterText _value, $Res Function(FilterText) _then)
-      : super(_value, (v) => _then(v as FilterText));
+class _$FilterSeparatorCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
+    implements $FilterSeparatorCopyWith<$Res> {
+  _$FilterSeparatorCopyWithImpl(
+      FilterSeparator _value, $Res Function(FilterSeparator) _then)
+      : super(_value, (v) => _then(v as FilterSeparator));
 
   @override
-  FilterText get _value => super._value as FilterText;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? value = freezed,
-  }) {
-    return _then(FilterText(
-      name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+  FilterSeparator get _value => super._value as FilterSeparator;
 }
 
 /// @nodoc
 
-class _$FilterText with DiagnosticableTreeMixin implements FilterText {
-  const _$FilterText(this.name, {this.value = ''});
-
-  @override
-  final String name;
-  @JsonKey(defaultValue: '')
-  @override
-  final String value;
+class _$FilterSeparator
+    with DiagnosticableTreeMixin
+    implements FilterSeparator {
+  const _$FilterSeparator();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.text(name: $name, value: $value)';
+    return 'Filter.separator()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Filter.text'))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('value', value));
+    properties..add(DiagnosticsProperty('type', 'Filter.separator'));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is FilterText &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType && other is FilterSeparator);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value);
-
-  @JsonKey(ignore: true)
-  @override
-  $FilterTextCopyWith<FilterText> get copyWith =>
-      _$FilterTextCopyWithImpl<FilterText>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return text(name, value);
+    return separator();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return separator?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) {
-    if (text != null) {
-      return text(name, value);
+    if (separator != null) {
+      return separator();
     }
     return orElse();
   }
@@ -430,234 +444,60 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
-    return text(this);
+    return separator(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return separator?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterSelect value)? select,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
-    if (text != null) {
-      return text(this);
+    if (separator != null) {
+      return separator(this);
     }
     return orElse();
   }
 }
 
-abstract class FilterText implements Filter {
-  const factory FilterText(String name, {String value}) = _$FilterText;
-
-  @override
-  String get name => throw _privateConstructorUsedError;
-  String get value => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  $FilterTextCopyWith<FilterText> get copyWith =>
-      throw _privateConstructorUsedError;
+abstract class FilterSeparator implements Filter {
+  const factory FilterSeparator() = _$FilterSeparator;
 }
 
 /// @nodoc
-abstract class $FilterCheckCopyWith<$Res> implements $FilterCopyWith<$Res> {
-  factory $FilterCheckCopyWith(
-          FilterCheck value, $Res Function(FilterCheck) then) =
-      _$FilterCheckCopyWithImpl<$Res>;
-  @override
-  $Res call({String name, bool allowsExclusion, bool value});
-}
-
-/// @nodoc
-class _$FilterCheckCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
-    implements $FilterCheckCopyWith<$Res> {
-  _$FilterCheckCopyWithImpl(
-      FilterCheck _value, $Res Function(FilterCheck) _then)
-      : super(_value, (v) => _then(v as FilterCheck));
-
-  @override
-  FilterCheck get _value => super._value as FilterCheck;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? allowsExclusion = freezed,
-    Object? value = freezed,
-  }) {
-    return _then(FilterCheck(
-      name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      allowsExclusion: allowsExclusion == freezed
-          ? _value.allowsExclusion
-          : allowsExclusion // ignore: cast_nullable_to_non_nullable
-              as bool,
-      value: value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
-  const _$FilterCheck(this.name,
-      {this.allowsExclusion = false, this.value = false});
-
-  @override
-  final String name;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool allowsExclusion;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool value;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.check(name: $name, allowsExclusion: $allowsExclusion, value: $value)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Filter.check'))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('allowsExclusion', allowsExclusion))
-      ..add(DiagnosticsProperty('value', value));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is FilterCheck &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.allowsExclusion, allowsExclusion) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowsExclusion, allowsExclusion)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(allowsExclusion) ^
-      const DeepCollectionEquality().hash(value);
-
-  @JsonKey(ignore: true)
-  @override
-  $FilterCheckCopyWith<FilterCheck> get copyWith =>
-      _$FilterCheckCopyWithImpl<FilterCheck>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
-        select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
-        sort,
-  }) {
-    return check(name, allowsExclusion, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
-    TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
-        sort,
-    required TResult orElse(),
-  }) {
-    if (check != null) {
-      return check(name, allowsExclusion, value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
-    required TResult Function(FilterText value) text,
-    required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
-    required TResult Function(FilterGroup value) group,
-    required TResult Function(FilterSort value) sort,
-  }) {
-    return check(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
-    TResult Function(FilterText value)? text,
-    TResult Function(FilterCheck value)? check,
-    TResult Function(FilterSelect value)? select,
-    TResult Function(FilterGroup value)? group,
-    TResult Function(FilterSort value)? sort,
-    required TResult orElse(),
-  }) {
-    if (check != null) {
-      return check(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FilterCheck implements Filter {
-  const factory FilterCheck(String name, {bool allowsExclusion, bool value}) =
-      _$FilterCheck;
-
-  @override
-  String get name => throw _privateConstructorUsedError;
-  bool get allowsExclusion => throw _privateConstructorUsedError;
-  bool get value => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  $FilterCheckCopyWith<FilterCheck> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FilterSelectCopyWith<$Res> implements $FilterCopyWith<$Res> {
+abstract class $FilterSelectCopyWith<$Res> {
   factory $FilterSelectCopyWith(
           FilterSelect value, $Res Function(FilterSelect) then) =
       _$FilterSelectCopyWithImpl<$Res>;
-  @override
-  $Res call({String name, List<MapEntry<String, dynamic>> options, int value});
+  $Res call({String name, List<String> options, int state});
 }
 
 /// @nodoc
@@ -674,7 +514,7 @@ class _$FilterSelectCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? options = freezed,
-    Object? value = freezed,
+    Object? state = freezed,
   }) {
     return _then(FilterSelect(
       name == freezed
@@ -684,10 +524,10 @@ class _$FilterSelectCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
       options == freezed
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<MapEntry<String, dynamic>>,
-      value: value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      state: state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -696,19 +536,19 @@ class _$FilterSelectCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
-  const _$FilterSelect(this.name, this.options, {this.value = 0});
+  const _$FilterSelect(this.name, this.options, {this.state = 0});
 
   @override
   final String name;
   @override
-  final List<MapEntry<String, dynamic>> options;
-  @JsonKey(defaultValue: 0)
+  final List<String> options;
+  @JsonKey()
   @override
-  final int value;
+  final int state;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.select(name: $name, options: $options, value: $value)';
+    return 'Filter.select(name: $name, options: $options, state: $state)';
   }
 
   @override
@@ -718,28 +558,25 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
       ..add(DiagnosticsProperty('type', 'Filter.select'))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('options', options))
-      ..add(DiagnosticsProperty('value', value));
+      ..add(DiagnosticsProperty('state', state));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is FilterSelect &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is FilterSelect &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.options, options) &&
+            const DeepCollectionEquality().equals(other.state, state));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(options) ^
-      const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(options),
+      const DeepCollectionEquality().hash(state));
 
   @JsonKey(ignore: true)
   @override
@@ -749,38 +586,52 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return select(name, options, value);
+    return select(name, options, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return select?.call(name, options, state);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) {
     if (select != null) {
-      return select(name, options, value);
+      return select(name, options, state);
     }
     return orElse();
   }
@@ -788,10 +639,11 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
@@ -800,11 +652,26 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return select?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
     TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
@@ -817,28 +684,404 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
 }
 
 abstract class FilterSelect implements Filter {
-  const factory FilterSelect(
-          String name, List<MapEntry<String, dynamic>> options, {int value}) =
+  const factory FilterSelect(String name, List<String> options, {int state}) =
       _$FilterSelect;
 
-  @override
-  String get name => throw _privateConstructorUsedError;
-  List<MapEntry<String, dynamic>> get options =>
-      throw _privateConstructorUsedError;
-  int get value => throw _privateConstructorUsedError;
-  @override
+  String get name;
+  List<String> get options;
+  int get state;
   @JsonKey(ignore: true)
   $FilterSelectCopyWith<FilterSelect> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterGroupCopyWith<$Res> implements $FilterCopyWith<$Res> {
+abstract class $FilterTextCopyWith<$Res> {
+  factory $FilterTextCopyWith(
+          FilterText value, $Res Function(FilterText) then) =
+      _$FilterTextCopyWithImpl<$Res>;
+  $Res call({String name, String state});
+}
+
+/// @nodoc
+class _$FilterTextCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
+    implements $FilterTextCopyWith<$Res> {
+  _$FilterTextCopyWithImpl(FilterText _value, $Res Function(FilterText) _then)
+      : super(_value, (v) => _then(v as FilterText));
+
+  @override
+  FilterText get _value => super._value as FilterText;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? state = freezed,
+  }) {
+    return _then(FilterText(
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      state: state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FilterText with DiagnosticableTreeMixin implements FilterText {
+  const _$FilterText(this.name, {this.state = ''});
+
+  @override
+  final String name;
+  @JsonKey()
+  @override
+  final String state;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'Filter.text(name: $name, state: $state)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Filter.text'))
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('state', state));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FilterText &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.state, state));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(state));
+
+  @JsonKey(ignore: true)
+  @override
+  $FilterTextCopyWith<FilterText> get copyWith =>
+      _$FilterTextCopyWithImpl<FilterText>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
+        select,
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
+        sort,
+  }) {
+    return text(name, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return text?.call(name, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+    required TResult orElse(),
+  }) {
+    if (text != null) {
+      return text(name, state);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
+    required TResult Function(FilterText value) text,
+    required TResult Function(FilterCheck value) check,
+    required TResult Function(FilterGroup value) group,
+    required TResult Function(FilterSort value) sort,
+  }) {
+    return text(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return text?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+    required TResult orElse(),
+  }) {
+    if (text != null) {
+      return text(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FilterText implements Filter {
+  const factory FilterText(String name, {String state}) = _$FilterText;
+
+  String get name;
+  String get state;
+  @JsonKey(ignore: true)
+  $FilterTextCopyWith<FilterText> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FilterCheckCopyWith<$Res> {
+  factory $FilterCheckCopyWith(
+          FilterCheck value, $Res Function(FilterCheck) then) =
+      _$FilterCheckCopyWithImpl<$Res>;
+  $Res call({String name, bool state});
+}
+
+/// @nodoc
+class _$FilterCheckCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
+    implements $FilterCheckCopyWith<$Res> {
+  _$FilterCheckCopyWithImpl(
+      FilterCheck _value, $Res Function(FilterCheck) _then)
+      : super(_value, (v) => _then(v as FilterCheck));
+
+  @override
+  FilterCheck get _value => super._value as FilterCheck;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? state = freezed,
+  }) {
+    return _then(FilterCheck(
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      state: state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
+  const _$FilterCheck(this.name, {this.state = false});
+
+  @override
+  final String name;
+  @JsonKey()
+  @override
+  final bool state;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'Filter.check(name: $name, state: $state)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Filter.check'))
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('state', state));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FilterCheck &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.state, state));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(state));
+
+  @JsonKey(ignore: true)
+  @override
+  $FilterCheckCopyWith<FilterCheck> get copyWith =>
+      _$FilterCheckCopyWithImpl<FilterCheck>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
+        select,
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
+        sort,
+  }) {
+    return check(name, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return check?.call(name, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+    required TResult orElse(),
+  }) {
+    if (check != null) {
+      return check(name, state);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
+    required TResult Function(FilterText value) text,
+    required TResult Function(FilterCheck value) check,
+    required TResult Function(FilterGroup value) group,
+    required TResult Function(FilterSort value) sort,
+  }) {
+    return check(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return check?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+    required TResult orElse(),
+  }) {
+    if (check != null) {
+      return check(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FilterCheck implements Filter {
+  const factory FilterCheck(String name, {bool state}) = _$FilterCheck;
+
+  String get name;
+  bool get state;
+  @JsonKey(ignore: true)
+  $FilterCheckCopyWith<FilterCheck> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FilterGroupCopyWith<$Res> {
   factory $FilterGroupCopyWith(
           FilterGroup value, $Res Function(FilterGroup) then) =
       _$FilterGroupCopyWithImpl<$Res>;
-  @override
-  $Res call({String name, List<Filter> filterList});
+  $Res call({String name, List<Filter> state});
 }
 
 /// @nodoc
@@ -854,16 +1097,16 @@ class _$FilterGroupCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? filterList = freezed,
+    Object? state = freezed,
   }) {
     return _then(FilterGroup(
       name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      filterList == freezed
-          ? _value.filterList
-          : filterList // ignore: cast_nullable_to_non_nullable
+      state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
               as List<Filter>,
     ));
   }
@@ -872,16 +1115,16 @@ class _$FilterGroupCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
-  const _$FilterGroup(this.name, this.filterList);
+  const _$FilterGroup(this.name, this.state);
 
   @override
   final String name;
   @override
-  final List<Filter> filterList;
+  final List<Filter> state;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.group(name: $name, filterList: $filterList)';
+    return 'Filter.group(name: $name, state: $state)';
   }
 
   @override
@@ -890,25 +1133,23 @@ class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
     properties
       ..add(DiagnosticsProperty('type', 'Filter.group'))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('filterList', filterList));
+      ..add(DiagnosticsProperty('state', state));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is FilterGroup &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.filterList, filterList) ||
-                const DeepCollectionEquality()
-                    .equals(other.filterList, filterList)));
+        (other.runtimeType == runtimeType &&
+            other is FilterGroup &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.state, state));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(filterList);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(state));
 
   @JsonKey(ignore: true)
   @override
@@ -918,38 +1159,52 @@ class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return group(name, filterList);
+    return group(name, state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return group?.call(name, state);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) {
     if (group != null) {
-      return group(name, filterList);
+      return group(name, state);
     }
     return orElse();
   }
@@ -957,10 +1212,11 @@ class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
@@ -969,11 +1225,26 @@ class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return group?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
     TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
@@ -986,29 +1257,21 @@ class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
 }
 
 abstract class FilterGroup implements Filter {
-  const factory FilterGroup(String name, List<Filter> filterList) =
-      _$FilterGroup;
+  const factory FilterGroup(String name, List<Filter> state) = _$FilterGroup;
 
-  @override
-  String get name => throw _privateConstructorUsedError;
-  List<Filter> get filterList => throw _privateConstructorUsedError;
-  @override
+  String get name;
+  List<Filter> get state;
   @JsonKey(ignore: true)
   $FilterGroupCopyWith<FilterGroup> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterSortCopyWith<$Res> implements $FilterCopyWith<$Res> {
+abstract class $FilterSortCopyWith<$Res> {
   factory $FilterSortCopyWith(
           FilterSort value, $Res Function(FilterSort) then) =
       _$FilterSortCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {String name,
-      List<MapEntry<String, dynamic>> options,
-      int value,
-      bool ascending});
+  $Res call({String name, List<String> options, int state, bool ascending});
 }
 
 /// @nodoc
@@ -1024,7 +1287,7 @@ class _$FilterSortCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? options = freezed,
-    Object? value = freezed,
+    Object? state = freezed,
     Object? ascending = freezed,
   }) {
     return _then(FilterSort(
@@ -1035,10 +1298,10 @@ class _$FilterSortCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
       options == freezed
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<MapEntry<String, dynamic>>,
-      value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      state == freezed
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
               as int,
       ascending == freezed
           ? _value.ascending
@@ -1051,20 +1314,20 @@ class _$FilterSortCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
-  const _$FilterSort(this.name, this.options, this.value, this.ascending);
+  const _$FilterSort(this.name, this.options, this.state, this.ascending);
 
   @override
   final String name;
   @override
-  final List<MapEntry<String, dynamic>> options;
+  final List<String> options;
   @override
-  final int value;
+  final int state;
   @override
   final bool ascending;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.sort(name: $name, options: $options, value: $value, ascending: $ascending)';
+    return 'Filter.sort(name: $name, options: $options, state: $state, ascending: $ascending)';
   }
 
   @override
@@ -1074,33 +1337,28 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
       ..add(DiagnosticsProperty('type', 'Filter.sort'))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('options', options))
-      ..add(DiagnosticsProperty('value', value))
+      ..add(DiagnosticsProperty('state', state))
       ..add(DiagnosticsProperty('ascending', ascending));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is FilterSort &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)) &&
-            (identical(other.ascending, ascending) ||
-                const DeepCollectionEquality()
-                    .equals(other.ascending, ascending)));
+        (other.runtimeType == runtimeType &&
+            other is FilterSort &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.options, options) &&
+            const DeepCollectionEquality().equals(other.state, state) &&
+            const DeepCollectionEquality().equals(other.ascending, ascending));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(options) ^
-      const DeepCollectionEquality().hash(value) ^
-      const DeepCollectionEquality().hash(ascending);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(options),
+      const DeepCollectionEquality().hash(state),
+      const DeepCollectionEquality().hash(ascending));
 
   @JsonKey(ignore: true)
   @override
@@ -1110,38 +1368,52 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name) note,
-    required TResult Function(String name, String value) text,
-    required TResult Function(String name, bool allowsExclusion, bool value)
-        check,
-    required TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)
+    required TResult Function(String name) header,
+    required TResult Function() separator,
+    required TResult Function(String name, List<String> options, int state)
         select,
-    required TResult Function(String name, List<Filter> filterList) group,
-    required TResult Function(String name,
-            List<MapEntry<String, dynamic>> options, int value, bool ascending)
+    required TResult Function(String name, String state) text,
+    required TResult Function(String name, bool state) check,
+    required TResult Function(String name, List<Filter> state) group,
+    required TResult Function(
+            String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return sort(name, options, value, ascending);
+    return sort(name, options, state, ascending);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
+    TResult Function(
+            String name, List<String> options, int state, bool ascending)?
+        sort,
+  }) {
+    return sort?.call(name, options, state, ascending);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? note,
-    TResult Function(String name, String value)? text,
-    TResult Function(String name, bool allowsExclusion, bool value)? check,
+    TResult Function(String name)? header,
+    TResult Function()? separator,
+    TResult Function(String name, List<String> options, int state)? select,
+    TResult Function(String name, String state)? text,
+    TResult Function(String name, bool state)? check,
+    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
-            String name, List<MapEntry<String, dynamic>> options, int value)?
-        select,
-    TResult Function(String name, List<Filter> filterList)? group,
-    TResult Function(String name, List<MapEntry<String, dynamic>> options,
-            int value, bool ascending)?
+            String name, List<String> options, int state, bool ascending)?
         sort,
     required TResult orElse(),
   }) {
     if (sort != null) {
-      return sort(name, options, value, ascending);
+      return sort(name, options, state, ascending);
     }
     return orElse();
   }
@@ -1149,10 +1421,11 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FilterNote value) note,
+    required TResult Function(FilterHeader value) header,
+    required TResult Function(FilterSeparator value) separator,
+    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterSelect value) select,
     required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
@@ -1161,11 +1434,26 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterNote value)? note,
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
+    TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
+    TResult Function(FilterGroup value)? group,
+    TResult Function(FilterSort value)? sort,
+  }) {
+    return sort?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FilterHeader value)? header,
+    TResult Function(FilterSeparator value)? separator,
     TResult Function(FilterSelect value)? select,
+    TResult Function(FilterText value)? text,
+    TResult Function(FilterCheck value)? check,
     TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
@@ -1178,16 +1466,14 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
 }
 
 abstract class FilterSort implements Filter {
-  const factory FilterSort(String name, List<MapEntry<String, dynamic>> options,
-      int value, bool ascending) = _$FilterSort;
+  const factory FilterSort(
+          String name, List<String> options, int state, bool ascending) =
+      _$FilterSort;
 
-  @override
-  String get name => throw _privateConstructorUsedError;
-  List<MapEntry<String, dynamic>> get options =>
-      throw _privateConstructorUsedError;
-  int get value => throw _privateConstructorUsedError;
-  bool get ascending => throw _privateConstructorUsedError;
-  @override
+  String get name;
+  List<String> get options;
+  int get state;
+  bool get ascending;
   @JsonKey(ignore: true)
   $FilterSortCopyWith<FilterSort> get copyWith =>
       throw _privateConstructorUsedError;

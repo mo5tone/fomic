@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/repository/service/requisition.dart';
+import 'package:fomic/repository/service/request.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
 
@@ -11,7 +11,7 @@ class Networker {
 
   final Dio _dio;
 
-  Networker._(ProviderRefBase ref, BaseOptions baseOptions)
+  Networker._(Ref ref, BaseOptions baseOptions)
       : _dio = Dio(
           baseOptions
             ..connectTimeout = 5000
@@ -19,7 +19,7 @@ class Networker {
             ..sendTimeout = 3000,
         )..interceptors.add(_LoadingIndicator(ref));
 
-  Future<T> fetch<T>(Requisition req, {required T Function(Response<dynamic>) parser}) async {
+  Future<T> fetch<T>(Request req, {required T Function(Response<dynamic>) parser}) async {
     return _dio
         .request(
           req.path,
@@ -42,25 +42,25 @@ class Networker {
 }
 
 class _LoadingIndicator extends Interceptor {
-  final HUDBLoC _hudBLoc;
+  final HUDBLoC _hudBLoC;
 
-  _LoadingIndicator(ProviderRefBase ref) : _hudBLoc = ref.read(HUDBLoC.provider.notifier);
+  _LoadingIndicator(Ref ref) : _hudBLoC = ref.read(HUDBLoC.provider.notifier);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    _hudBLoc.add(const HUDEvent.show());
+    _hudBLoC.add(const HUDEvent.show());
     super.onRequest(options, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    _hudBLoc.add(HUDEvent.toast(err.message));
+    _hudBLoC.add(HUDEvent.toast(err.message));
     super.onError(err, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    _hudBLoc.add(const HUDEvent.dismiss());
+    _hudBLoC.add(const HUDEvent.dismiss());
     super.onResponse(response, handler);
   }
 }

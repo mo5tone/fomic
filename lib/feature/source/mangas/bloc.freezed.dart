@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'bloc.dart';
 
@@ -37,6 +39,12 @@ mixin _$SourceMangasEvent {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? load,
+    TResult Function()? refresh,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? load,
     TResult Function()? refresh,
@@ -47,6 +55,12 @@ mixin _$SourceMangasEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(SourceMangasEventLoad value) load,
     required TResult Function(SourceMangasEventRefresh value) refresh,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SourceMangasEventLoad value)? load,
+    TResult Function(SourceMangasEventRefresh value)? refresh,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -114,7 +128,8 @@ class _$SourceMangasEventLoad
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SourceMangasEventLoad);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is SourceMangasEventLoad);
   }
 
   @override
@@ -127,6 +142,15 @@ class _$SourceMangasEventLoad
     required TResult Function() refresh,
   }) {
     return load();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? load,
+    TResult Function()? refresh,
+  }) {
+    return load?.call();
   }
 
   @override
@@ -149,6 +173,15 @@ class _$SourceMangasEventLoad
     required TResult Function(SourceMangasEventRefresh value) refresh,
   }) {
     return load(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SourceMangasEventLoad value)? load,
+    TResult Function(SourceMangasEventRefresh value)? refresh,
+  }) {
+    return load?.call(this);
   }
 
   @override
@@ -209,7 +242,8 @@ class _$SourceMangasEventRefresh
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SourceMangasEventRefresh);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is SourceMangasEventRefresh);
   }
 
   @override
@@ -222,6 +256,15 @@ class _$SourceMangasEventRefresh
     required TResult Function() refresh,
   }) {
     return refresh();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? load,
+    TResult Function()? refresh,
+  }) {
+    return refresh?.call();
   }
 
   @override
@@ -244,6 +287,15 @@ class _$SourceMangasEventRefresh
     required TResult Function(SourceMangasEventRefresh value) refresh,
   }) {
     return refresh(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SourceMangasEventLoad value)? load,
+    TResult Function(SourceMangasEventRefresh value)? refresh,
+  }) {
+    return refresh?.call(this);
   }
 
   @override
@@ -358,7 +410,7 @@ class _$_SourceMangasState
     implements _SourceMangasState {
   const _$_SourceMangasState({this.pages = const []});
 
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<MangasPage> pages;
 
@@ -378,14 +430,14 @@ class _$_SourceMangasState
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SourceMangasState &&
-            (identical(other.pages, pages) ||
-                const DeepCollectionEquality().equals(other.pages, pages)));
+        (other.runtimeType == runtimeType &&
+            other is _SourceMangasState &&
+            const DeepCollectionEquality().equals(other.pages, pages));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(pages);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(pages));
 
   @JsonKey(ignore: true)
   @override
@@ -398,7 +450,7 @@ abstract class _SourceMangasState implements SourceMangasState {
       _$_SourceMangasState;
 
   @override
-  List<MangasPage> get pages => throw _privateConstructorUsedError;
+  List<MangasPage> get pages;
   @override
   @JsonKey(ignore: true)
   _$SourceMangasStateCopyWith<_SourceMangasState> get copyWith =>

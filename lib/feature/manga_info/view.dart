@@ -22,12 +22,13 @@ class MangaInfoView extends HookConsumerWidget {
     final expandedHeight = mediaQueryData.size.height / 4;
     useEffect(() {
       ref.read(provider.notifier).add(const MangaInfoEvent.refresh());
+      return null;
     });
     final currentTabIndex = StateProvider((_) => 0);
     const tabs = [Tab(icon: Icon(Icons.info)), Tab(icon: Icon(Icons.list))];
     final tabController = useTabController(initialLength: tabs.length);
     tabController.addListener(() {
-      ref.read(currentTabIndex).state = tabController.index;
+      ref.read(currentTabIndex.notifier).state = tabController.index;
     });
     return Scaffold(
       body: NestedScrollView(
@@ -125,7 +126,10 @@ class MangaInfoView extends HookConsumerWidget {
                                               textBaseline: TextBaseline.alphabetic,
                                               children: [
                                                 const Text('Author: '),
-                                                Text(manga.author),
+                                                Text(
+                                                  manga.author,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                               ],
                                             ),
                                         ],
@@ -178,20 +182,26 @@ class MangaInfoView extends HookConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Consumer(
-          builder: (context, ref, child) {
-            final index = ref.watch(currentTabIndex).state;
-            // TODO: implement
-            final isFavorite = false;
-            return Icon(index == 0
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) {
+          final index = ref.watch(currentTabIndex);
+          // TODO: implement
+          final isFavorite = false;
+          return FloatingActionButton(
+            child: Icon(index == 0
                 ? isFavorite
                     ? Icons.favorite
                     : Icons.favorite_border
-                : Icons.play_arrow);
-          },
-        ),
-        onPressed: () => ref.read(provider.notifier).add(const MangaInfoEvent.favorite()),
+                : Icons.play_arrow),
+            onPressed: () {
+              if (index == 0) {
+                ref.read(provider.notifier).add(const MangaInfoEvent.favorite());
+              } else {
+                ref.read(provider.notifier).add(const MangaInfoEvent.favorite());
+              }
+            },
+          );
+        },
       ),
     );
   }

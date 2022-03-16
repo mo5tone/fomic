@@ -8,7 +8,7 @@ import 'package:fomic/repository/source/online/kuai_kan_man_hua.dart';
 abstract class Source {
   static final current = StateProvider((ref) => 1);
   static final provider = Provider<Source>((ref) {
-    final id = ref.watch(current).state;
+    final id = ref.watch(current);
     switch (id) {
       case 1:
         return ref.read(Kuaikanmanhua.provider);
@@ -19,7 +19,9 @@ abstract class Source {
 
   int get id;
   String get name;
-  String get lang => '';
+
+  /// An ISO 639-1 compliant language code (two letters in lower case).
+  String get lang;
 
   const Source();
 

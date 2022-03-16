@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'theme_bloc.dart';
 
@@ -41,6 +43,12 @@ mixin _$ThemeEvent {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MaterialColor primarySwatch)? primarySwatch,
+    TResult Function(Brightness? brightness)? brightness,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(MaterialColor primarySwatch)? primarySwatch,
     TResult Function(Brightness? brightness)? brightness,
@@ -51,6 +59,12 @@ mixin _$ThemeEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(ThemeEventPrimarySwatch value) primarySwatch,
     required TResult Function(ThemeEventBrightness value) brightness,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ThemeEventPrimarySwatch value)? primarySwatch,
+    TResult Function(ThemeEventBrightness value)? brightness,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -136,15 +150,15 @@ class _$ThemeEventPrimarySwatch
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ThemeEventPrimarySwatch &&
-            (identical(other.primarySwatch, primarySwatch) ||
-                const DeepCollectionEquality()
-                    .equals(other.primarySwatch, primarySwatch)));
+        (other.runtimeType == runtimeType &&
+            other is ThemeEventPrimarySwatch &&
+            const DeepCollectionEquality()
+                .equals(other.primarySwatch, primarySwatch));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(primarySwatch);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(primarySwatch));
 
   @JsonKey(ignore: true)
   @override
@@ -159,6 +173,15 @@ class _$ThemeEventPrimarySwatch
     required TResult Function(Brightness? brightness) brightness,
   }) {
     return primarySwatch(this.primarySwatch);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MaterialColor primarySwatch)? primarySwatch,
+    TResult Function(Brightness? brightness)? brightness,
+  }) {
+    return primarySwatch?.call(this.primarySwatch);
   }
 
   @override
@@ -185,6 +208,15 @@ class _$ThemeEventPrimarySwatch
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ThemeEventPrimarySwatch value)? primarySwatch,
+    TResult Function(ThemeEventBrightness value)? brightness,
+  }) {
+    return primarySwatch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ThemeEventPrimarySwatch value)? primarySwatch,
     TResult Function(ThemeEventBrightness value)? brightness,
@@ -201,7 +233,7 @@ abstract class ThemeEventPrimarySwatch implements ThemeEvent {
   const factory ThemeEventPrimarySwatch(MaterialColor primarySwatch) =
       _$ThemeEventPrimarySwatch;
 
-  MaterialColor get primarySwatch => throw _privateConstructorUsedError;
+  MaterialColor get primarySwatch;
   @JsonKey(ignore: true)
   $ThemeEventPrimarySwatchCopyWith<ThemeEventPrimarySwatch> get copyWith =>
       throw _privateConstructorUsedError;
@@ -265,15 +297,15 @@ class _$ThemeEventBrightness
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ThemeEventBrightness &&
-            (identical(other.brightness, brightness) ||
-                const DeepCollectionEquality()
-                    .equals(other.brightness, brightness)));
+        (other.runtimeType == runtimeType &&
+            other is ThemeEventBrightness &&
+            const DeepCollectionEquality()
+                .equals(other.brightness, brightness));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(brightness);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(brightness));
 
   @JsonKey(ignore: true)
   @override
@@ -288,6 +320,15 @@ class _$ThemeEventBrightness
     required TResult Function(Brightness? brightness) brightness,
   }) {
     return brightness(this.brightness);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MaterialColor primarySwatch)? primarySwatch,
+    TResult Function(Brightness? brightness)? brightness,
+  }) {
+    return brightness?.call(this.brightness);
   }
 
   @override
@@ -314,6 +355,15 @@ class _$ThemeEventBrightness
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ThemeEventPrimarySwatch value)? primarySwatch,
+    TResult Function(ThemeEventBrightness value)? brightness,
+  }) {
+    return brightness?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ThemeEventPrimarySwatch value)? primarySwatch,
     TResult Function(ThemeEventBrightness value)? brightness,
@@ -330,7 +380,7 @@ abstract class ThemeEventBrightness implements ThemeEvent {
   const factory ThemeEventBrightness([Brightness? brightness]) =
       _$ThemeEventBrightness;
 
-  Brightness? get brightness => throw _privateConstructorUsedError;
+  Brightness? get brightness;
   @JsonKey(ignore: true)
   $ThemeEventBrightnessCopyWith<ThemeEventBrightness> get copyWith =>
       throw _privateConstructorUsedError;
@@ -459,20 +509,19 @@ class _$_ThemeState extends _ThemeState with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ThemeState &&
-            (identical(other.primarySwatch, primarySwatch) ||
-                const DeepCollectionEquality()
-                    .equals(other.primarySwatch, primarySwatch)) &&
-            (identical(other.brightness, brightness) ||
-                const DeepCollectionEquality()
-                    .equals(other.brightness, brightness)));
+        (other.runtimeType == runtimeType &&
+            other is _ThemeState &&
+            const DeepCollectionEquality()
+                .equals(other.primarySwatch, primarySwatch) &&
+            const DeepCollectionEquality()
+                .equals(other.brightness, brightness));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(primarySwatch) ^
-      const DeepCollectionEquality().hash(brightness);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(primarySwatch),
+      const DeepCollectionEquality().hash(brightness));
 
   @JsonKey(ignore: true)
   @override
@@ -486,9 +535,9 @@ abstract class _ThemeState extends ThemeState {
   const _ThemeState._() : super._();
 
   @override
-  MaterialColor get primarySwatch => throw _privateConstructorUsedError;
+  MaterialColor get primarySwatch;
   @override
-  Brightness? get brightness => throw _privateConstructorUsedError;
+  Brightness? get brightness;
   @override
   @JsonKey(ignore: true)
   _$ThemeStateCopyWith<_ThemeState> get copyWith =>

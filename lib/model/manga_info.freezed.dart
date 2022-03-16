@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'manga_info.dart';
 
@@ -215,22 +217,22 @@ class _$_MangaInfo with DiagnosticableTreeMixin implements _MangaInfo {
   final String key;
   @override
   final String title;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String artist;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String author;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String description;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<String> genres;
-  @JsonKey(defaultValue: MangaInfoStatus.unknown)
+  @JsonKey()
   @override
   final MangaInfoStatus status;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String cover;
 
@@ -257,37 +259,30 @@ class _$_MangaInfo with DiagnosticableTreeMixin implements _MangaInfo {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MangaInfo &&
-            (identical(other.key, key) ||
-                const DeepCollectionEquality().equals(other.key, key)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.artist, artist) ||
-                const DeepCollectionEquality().equals(other.artist, artist)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.genres, genres) ||
-                const DeepCollectionEquality().equals(other.genres, genres)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.cover, cover) ||
-                const DeepCollectionEquality().equals(other.cover, cover)));
+        (other.runtimeType == runtimeType &&
+            other is _MangaInfo &&
+            const DeepCollectionEquality().equals(other.key, key) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.artist, artist) &&
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.genres, genres) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.cover, cover));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(key) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(artist) ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(genres) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(cover);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(key),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(artist),
+      const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(genres),
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(cover));
 
   @JsonKey(ignore: true)
   @override
@@ -305,21 +300,21 @@ abstract class _MangaInfo implements MangaInfo {
       String cover}) = _$_MangaInfo;
 
   @override
-  String get key => throw _privateConstructorUsedError;
+  String get key;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
-  String get artist => throw _privateConstructorUsedError;
+  String get artist;
   @override
-  String get author => throw _privateConstructorUsedError;
+  String get author;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  List<String> get genres => throw _privateConstructorUsedError;
+  List<String> get genres;
   @override
-  MangaInfoStatus get status => throw _privateConstructorUsedError;
+  MangaInfoStatus get status;
   @override
-  String get cover => throw _privateConstructorUsedError;
+  String get cover;
   @override
   @JsonKey(ignore: true)
   _$MangaInfoCopyWith<_MangaInfo> get copyWith =>

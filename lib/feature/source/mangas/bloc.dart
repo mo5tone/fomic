@@ -24,20 +24,23 @@ class SourceMangasBLoC extends BLoC<SourceMangasEvent, SourceMangasState> {
 
   final HttpSource _source;
 
-  SourceMangasBLoC._(ProviderRefBase ref)
+  SourceMangasBLoC._(Ref ref)
       : _source = ref.read(Source.provider) as HttpSource,
         super(const SourceMangasState());
 
   @override
   Stream<SourceMangasState> mapEventToState(SourceMangasEvent event) {
-    return event.when<Stream<SourceMangasState>>(load: () async* {
-      if (state.pages.isNotEmpty) {
-        final mangas = await _source.fetchPopularManga(page: state.pages.length + 1);
-        yield state.copyWith(pages: state.pages..add(mangas));
-      }
-    }, refresh: () async* {
-      final mangas = await _source.fetchPopularManga(page: 1);
-      yield state.copyWith(pages: [...state.pages, mangas]);
-    });
+    return event.when<Stream<SourceMangasState>>(
+      load: () async* {
+        if (state.pages.isNotEmpty) {
+          final mangasPage = await _source.fetchPopularManga(page: state.pages.length + 1);
+          yield state.copyWith(pages: [...state.pages, mangasPage]);
+        }
+      },
+      refresh: () async* {
+        final mangas = await _source.fetchPopularManga(page: 1);
+        yield state.copyWith(pages: [...state.pages, mangas]);
+      },
+    );
   }
 }

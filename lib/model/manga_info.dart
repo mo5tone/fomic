@@ -23,15 +23,6 @@ enum MangaInfoStatus {
   onHiatus,
 }
 
-extension MangaInfoStatusX on MangaInfoStatus {
-  static MangaInfoStatus? of(int idx) {
-    if (idx > -1 && idx < MangaInfoStatus.values.length) {
-      return MangaInfoStatus.values[idx];
-    }
-    return null;
-  }
-}
-
 @freezed
 class MangaInfo with _$MangaInfo {
   factory MangaInfo(

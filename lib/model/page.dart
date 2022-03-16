@@ -8,5 +8,5 @@ class Page with _$Page {
   const factory Page.url(String url) = PageUrl;
   const factory Page.imageUrl(String url) = PageImageUrl;
   const factory Page.imageBase64(String data) = PageImageBase64;
-  const factory Page.text(String url) = PageText;
+  const factory Page.text(String text) = PageText;
 }

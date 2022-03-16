@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'bloc.dart';
 
@@ -37,6 +39,12 @@ mixin _$MangaInfoEvent {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function()? favorite,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
     TResult Function()? favorite,
@@ -47,6 +55,12 @@ mixin _$MangaInfoEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(MangaInfoEventRefresh value) refresh,
     required TResult Function(MangaInfoEventFavorite value) favorite,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventFavorite value)? favorite,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -114,7 +128,8 @@ class _$MangaInfoEventRefresh
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is MangaInfoEventRefresh);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is MangaInfoEventRefresh);
   }
 
   @override
@@ -127,6 +142,15 @@ class _$MangaInfoEventRefresh
     required TResult Function() favorite,
   }) {
     return refresh();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function()? favorite,
+  }) {
+    return refresh?.call();
   }
 
   @override
@@ -149,6 +173,15 @@ class _$MangaInfoEventRefresh
     required TResult Function(MangaInfoEventFavorite value) favorite,
   }) {
     return refresh(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventFavorite value)? favorite,
+  }) {
+    return refresh?.call(this);
   }
 
   @override
@@ -208,7 +241,8 @@ class _$MangaInfoEventFavorite
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is MangaInfoEventFavorite);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is MangaInfoEventFavorite);
   }
 
   @override
@@ -221,6 +255,15 @@ class _$MangaInfoEventFavorite
     required TResult Function() favorite,
   }) {
     return favorite();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function()? favorite,
+  }) {
+    return favorite?.call();
   }
 
   @override
@@ -243,6 +286,15 @@ class _$MangaInfoEventFavorite
     required TResult Function(MangaInfoEventFavorite value) favorite,
   }) {
     return favorite(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventFavorite value)? favorite,
+  }) {
+    return favorite?.call(this);
   }
 
   @override
@@ -384,7 +436,7 @@ class _$_MangaInfoState
 
   @override
   final MangaInfo manga;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<ChapterInfo> chapters;
 
@@ -405,19 +457,17 @@ class _$_MangaInfoState
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MangaInfoState &&
-            (identical(other.manga, manga) ||
-                const DeepCollectionEquality().equals(other.manga, manga)) &&
-            (identical(other.chapters, chapters) ||
-                const DeepCollectionEquality()
-                    .equals(other.chapters, chapters)));
+        (other.runtimeType == runtimeType &&
+            other is _MangaInfoState &&
+            const DeepCollectionEquality().equals(other.manga, manga) &&
+            const DeepCollectionEquality().equals(other.chapters, chapters));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(manga) ^
-      const DeepCollectionEquality().hash(chapters);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(manga),
+      const DeepCollectionEquality().hash(chapters));
 
   @JsonKey(ignore: true)
   @override
@@ -431,9 +481,9 @@ abstract class _MangaInfoState implements MangaInfoState {
       List<ChapterInfo> chapters}) = _$_MangaInfoState;
 
   @override
-  MangaInfo get manga => throw _privateConstructorUsedError;
+  MangaInfo get manga;
   @override
-  List<ChapterInfo> get chapters => throw _privateConstructorUsedError;
+  List<ChapterInfo> get chapters;
   @override
   @JsonKey(ignore: true)
   _$MangaInfoStateCopyWith<_MangaInfoState> get copyWith =>
