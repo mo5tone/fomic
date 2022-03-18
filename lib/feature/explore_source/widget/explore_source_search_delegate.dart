@@ -12,6 +12,12 @@ class ExploreSourceSearchDelegate extends SearchDelegate<MangaInfo?> {
   ExploreSourceSearchDelegate({Key? key, required this.bloc});
 
   @override
+  void close(BuildContext context, MangaInfo? result) {
+    bloc.add(const ExploreSourceEvent.search(''));
+    super.close(context, result);
+  }
+
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
@@ -26,7 +32,6 @@ class ExploreSourceSearchDelegate extends SearchDelegate<MangaInfo?> {
     return IconButton(
       icon: const BackButtonIcon(),
       onPressed: () {
-        bloc.add(const ExploreSourceEvent.search(''));
         close(context, null);
       },
     );
@@ -34,6 +39,9 @@ class ExploreSourceSearchDelegate extends SearchDelegate<MangaInfo?> {
 
   @override
   Widget buildResults(BuildContext context) {
+    if (query.isEmpty) {
+      return Container();
+    }
     bloc.add(ExploreSourceEvent.search(query));
     return HookConsumer(
       builder: (context, ref, child) {

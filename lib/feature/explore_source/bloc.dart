@@ -38,7 +38,7 @@ class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
   Stream<ExploreSourceState> mapEventToState(ExploreSourceEvent event) {
     return event.when<Stream<ExploreSourceState>>(
       load: () async* {
-        if (state.pages.isNotEmpty) {
+        if (state.pages.isNotEmpty && state.pages.last.hasNextPage) {
           if (state.query.isEmpty && state.filters.isEmpty) {
             final mangasPage = await _source.fetchPopularManga(page: state.pages.length + 1);
             yield state.copyWith(pages: [...state.pages, mangasPage]);
