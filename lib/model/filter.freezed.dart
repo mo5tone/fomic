@@ -50,13 +50,6 @@ class _$FilterTearOff {
     );
   }
 
-  FilterGroup group(String name, List<Filter> state) {
-    return FilterGroup(
-      name,
-      state,
-    );
-  }
-
   FilterSort sort(
       String name, List<String> options, int state, bool ascending) {
     return FilterSort(
@@ -81,7 +74,6 @@ mixin _$Filter {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -94,7 +86,6 @@ mixin _$Filter {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -107,7 +98,6 @@ mixin _$Filter {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -121,7 +111,6 @@ mixin _$Filter {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) =>
       throw _privateConstructorUsedError;
@@ -132,7 +121,6 @@ mixin _$Filter {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) =>
       throw _privateConstructorUsedError;
@@ -143,7 +131,6 @@ mixin _$Filter {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) =>
@@ -243,7 +230,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -259,7 +245,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -275,7 +260,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -295,7 +279,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return header(this);
@@ -309,7 +292,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return header?.call(this);
@@ -323,7 +305,6 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
@@ -397,7 +378,6 @@ class _$FilterSeparator
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -413,7 +393,6 @@ class _$FilterSeparator
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -429,7 +408,6 @@ class _$FilterSeparator
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -449,7 +427,6 @@ class _$FilterSeparator
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return separator(this);
@@ -463,7 +440,6 @@ class _$FilterSeparator
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return separator?.call(this);
@@ -477,7 +453,6 @@ class _$FilterSeparator
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
@@ -592,7 +567,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -608,7 +582,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -624,7 +597,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -644,7 +616,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return select(this);
@@ -658,7 +629,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return select?.call(this);
@@ -672,7 +642,6 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
@@ -784,7 +753,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -800,7 +768,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -816,7 +783,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -836,7 +802,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return text(this);
@@ -850,7 +815,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return text?.call(this);
@@ -864,7 +828,6 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
@@ -975,7 +938,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -991,7 +953,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -1007,7 +968,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -1027,7 +987,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return check(this);
@@ -1041,7 +1000,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return check?.call(this);
@@ -1055,7 +1013,6 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {
@@ -1073,196 +1030,6 @@ abstract class FilterCheck implements Filter {
   bool get state;
   @JsonKey(ignore: true)
   $FilterCheckCopyWith<FilterCheck> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FilterGroupCopyWith<$Res> {
-  factory $FilterGroupCopyWith(
-          FilterGroup value, $Res Function(FilterGroup) then) =
-      _$FilterGroupCopyWithImpl<$Res>;
-  $Res call({String name, List<Filter> state});
-}
-
-/// @nodoc
-class _$FilterGroupCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
-    implements $FilterGroupCopyWith<$Res> {
-  _$FilterGroupCopyWithImpl(
-      FilterGroup _value, $Res Function(FilterGroup) _then)
-      : super(_value, (v) => _then(v as FilterGroup));
-
-  @override
-  FilterGroup get _value => super._value as FilterGroup;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? state = freezed,
-  }) {
-    return _then(FilterGroup(
-      name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      state == freezed
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as List<Filter>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FilterGroup with DiagnosticableTreeMixin implements FilterGroup {
-  const _$FilterGroup(this.name, this.state);
-
-  @override
-  final String name;
-  @override
-  final List<Filter> state;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.group(name: $name, state: $state)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Filter.group'))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('state', state));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is FilterGroup &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.state, state));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(state));
-
-  @JsonKey(ignore: true)
-  @override
-  $FilterGroupCopyWith<FilterGroup> get copyWith =>
-      _$FilterGroupCopyWithImpl<FilterGroup>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String name) header,
-    required TResult Function() separator,
-    required TResult Function(String name, List<String> options, int state)
-        select,
-    required TResult Function(String name, String state) text,
-    required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
-    required TResult Function(
-            String name, List<String> options, int state, bool ascending)
-        sort,
-  }) {
-    return group(name, state);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String name)? header,
-    TResult Function()? separator,
-    TResult Function(String name, List<String> options, int state)? select,
-    TResult Function(String name, String state)? text,
-    TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
-    TResult Function(
-            String name, List<String> options, int state, bool ascending)?
-        sort,
-  }) {
-    return group?.call(name, state);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name)? header,
-    TResult Function()? separator,
-    TResult Function(String name, List<String> options, int state)? select,
-    TResult Function(String name, String state)? text,
-    TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
-    TResult Function(
-            String name, List<String> options, int state, bool ascending)?
-        sort,
-    required TResult orElse(),
-  }) {
-    if (group != null) {
-      return group(name, state);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FilterHeader value) header,
-    required TResult Function(FilterSeparator value) separator,
-    required TResult Function(FilterSelect value) select,
-    required TResult Function(FilterText value) text,
-    required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
-    required TResult Function(FilterSort value) sort,
-  }) {
-    return group(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(FilterHeader value)? header,
-    TResult Function(FilterSeparator value)? separator,
-    TResult Function(FilterSelect value)? select,
-    TResult Function(FilterText value)? text,
-    TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
-    TResult Function(FilterSort value)? sort,
-  }) {
-    return group?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FilterHeader value)? header,
-    TResult Function(FilterSeparator value)? separator,
-    TResult Function(FilterSelect value)? select,
-    TResult Function(FilterText value)? text,
-    TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
-    TResult Function(FilterSort value)? sort,
-    required TResult orElse(),
-  }) {
-    if (group != null) {
-      return group(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FilterGroup implements Filter {
-  const factory FilterGroup(String name, List<Filter> state) = _$FilterGroup;
-
-  String get name;
-  List<Filter> get state;
-  @JsonKey(ignore: true)
-  $FilterGroupCopyWith<FilterGroup> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1374,7 +1141,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
         select,
     required TResult Function(String name, String state) text,
     required TResult Function(String name, bool state) check,
-    required TResult Function(String name, List<Filter> state) group,
     required TResult Function(
             String name, List<String> options, int state, bool ascending)
         sort,
@@ -1390,7 +1156,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -1406,7 +1171,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
-    TResult Function(String name, List<Filter> state)? group,
     TResult Function(
             String name, List<String> options, int state, bool ascending)?
         sort,
@@ -1426,7 +1190,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
     required TResult Function(FilterSelect value) select,
     required TResult Function(FilterText value) text,
     required TResult Function(FilterCheck value) check,
-    required TResult Function(FilterGroup value) group,
     required TResult Function(FilterSort value) sort,
   }) {
     return sort(this);
@@ -1440,7 +1203,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
   }) {
     return sort?.call(this);
@@ -1454,7 +1216,6 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
     TResult Function(FilterSelect value)? select,
     TResult Function(FilterText value)? text,
     TResult Function(FilterCheck value)? check,
-    TResult Function(FilterGroup value)? group,
     TResult Function(FilterSort value)? sort,
     required TResult orElse(),
   }) {

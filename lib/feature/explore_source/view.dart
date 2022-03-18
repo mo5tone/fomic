@@ -158,8 +158,7 @@ class _FilterWidget extends HookConsumerWidget {
           },
           text: (name, value) => Container(),
           check: (name, value) => Container(),
-          group: (name, filterList) => Container(),
-          sort: (name, options, index, isfas) => Container(),
+          sort: (name, options, index, ascending) => Container(),
         );
   }
 }
