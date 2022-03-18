@@ -22,39 +22,12 @@ class MangaInfoView extends HookConsumerWidget {
       ref.read(provider.notifier).add(const MangaInfoEvent.refresh());
       return null;
     });
-    final currentTabIndex = StateProvider((_) => 0);
-    const tabs = [Tab(icon: Icon(Icons.info)), Tab(icon: Icon(Icons.list))];
-    final tabController = useTabController(initialLength: tabs.length);
-    tabController.addListener(() {
-      ref.read(currentTabIndex.notifier).state = tabController.index;
-    });
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           _AppBar(provider: provider),
           _ChapterInfoList(provider: provider),
         ],
-      ),
-      floatingActionButton: Consumer(
-        builder: (context, ref, child) {
-          final index = ref.watch(currentTabIndex);
-          // TODO: implement
-          final isFavorite = false;
-          return FloatingActionButton(
-            child: Icon(index == 0
-                ? isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border
-                : Icons.play_arrow),
-            onPressed: () {
-              if (index == 0) {
-                ref.read(provider.notifier).add(const MangaInfoEvent.favorite());
-              } else {
-                ref.read(provider.notifier).add(const MangaInfoEvent.favorite());
-              }
-            },
-          );
-        },
       ),
     );
   }

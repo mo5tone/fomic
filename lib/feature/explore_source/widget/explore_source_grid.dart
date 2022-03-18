@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
-import 'package:fomic/repository/source/source.dart';
 
-class MangaInfosGrid extends HookConsumerWidget {
+class ExploreSourceGrid extends HookConsumerWidget {
   final List<MangaInfo> mangas;
   final ScrollController? scrollController;
   final void Function(BuildContext context, MangaInfo manga)? didTap;
 
-  const MangaInfosGrid({
+  const ExploreSourceGrid({
     Key? key,
     required this.mangas,
     this.scrollController,

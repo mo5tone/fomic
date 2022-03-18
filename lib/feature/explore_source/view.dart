@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fomic/feature/widget/manga_infos_grid.dart';
+import 'package:fomic/feature/explore_source/widget/explore_source_grid.dart';
+import 'package:fomic/feature/explore_source/widget/explore_source_search_delegate.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,9 +35,7 @@ class ExploreSourceView extends HookConsumerWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () {
-              // showSearch(context: context, delegate: BooksSearchDelegate()).then((value) => _didTap(context, value)).catchError((err) => null);
-            },
+            onPressed: () => showSearch(context: context, delegate: ExploreSourceSearchDelegate(bloc: bloc)),
           ),
           if (ref.watch(HttpSource.provider).filters.isNotEmpty)
             IconButton(
@@ -51,7 +50,7 @@ class ExploreSourceView extends HookConsumerWidget {
         ],
       ),
       body: RefreshIndicator(
-        child: MangaInfosGrid(
+        child: ExploreSourceGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<MangaInfo>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
           didTap: (context, manga) => Screen.mangaInfo(manga).push(context),
@@ -120,16 +119,15 @@ class _FiltersBottomSheet extends HookConsumerWidget {
 
 class _FilterWidget extends HookConsumerWidget {
   final int _index;
-  late StateProvider<Filter> _provider;
 
-  _FilterWidget({Key? key, required int index})
+  const _FilterWidget({Key? key, required int index})
       : _index = index,
         super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    _provider = StateProvider((ref) => ref.watch(_FiltersBottomSheet.filtersProvider)[_index]);
-    return ref.read(_provider).when(
+    final provider = StateProvider((ref) => ref.watch(_FiltersBottomSheet.filtersProvider)[_index]);
+    return ref.read(provider).when(
           header: (name) => Text(name),
           separator: () => const Divider(),
           select: (name, options, index) {
@@ -138,7 +136,7 @@ class _FilterWidget extends HookConsumerWidget {
                 Text(name),
                 const Spacer(),
                 DropdownButton<String>(
-                  value: options[ref.watch(_provider.select((value) => (value as FilterSelect).state))],
+                  value: options[ref.watch(provider.select((value) => (value as FilterSelect).state))],
                   items: options
                       .map(
                         (o) => DropdownMenuItem(
@@ -149,8 +147,8 @@ class _FilterWidget extends HookConsumerWidget {
                       .toList(growable: false),
                   onChanged: (newValue) {
                     if (newValue != null) {
-                      final newFilter = (ref.read(_provider.notifier).state as FilterSelect).copyWith(state: options.indexOf(newValue));
-                      ref.read(_provider.notifier).update((state) => newFilter);
+                      final newFilter = (ref.read(provider.notifier).state as FilterSelect).copyWith(state: options.indexOf(newValue));
+                      ref.read(provider.notifier).update((state) => newFilter);
                       ref.read(_FiltersBottomSheet.filtersProvider.notifier).update((state) => state..[_index] = newFilter);
                     }
                   },
