@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:html/parser.dart' as html;
 
-class Kuaikanmanhua extends HttpSource {
-  static final provider = Provider.autoDispose((ref) => Kuaikanmanhua._(ref));
+class KuaiKanManHua extends HttpSource {
+  static final provider = Provider.autoDispose((ref) => KuaiKanManHua._(ref));
 
   static const _lockIcon = '\uD83D\uDD12';
   static const _topicIdSearchPrefix = 'topic:';
@@ -50,7 +50,7 @@ class Kuaikanmanhua extends HttpSource {
   final _statusFilter = FilterSelect('类别', _statusFilterOptions.map((e) => e.key).toList(growable: false));
   final _genreFilter = FilterSelect('题材', _genreFilterOptions.map((e) => e.key).toList(growable: false));
 
-  Kuaikanmanhua._(Ref ref) : super(ref);
+  KuaiKanManHua._(Ref ref) : super(ref);
 
   @override
   String get name => '快看漫画';
@@ -106,12 +106,16 @@ class Kuaikanmanhua extends HttpSource {
       var status = '';
       var genre = '';
       for (final filter in filters) {
-        if (filter == _statusFilter) {
-          status = _statusFilterOptions[_statusFilter.state].value;
-        }
-        if (filter == _genreFilter) {
-          genre = _genreFilterOptions[_genreFilter.state].value;
-        }
+        filter.maybeWhen(
+          select: (name, _, index) {
+            if (name == '类别') {
+              status = _statusFilterOptions[index].value;
+            } else if (name == '题材') {
+              genre = _genreFilterOptions[index].value;
+            }
+          },
+          orElse: () {},
+        );
       }
       return Request(path: '$_apiBaseUrl/v1/search/by_tag?since=${(page - 1) * 10}&tag=$genre&sort=1&query_category=%7B%22update_status%22:$status%7D');
     }

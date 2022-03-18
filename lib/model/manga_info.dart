@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/avd.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -21,6 +23,44 @@ enum MangaInfoStatus {
   cancelled,
   @HiveField(6)
   onHiatus,
+}
+
+extension MangaInfoStatusExtension on MangaInfoStatus {
+  Widget image({
+    bool matchTextDirection = false,
+    AssetBundle? bundle,
+    String? package,
+    bool allowDrawingOutsideViewBox = false,
+    WidgetBuilder? placeholderBuilder,
+    Color? color,
+    BlendMode colorBlendMode = BlendMode.srcIn,
+  }) {
+    var assetName = 'assets/images/vector_drawable/';
+    switch (this) {
+      case MangaInfoStatus.ongoing:
+        assetName += 'ic_status_ongoing.xml';
+        break;
+      case MangaInfoStatus.completed:
+        assetName += 'ic_status_completed.xml';
+        break;
+      case MangaInfoStatus.licensed:
+        assetName += 'ic_status_licensed.xml';
+        break;
+      default:
+        assetName += 'ic_status_unknown.xml';
+        break;
+    }
+    return AvdPicture.asset(
+      assetName,
+      matchTextDirection: matchTextDirection,
+      bundle: bundle,
+      package: package,
+      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+      placeholderBuilder: placeholderBuilder,
+      color: color,
+      colorBlendMode: colorBlendMode,
+    );
+  }
 }
 
 @freezed

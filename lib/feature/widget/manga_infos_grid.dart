@@ -5,12 +5,12 @@ import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:fomic/repository/source/source.dart';
 
-class MangasGrid extends HookConsumerWidget {
+class MangaInfosGrid extends HookConsumerWidget {
   final List<MangaInfo> mangas;
   final ScrollController? scrollController;
   final void Function(BuildContext context, MangaInfo manga)? didTap;
 
-  const MangasGrid({
+  const MangaInfosGrid({
     Key? key,
     required this.mangas,
     this.scrollController,
@@ -75,60 +75,48 @@ class _Cell extends HookConsumerWidget {
         ],
       ),
       child: InkWell(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(radius),
-                  bottom: Radius.zero,
-                ),
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    return CachedNetworkImage(
-                      imageUrl: manga.cover,
-                      httpHeaders: (ref.watch(Source.provider) as HttpSource).headers,
-                      fit: BoxFit.cover,
-                    );
-                  },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(radius)),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  return CachedNetworkImage(
+                    imageUrl: manga.cover,
+                    httpHeaders: ref.read(HttpSource.provider).headers,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(radius),
+                gradient: const LinearGradient(
+                  begin: FractionalOffset.topCenter,
+                  end: FractionalOffset.bottomCenter,
+                  colors: [
+                    Color.fromARGB(0x00, 0xff, 0xff, 0xff),
+                    Color.fromARGB(0xaa, 0x00, 0x00, 0x00),
+                  ],
+                  stops: [
+                    0,
+                    0.9,
+                  ],
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 4),
-                child: Stack(
-                  children: [
-                    Text(
-                      manga.title,
-                      maxLines: 2,
-                      textAlign: TextAlign.start,
-                      style: theme.textTheme.headline6,
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.secondary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(radius),
-                            bottomRight: Radius.circular(radius),
-                          ),
-                        ),
-                        child: Text(
-                          '${manga.status}',
-                          style: theme.textTheme.subtitle1?.copyWith(
-                            color: theme.colorScheme.onSecondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+            Positioned(
+              left: radius,
+              bottom: radius,
+              child: Text(
+                manga.title,
+                maxLines: 2,
+                textAlign: TextAlign.start,
+                style: theme.textTheme.titleMedium?.apply(
+                  color: theme.colorScheme.onBackground,
                 ),
               ),
             ),

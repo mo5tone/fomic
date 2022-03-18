@@ -4,7 +4,6 @@ import 'package:fomic/common/bloc/bloc.dart';
 import 'package:fomic/model/chapter_info.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
-import 'package:fomic/repository/source/source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bloc.freezed.dart';
@@ -26,7 +25,7 @@ class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
   final HttpSource _source;
 
   MangaInfoBLoC._(Ref ref, MangaInfo manga)
-      : _source = ref.read(Source.provider) as HttpSource,
+      : _source = ref.read(HttpSource.provider),
         super(MangaInfoState(manga: manga));
 
   @override

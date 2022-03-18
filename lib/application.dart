@@ -3,8 +3,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
 import 'package:fomic/common/bloc/theme_bloc.dart';
+import 'package:fomic/feature/explore_source/view.dart';
 import 'package:fomic/feature/setting/view.dart';
-import 'package:fomic/feature/source/mangas/view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Fomic extends HookConsumerWidget {
@@ -54,7 +54,7 @@ class _Home extends HookConsumerWidget {
 
   Widget _pageViewItembuilder(BuildContext context, int index) {
     if (index == 0) {
-      return const SourceMangasView();
+      return const ExploreSourceView();
     } else {
       return const SettingView();
     }

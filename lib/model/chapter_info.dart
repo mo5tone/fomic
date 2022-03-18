@@ -1,9 +1,15 @@
-class ChapterInfo {
-  final String key;
-  final String name;
-  final int dateUpload;
-  final double number;
-  final String scanlator;
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  ChapterInfo(this.key, this.name, {this.dateUpload = 0, this.number = -1, this.scanlator = ''});
+part 'chapter_info.freezed.dart';
+
+@freezed
+class ChapterInfo with _$ChapterInfo {
+  factory ChapterInfo(
+    String key,
+    String name, {
+    @Default(0) int dateUpload,
+    @Default(-1) double number,
+    @Default('') String scanlator,
+  }) = _ChapterInfo;
 }
