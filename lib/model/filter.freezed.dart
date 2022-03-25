@@ -24,8 +24,10 @@ class _$FilterTearOff {
     );
   }
 
-  FilterSeparator separator() {
-    return const FilterSeparator();
+  FilterSeparator separator({String name = ''}) {
+    return FilterSeparator(
+      name: name,
+    );
   }
 
   FilterSelect select(String name, List<String> options, {int state = 0}) {
@@ -66,10 +68,12 @@ const $Filter = _$FilterTearOff();
 
 /// @nodoc
 mixin _$Filter {
+  String get name => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -82,7 +86,7 @@ mixin _$Filter {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -94,7 +98,7 @@ mixin _$Filter {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -135,12 +139,16 @@ mixin _$Filter {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $FilterCopyWith<Filter> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $FilterCopyWith<$Res> {
   factory $FilterCopyWith(Filter value, $Res Function(Filter) then) =
       _$FilterCopyWithImpl<$Res>;
+  $Res call({String name});
 }
 
 /// @nodoc
@@ -150,13 +158,26 @@ class _$FilterCopyWithImpl<$Res> implements $FilterCopyWith<$Res> {
   final Filter _value;
   // ignore: unused_field
   final $Res Function(Filter) _then;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
-abstract class $FilterHeaderCopyWith<$Res> {
+abstract class $FilterHeaderCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterHeaderCopyWith(
           FilterHeader value, $Res Function(FilterHeader) then) =
       _$FilterHeaderCopyWithImpl<$Res>;
+  @override
   $Res call({String name});
 }
 
@@ -225,7 +246,7 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -241,7 +262,7 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -256,7 +277,7 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -318,17 +339,21 @@ class _$FilterHeader with DiagnosticableTreeMixin implements FilterHeader {
 abstract class FilterHeader implements Filter {
   const factory FilterHeader(String name) = _$FilterHeader;
 
+  @override
   String get name;
+  @override
   @JsonKey(ignore: true)
   $FilterHeaderCopyWith<FilterHeader> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterSeparatorCopyWith<$Res> {
+abstract class $FilterSeparatorCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterSeparatorCopyWith(
           FilterSeparator value, $Res Function(FilterSeparator) then) =
       _$FilterSeparatorCopyWithImpl<$Res>;
+  @override
+  $Res call({String name});
 }
 
 /// @nodoc
@@ -340,6 +365,18 @@ class _$FilterSeparatorCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 
   @override
   FilterSeparator get _value => super._value as FilterSeparator;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+  }) {
+    return _then(FilterSeparator(
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
@@ -347,33 +384,47 @@ class _$FilterSeparatorCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 class _$FilterSeparator
     with DiagnosticableTreeMixin
     implements FilterSeparator {
-  const _$FilterSeparator();
+  const _$FilterSeparator({this.name = ''});
+
+  @JsonKey()
+  @override
+  final String name;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Filter.separator()';
+    return 'Filter.separator(name: $name)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Filter.separator'));
+    properties
+      ..add(DiagnosticsProperty('type', 'Filter.separator'))
+      ..add(DiagnosticsProperty('name', name));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is FilterSeparator);
+        (other.runtimeType == runtimeType &&
+            other is FilterSeparator &&
+            const DeepCollectionEquality().equals(other.name, name));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(name));
+
+  @JsonKey(ignore: true)
+  @override
+  $FilterSeparatorCopyWith<FilterSeparator> get copyWith =>
+      _$FilterSeparatorCopyWithImpl<FilterSeparator>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -382,14 +433,14 @@ class _$FilterSeparator
             String name, List<String> options, int state, bool ascending)
         sort,
   }) {
-    return separator();
+    return separator(name);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -397,14 +448,14 @@ class _$FilterSeparator
             String name, List<String> options, int state, bool ascending)?
         sort,
   }) {
-    return separator?.call();
+    return separator?.call(name);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -414,7 +465,7 @@ class _$FilterSeparator
     required TResult orElse(),
   }) {
     if (separator != null) {
-      return separator();
+      return separator(name);
     }
     return orElse();
   }
@@ -464,14 +515,22 @@ class _$FilterSeparator
 }
 
 abstract class FilterSeparator implements Filter {
-  const factory FilterSeparator() = _$FilterSeparator;
+  const factory FilterSeparator({String name}) = _$FilterSeparator;
+
+  @override
+  String get name;
+  @override
+  @JsonKey(ignore: true)
+  $FilterSeparatorCopyWith<FilterSeparator> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterSelectCopyWith<$Res> {
+abstract class $FilterSelectCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterSelectCopyWith(
           FilterSelect value, $Res Function(FilterSelect) then) =
       _$FilterSelectCopyWithImpl<$Res>;
+  @override
   $Res call({String name, List<String> options, int state});
 }
 
@@ -562,7 +621,7 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -578,7 +637,7 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -593,7 +652,7 @@ class _$FilterSelect with DiagnosticableTreeMixin implements FilterSelect {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -656,19 +715,22 @@ abstract class FilterSelect implements Filter {
   const factory FilterSelect(String name, List<String> options, {int state}) =
       _$FilterSelect;
 
+  @override
   String get name;
   List<String> get options;
   int get state;
+  @override
   @JsonKey(ignore: true)
   $FilterSelectCopyWith<FilterSelect> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterTextCopyWith<$Res> {
+abstract class $FilterTextCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterTextCopyWith(
           FilterText value, $Res Function(FilterText) then) =
       _$FilterTextCopyWithImpl<$Res>;
+  @override
   $Res call({String name, String state});
 }
 
@@ -748,7 +810,7 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -764,7 +826,7 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -779,7 +841,7 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -841,18 +903,21 @@ class _$FilterText with DiagnosticableTreeMixin implements FilterText {
 abstract class FilterText implements Filter {
   const factory FilterText(String name, {String state}) = _$FilterText;
 
+  @override
   String get name;
   String get state;
+  @override
   @JsonKey(ignore: true)
   $FilterTextCopyWith<FilterText> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterCheckCopyWith<$Res> {
+abstract class $FilterCheckCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterCheckCopyWith(
           FilterCheck value, $Res Function(FilterCheck) then) =
       _$FilterCheckCopyWithImpl<$Res>;
+  @override
   $Res call({String name, bool state});
 }
 
@@ -933,7 +998,7 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -949,7 +1014,7 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -964,7 +1029,7 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -1026,18 +1091,21 @@ class _$FilterCheck with DiagnosticableTreeMixin implements FilterCheck {
 abstract class FilterCheck implements Filter {
   const factory FilterCheck(String name, {bool state}) = _$FilterCheck;
 
+  @override
   String get name;
   bool get state;
+  @override
   @JsonKey(ignore: true)
   $FilterCheckCopyWith<FilterCheck> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FilterSortCopyWith<$Res> {
+abstract class $FilterSortCopyWith<$Res> implements $FilterCopyWith<$Res> {
   factory $FilterSortCopyWith(
           FilterSort value, $Res Function(FilterSort) then) =
       _$FilterSortCopyWithImpl<$Res>;
+  @override
   $Res call({String name, List<String> options, int state, bool ascending});
 }
 
@@ -1136,7 +1204,7 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name) header,
-    required TResult Function() separator,
+    required TResult Function(String name) separator,
     required TResult Function(String name, List<String> options, int state)
         select,
     required TResult Function(String name, String state) text,
@@ -1152,7 +1220,7 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -1167,7 +1235,7 @@ class _$FilterSort with DiagnosticableTreeMixin implements FilterSort {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name)? header,
-    TResult Function()? separator,
+    TResult Function(String name)? separator,
     TResult Function(String name, List<String> options, int state)? select,
     TResult Function(String name, String state)? text,
     TResult Function(String name, bool state)? check,
@@ -1231,10 +1299,12 @@ abstract class FilterSort implements Filter {
           String name, List<String> options, int state, bool ascending) =
       _$FilterSort;
 
+  @override
   String get name;
   List<String> get options;
   int get state;
   bool get ascending;
+  @override
   @JsonKey(ignore: true)
   $FilterSortCopyWith<FilterSort> get copyWith =>
       throw _privateConstructorUsedError;

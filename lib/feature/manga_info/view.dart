@@ -9,15 +9,14 @@ import 'package:fomic/repository/source/http_source.dart';
 import 'package:intl/intl.dart';
 
 class MangaInfoView extends HookConsumerWidget {
-  final MangaInfo _manga;
+  final StateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
 
-  const MangaInfoView({Key? key, required MangaInfo manga})
-      : _manga = manga,
+  MangaInfoView({Key? key, required MangaInfo manga})
+      : provider = MangaInfoBLoC.family(manga),
         super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = MangaInfoBLoC.family(_manga);
     useEffect(() {
       ref.read(provider.notifier).add(const MangaInfoEvent.refresh());
       return null;

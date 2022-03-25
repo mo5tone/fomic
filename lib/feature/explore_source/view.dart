@@ -40,11 +40,15 @@ class ExploreSourceView extends HookConsumerWidget {
           if (ref.watch(HttpSource.provider).filters.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.filter_list),
-              onPressed: () {
-                showModalBottomSheet(
+              onPressed: () async {
+                final filters = await showModalBottomSheet<List<Filter>>(
                   context: context,
-                  builder: (context) => _FiltersBottomSheet(),
+                  builder: (context) => const _FiltersBottomSheet(),
+                  isScrollControlled: true,
                 );
+                if (filters != null) {
+                  bloc.add(ExploreSourceEvent.filter(filters));
+                }
               },
             ),
         ],
@@ -62,21 +66,12 @@ class ExploreSourceView extends HookConsumerWidget {
 }
 
 class _FiltersBottomSheet extends HookConsumerWidget {
-  static final filtersProvider = StateProvider((ref) => ref.read(HttpSource.provider).filters);
+  static final filters = StateProvider((ref) => ref.read(HttpSource.provider).filters);
+
+  const _FiltersBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bloc = ref.read(ExploreSourceBLoC.provider.notifier);
-    ref.listen<List<Filter>>(
-      ExploreSourceBLoC.provider.select((value) => value.filters),
-      (previous, next) {
-        if (next.isNotEmpty) {
-          ref.read(filtersProvider.notifier).state = next;
-        } else {
-          ref.read(filtersProvider.notifier).state = ref.read(HttpSource.provider).filters;
-        }
-      },
-    );
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -91,25 +86,21 @@ class _FiltersBottomSheet extends HookConsumerWidget {
                 TextButton(
                   child: const Text('Reset'),
                   onPressed: () {
-                    bloc.add(const ExploreSourceEvent.filter([]));
-                    Navigator.of(context).pop();
+                    ref.refresh(filters);
+                    Navigator.of(context).pop(<Filter>[]);
                   },
                 ),
                 const Spacer(),
                 ElevatedButton(
                   child: const Text('Filter'),
                   onPressed: () {
-                    bloc.add(ExploreSourceEvent.filter(ref.read(filtersProvider)));
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(ref.read(filters));
                   },
                 ),
               ],
             ),
             const Divider(),
-            for (var i = 0; i < ref.watch(filtersProvider).length; i++)
-              _FilterWidget(
-                index: i,
-              ),
+            ...ref.watch(filters).map((f) => _FilterWidget(filter: f)).toList(growable: false),
           ],
         ),
       ),
@@ -118,47 +109,105 @@ class _FiltersBottomSheet extends HookConsumerWidget {
 }
 
 class _FilterWidget extends HookConsumerWidget {
-  final int _index;
+  final Filter filter;
 
-  const _FilterWidget({Key? key, required int index})
-      : _index = index,
-        super(key: key);
+  const _FilterWidget({Key? key, required this.filter}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = StateProvider((ref) => ref.watch(_FiltersBottomSheet.filtersProvider)[_index]);
-    return ref.read(provider).when(
-          header: (name) => Text(name),
-          separator: () => const Divider(),
-          select: (name, options, index) {
-            return Row(
-              children: [
-                Text(name),
-                const Spacer(),
-                DropdownButton<String>(
-                  value: options[ref.watch(provider.select((value) => (value as FilterSelect).state))],
-                  items: options
-                      .map(
-                        (o) => DropdownMenuItem(
-                          value: o,
-                          child: Text(o),
-                        ),
-                      )
-                      .toList(growable: false),
-                  onChanged: (newValue) {
-                    if (newValue != null) {
-                      final newFilter = (ref.read(provider.notifier).state as FilterSelect).copyWith(state: options.indexOf(newValue));
-                      ref.read(provider.notifier).update((state) => newFilter);
-                      ref.read(_FiltersBottomSheet.filtersProvider.notifier).update((state) => state..[_index] = newFilter);
-                    }
-                  },
+    void update({required Filter filter}) {
+      ref.read(_FiltersBottomSheet.filters.notifier).update((state) => state.map((f) => f.name == filter.name ? filter : f).toList(growable: false));
+    }
+
+    return filter.when(
+      header: (name) => Text(name),
+      separator: (_) => const Divider(),
+      select: (name, options, state) => Row(
+        children: [
+          Text(name),
+          const Spacer(),
+          DropdownButton<String>(
+            value: options[state],
+            items: options
+                .map(
+                  (o) => DropdownMenuItem(
+                    value: o,
+                    child: Text(o),
+                  ),
                 )
-              ],
-            );
-          },
-          text: (name, value) => Container(),
-          check: (name, value) => Container(),
-          sort: (name, options, index, ascending) => Container(),
+                .toList(growable: false),
+            onChanged: (newValue) {
+              if (newValue != null) {
+                update(filter: (filter as FilterSelect).copyWith(state: options.indexOf(newValue)));
+              }
+            },
+          ),
+        ],
+      ),
+      text: (name, state) {
+        final textEditingController = useTextEditingController(text: state);
+        return Row(
+          children: [
+            Text(name),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(
+                  left: 8,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: TextField(
+                  controller: textEditingController,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (newValue) {
+                    update(filter: (filter as FilterText).copyWith(state: newValue));
+                  },
+                ),
+              ),
+            ),
+          ],
         );
+      },
+      check: (name, value) => Row(
+        children: [
+          Text(name),
+          const Spacer(),
+          Switch(
+            value: value,
+            onChanged: (newValue) {
+              update(filter: (filter as FilterCheck).copyWith(state: newValue));
+            },
+          ),
+        ],
+      ),
+      sort: (name, options, state, ascending) => Row(
+        children: [
+          Text(name),
+          const Spacer(),
+          DropdownButton<String>(
+            value: options[state],
+            items: options
+                .map(
+                  (o) => DropdownMenuItem(
+                    value: o,
+                    child: Text(o),
+                  ),
+                )
+                .toList(growable: false),
+            onChanged: (newValue) {
+              if (newValue != null) {
+                update(filter: (filter as FilterSort).copyWith(state: options.indexOf(newValue)));
+              }
+            },
+          ),
+          const Spacer(),
+          Switch(
+            value: ascending,
+            onChanged: (newValue) {
+              update(filter: (filter as FilterSort).copyWith(ascending: newValue));
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

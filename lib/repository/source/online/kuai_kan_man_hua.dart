@@ -68,7 +68,10 @@ class KuaiKanManHua extends HttpSource {
   Map<String, String> get headers => {};
 
   @override
-  List<Filter> get filters => [_statusFilter, _genreFilter];
+  List<Filter> get filters => [
+        _statusFilter,
+        _genreFilter,
+      ];
 
   @override
   bool get supportsLatest => true;

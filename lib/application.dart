@@ -75,7 +75,7 @@ class _Home extends HookConsumerWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomNavigationBarItems,
-        onTap: (index) => ref.read(_currentIndex.notifier).state = index,
+        onTap: (index) => ref.read(_currentIndex.notifier).update((state) => index),
         currentIndex: ref.watch(_currentIndex),
       ),
     );
