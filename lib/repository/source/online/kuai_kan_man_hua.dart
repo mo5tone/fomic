@@ -186,19 +186,27 @@ class KuaiKanManHua extends HttpSource {
 
   @override
   List<Page> pageListParser(Response response) {
-    final pages = <Page>[];
     final document = html.parse(response.data);
     String script = document.getElementsByTagName('script').firstWhere((ele) => ele.innerHtml.contains('comicImages:')).innerHtml;
-    final imagesStringRawValue = script.allMatches(r'comicImages:(.*)},nextComicInfo').first.group(1) ?? '[]';
-    debugPrint(imagesStringRawValue);
+    var imagesStringRawValue = RegExp(r'comicImages:(.*)},nextComicInfo').firstMatch(script)?.group(1) ?? '[]';
+    imagesStringRawValue = imagesStringRawValue.replaceAllMapped(RegExp(r'(:([^\[\{\"]+?)[\},])'), (match) {
+      final value = match.group(1) ?? '';
+      if (value.isEmpty) {
+        return value;
+      }
+      return value[0] + '"' + value.substring(1, value.length - 1) + '"' + value[value.length - 1];
+    });
+    imagesStringRawValue = imagesStringRawValue.replaceAllMapped(RegExp(r'([,{]([^\[\{\"]+?)[\}:])'), (match) {
+      final value = match.group(1) ?? '';
+      if (value.isEmpty) {
+        return value;
+      }
+      return value[0] + '"' + value.substring(1, value.length - 1) + '"' + value[value.length - 1];
+    });
     List images = jsonDecode(imagesStringRawValue);
-    final variable = script.allMatches(r'\(function\((.*)\){').first.group(1)?.split(',') ?? [];
-    final values = script.allMatches(r'}}\((.*)\)\);').first.group(1)?.split(',') ?? [];
-    for (final image in images) {
-      final url = values[variable.indexOf(image['url'])].replaceAll('\\u002F', '/').replaceAll('"', '');
-      pages.add(Page.imageUrl(url));
-    }
-    return pages;
+    final variable = RegExp(r'\(function\((.*)\){').firstMatch(script)?.group(1)?.split(',') ?? [];
+    final values = RegExp(r'}}\((.*)\)\);').firstMatch(script)?.group(1)?.split(',') ?? [];
+    return images.map((image) => Page.imageUrl(values[variable.indexOf(image['url'])].replaceAll('\\u002F', '/').replaceAll('"', ''))).toList(growable: false);
   }
 
   @override

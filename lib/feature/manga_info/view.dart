@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fomic/common/route/screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/feature/manga_info/bloc.dart';
 import 'package:fomic/model/manga_info.dart';
@@ -17,16 +18,20 @@ class MangaInfoView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bloc = ref.read(provider.notifier);
     useEffect(() {
-      ref.read(provider.notifier).add(const MangaInfoEvent.refresh());
+      bloc.add(const MangaInfoEvent.refresh());
       return null;
     });
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _AppBar(provider: provider),
-          _ChapterInfoList(provider: provider),
-        ],
+      body: RefreshIndicator(
+        child: CustomScrollView(
+          slivers: [
+            _AppBar(provider: provider),
+            _ChapterInfoList(provider: provider),
+          ],
+        ),
+        onRefresh: () => Future(() => bloc.add(const MangaInfoEvent.refresh())),
       ),
     );
   }
@@ -246,7 +251,7 @@ class _ChapterInfoList extends HookConsumerWidget {
             return ListTile(
               title: Text(chapter.name),
               subtitle: chapter.dateUpload > 0 ? Text(formatter.format(updatedAt)) : null,
-              onTap: () {},
+              onTap: () => Screen.chapterInfo(chapter).push(context),
             );
           },
           childCount: chapters.length,

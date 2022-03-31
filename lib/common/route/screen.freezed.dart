@@ -18,14 +18,14 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ScreenTearOff {
   const _$ScreenTearOff();
 
-  ScreenMangaInfo mangaInfo(MangaInfo manga) {
-    return ScreenMangaInfo(
+  ScreenMangaDetail mangaInfo(MangaInfo manga) {
+    return ScreenMangaDetail(
       manga,
     );
   }
 
-  ScreenChapterInfo chapterInfo(ChapterInfo chapter) {
-    return ScreenChapterInfo(
+  ScreenReader chapterInfo(ChapterInfo chapter) {
+    return ScreenReader(
       chapter,
     );
   }
@@ -57,20 +57,20 @@ mixin _$Screen {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ScreenMangaInfo value) mangaInfo,
-    required TResult Function(ScreenChapterInfo value) chapterInfo,
+    required TResult Function(ScreenMangaDetail value) mangaInfo,
+    required TResult Function(ScreenReader value) chapterInfo,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -92,30 +92,30 @@ class _$ScreenCopyWithImpl<$Res> implements $ScreenCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $ScreenMangaInfoCopyWith<$Res> {
-  factory $ScreenMangaInfoCopyWith(
-          ScreenMangaInfo value, $Res Function(ScreenMangaInfo) then) =
-      _$ScreenMangaInfoCopyWithImpl<$Res>;
+abstract class $ScreenMangaDetailCopyWith<$Res> {
+  factory $ScreenMangaDetailCopyWith(
+          ScreenMangaDetail value, $Res Function(ScreenMangaDetail) then) =
+      _$ScreenMangaDetailCopyWithImpl<$Res>;
   $Res call({MangaInfo manga});
 
   $MangaInfoCopyWith<$Res> get manga;
 }
 
 /// @nodoc
-class _$ScreenMangaInfoCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
-    implements $ScreenMangaInfoCopyWith<$Res> {
-  _$ScreenMangaInfoCopyWithImpl(
-      ScreenMangaInfo _value, $Res Function(ScreenMangaInfo) _then)
-      : super(_value, (v) => _then(v as ScreenMangaInfo));
+class _$ScreenMangaDetailCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+    implements $ScreenMangaDetailCopyWith<$Res> {
+  _$ScreenMangaDetailCopyWithImpl(
+      ScreenMangaDetail _value, $Res Function(ScreenMangaDetail) _then)
+      : super(_value, (v) => _then(v as ScreenMangaDetail));
 
   @override
-  ScreenMangaInfo get _value => super._value as ScreenMangaInfo;
+  ScreenMangaDetail get _value => super._value as ScreenMangaDetail;
 
   @override
   $Res call({
     Object? manga = freezed,
   }) {
-    return _then(ScreenMangaInfo(
+    return _then(ScreenMangaDetail(
       manga == freezed
           ? _value.manga
           : manga // ignore: cast_nullable_to_non_nullable
@@ -133,8 +133,9 @@ class _$ScreenMangaInfoCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
-  _$ScreenMangaInfo(this.manga) : super._();
+class _$ScreenMangaDetail extends ScreenMangaDetail
+    with DiagnosticableTreeMixin {
+  _$ScreenMangaDetail(this.manga) : super._();
 
   @override
   final MangaInfo manga;
@@ -156,7 +157,7 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ScreenMangaInfo &&
+            other is ScreenMangaDetail &&
             const DeepCollectionEquality().equals(other.manga, manga));
   }
 
@@ -166,8 +167,8 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
 
   @JsonKey(ignore: true)
   @override
-  $ScreenMangaInfoCopyWith<ScreenMangaInfo> get copyWith =>
-      _$ScreenMangaInfoCopyWithImpl<ScreenMangaInfo>(this, _$identity);
+  $ScreenMangaDetailCopyWith<ScreenMangaDetail> get copyWith =>
+      _$ScreenMangaDetailCopyWithImpl<ScreenMangaDetail>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -203,8 +204,8 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ScreenMangaInfo value) mangaInfo,
-    required TResult Function(ScreenChapterInfo value) chapterInfo,
+    required TResult Function(ScreenMangaDetail value) mangaInfo,
+    required TResult Function(ScreenReader value) chapterInfo,
   }) {
     return mangaInfo(this);
   }
@@ -212,8 +213,8 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
   }) {
     return mangaInfo?.call(this);
   }
@@ -221,8 +222,8 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
     required TResult orElse(),
   }) {
     if (mangaInfo != null) {
@@ -232,41 +233,41 @@ class _$ScreenMangaInfo extends ScreenMangaInfo with DiagnosticableTreeMixin {
   }
 }
 
-abstract class ScreenMangaInfo extends Screen {
-  factory ScreenMangaInfo(MangaInfo manga) = _$ScreenMangaInfo;
-  ScreenMangaInfo._() : super._();
+abstract class ScreenMangaDetail extends Screen {
+  factory ScreenMangaDetail(MangaInfo manga) = _$ScreenMangaDetail;
+  ScreenMangaDetail._() : super._();
 
   MangaInfo get manga;
   @JsonKey(ignore: true)
-  $ScreenMangaInfoCopyWith<ScreenMangaInfo> get copyWith =>
+  $ScreenMangaDetailCopyWith<ScreenMangaDetail> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ScreenChapterInfoCopyWith<$Res> {
-  factory $ScreenChapterInfoCopyWith(
-          ScreenChapterInfo value, $Res Function(ScreenChapterInfo) then) =
-      _$ScreenChapterInfoCopyWithImpl<$Res>;
+abstract class $ScreenReaderCopyWith<$Res> {
+  factory $ScreenReaderCopyWith(
+          ScreenReader value, $Res Function(ScreenReader) then) =
+      _$ScreenReaderCopyWithImpl<$Res>;
   $Res call({ChapterInfo chapter});
 
   $ChapterInfoCopyWith<$Res> get chapter;
 }
 
 /// @nodoc
-class _$ScreenChapterInfoCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
-    implements $ScreenChapterInfoCopyWith<$Res> {
-  _$ScreenChapterInfoCopyWithImpl(
-      ScreenChapterInfo _value, $Res Function(ScreenChapterInfo) _then)
-      : super(_value, (v) => _then(v as ScreenChapterInfo));
+class _$ScreenReaderCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+    implements $ScreenReaderCopyWith<$Res> {
+  _$ScreenReaderCopyWithImpl(
+      ScreenReader _value, $Res Function(ScreenReader) _then)
+      : super(_value, (v) => _then(v as ScreenReader));
 
   @override
-  ScreenChapterInfo get _value => super._value as ScreenChapterInfo;
+  ScreenReader get _value => super._value as ScreenReader;
 
   @override
   $Res call({
     Object? chapter = freezed,
   }) {
-    return _then(ScreenChapterInfo(
+    return _then(ScreenReader(
       chapter == freezed
           ? _value.chapter
           : chapter // ignore: cast_nullable_to_non_nullable
@@ -284,9 +285,8 @@ class _$ScreenChapterInfoCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ScreenChapterInfo extends ScreenChapterInfo
-    with DiagnosticableTreeMixin {
-  _$ScreenChapterInfo(this.chapter) : super._();
+class _$ScreenReader extends ScreenReader with DiagnosticableTreeMixin {
+  _$ScreenReader(this.chapter) : super._();
 
   @override
   final ChapterInfo chapter;
@@ -308,7 +308,7 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ScreenChapterInfo &&
+            other is ScreenReader &&
             const DeepCollectionEquality().equals(other.chapter, chapter));
   }
 
@@ -318,8 +318,8 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
 
   @JsonKey(ignore: true)
   @override
-  $ScreenChapterInfoCopyWith<ScreenChapterInfo> get copyWith =>
-      _$ScreenChapterInfoCopyWithImpl<ScreenChapterInfo>(this, _$identity);
+  $ScreenReaderCopyWith<ScreenReader> get copyWith =>
+      _$ScreenReaderCopyWithImpl<ScreenReader>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -355,8 +355,8 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ScreenMangaInfo value) mangaInfo,
-    required TResult Function(ScreenChapterInfo value) chapterInfo,
+    required TResult Function(ScreenMangaDetail value) mangaInfo,
+    required TResult Function(ScreenReader value) chapterInfo,
   }) {
     return chapterInfo(this);
   }
@@ -364,8 +364,8 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
   }) {
     return chapterInfo?.call(this);
   }
@@ -373,8 +373,8 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ScreenMangaInfo value)? mangaInfo,
-    TResult Function(ScreenChapterInfo value)? chapterInfo,
+    TResult Function(ScreenMangaDetail value)? mangaInfo,
+    TResult Function(ScreenReader value)? chapterInfo,
     required TResult orElse(),
   }) {
     if (chapterInfo != null) {
@@ -384,12 +384,12 @@ class _$ScreenChapterInfo extends ScreenChapterInfo
   }
 }
 
-abstract class ScreenChapterInfo extends Screen {
-  factory ScreenChapterInfo(ChapterInfo chapter) = _$ScreenChapterInfo;
-  ScreenChapterInfo._() : super._();
+abstract class ScreenReader extends Screen {
+  factory ScreenReader(ChapterInfo chapter) = _$ScreenReader;
+  ScreenReader._() : super._();
 
   ChapterInfo get chapter;
   @JsonKey(ignore: true)
-  $ScreenChapterInfoCopyWith<ScreenChapterInfo> get copyWith =>
+  $ScreenReaderCopyWith<ScreenReader> get copyWith =>
       throw _privateConstructorUsedError;
 }
