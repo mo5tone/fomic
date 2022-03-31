@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:fomic/model/filter.dart';
 import 'package:fomic/repository/service/request.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -212,11 +211,5 @@ class KuaiKanManHua extends HttpSource {
   @override
   PageImageUrl imageUrlParser(Response response) {
     throw UnimplementedError();
-  }
-}
-
-extension on String {
-  String get withQuotes {
-    return replaceAllMapped(RegExp(r'[^\[\]{}:,]+'), (match) => '"${match.group(0)}"');
   }
 }

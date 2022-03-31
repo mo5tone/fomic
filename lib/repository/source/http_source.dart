@@ -10,7 +10,7 @@ import 'package:fomic/model/chapter_info.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/model/page.dart';
-import 'package:fomic/repository/service/networker.dart';
+import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 
 abstract class HttpSource extends CatalogueSource {
