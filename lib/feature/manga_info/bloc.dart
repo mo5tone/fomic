@@ -11,6 +11,7 @@ part 'bloc.freezed.dart';
 @freezed
 class MangaInfoEvent with _$MangaInfoEvent {
   const factory MangaInfoEvent.refresh() = MangaInfoEventRefresh;
+  const factory MangaInfoEvent.swapList() = MangaInfoEventSwapList;
   const factory MangaInfoEvent.favorite() = MangaInfoEventFavorite;
 }
 
@@ -20,7 +21,7 @@ class MangaInfoState with _$MangaInfoState {
 }
 
 class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
-  static final family = StateNotifierProvider.family<MangaInfoBLoC, MangaInfoState, MangaInfo>((ref, manga) => MangaInfoBLoC._(ref, manga));
+  static final family = StateNotifierProvider.autoDispose.family<MangaInfoBLoC, MangaInfoState, MangaInfo>((ref, manga) => MangaInfoBLoC._(ref, manga));
 
   final HttpSource _source;
 
@@ -35,6 +36,9 @@ class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
         final manga = await _source.fetchMangaDetails(manga: state.manga);
         final chapters = await _source.fetchChapterList(manga: state.manga);
         yield state.copyWith(manga: manga, chapters: chapters);
+      },
+      swapList: () async* {
+        yield state.copyWith(chapters: state.chapters.reversed.toList(growable: false));
       },
       favorite: () async* {},
     );

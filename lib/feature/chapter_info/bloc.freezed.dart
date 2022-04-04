@@ -22,8 +22,8 @@ class _$ChapterInfoEventTearOff {
     return const ChapterInfoEventRefresh();
   }
 
-  ChapterInfoEventFetch fetch(int index) {
-    return ChapterInfoEventFetch(
+  ChapterInfoEventPageChanged pageChanged(int index) {
+    return ChapterInfoEventPageChanged(
       index,
     );
   }
@@ -37,38 +37,38 @@ mixin _$ChapterInfoEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
-    required TResult Function(int index) fetch,
+    required TResult Function(int index) pageChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ChapterInfoEventRefresh value) refresh,
-    required TResult Function(ChapterInfoEventFetch value) fetch,
+    required TResult Function(ChapterInfoEventPageChanged value) pageChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -141,7 +141,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
-    required TResult Function(int index) fetch,
+    required TResult Function(int index) pageChanged,
   }) {
     return refresh();
   }
@@ -150,7 +150,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
   }) {
     return refresh?.call();
   }
@@ -159,7 +159,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -172,7 +172,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ChapterInfoEventRefresh value) refresh,
-    required TResult Function(ChapterInfoEventFetch value) fetch,
+    required TResult Function(ChapterInfoEventPageChanged value) pageChanged,
   }) {
     return refresh(this);
   }
@@ -181,7 +181,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
   }) {
     return refresh?.call(this);
   }
@@ -190,7 +190,7 @@ class _$ChapterInfoEventRefresh
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -205,29 +205,31 @@ abstract class ChapterInfoEventRefresh implements ChapterInfoEvent {
 }
 
 /// @nodoc
-abstract class $ChapterInfoEventFetchCopyWith<$Res> {
-  factory $ChapterInfoEventFetchCopyWith(ChapterInfoEventFetch value,
-          $Res Function(ChapterInfoEventFetch) then) =
-      _$ChapterInfoEventFetchCopyWithImpl<$Res>;
+abstract class $ChapterInfoEventPageChangedCopyWith<$Res> {
+  factory $ChapterInfoEventPageChangedCopyWith(
+          ChapterInfoEventPageChanged value,
+          $Res Function(ChapterInfoEventPageChanged) then) =
+      _$ChapterInfoEventPageChangedCopyWithImpl<$Res>;
   $Res call({int index});
 }
 
 /// @nodoc
-class _$ChapterInfoEventFetchCopyWithImpl<$Res>
+class _$ChapterInfoEventPageChangedCopyWithImpl<$Res>
     extends _$ChapterInfoEventCopyWithImpl<$Res>
-    implements $ChapterInfoEventFetchCopyWith<$Res> {
-  _$ChapterInfoEventFetchCopyWithImpl(
-      ChapterInfoEventFetch _value, $Res Function(ChapterInfoEventFetch) _then)
-      : super(_value, (v) => _then(v as ChapterInfoEventFetch));
+    implements $ChapterInfoEventPageChangedCopyWith<$Res> {
+  _$ChapterInfoEventPageChangedCopyWithImpl(ChapterInfoEventPageChanged _value,
+      $Res Function(ChapterInfoEventPageChanged) _then)
+      : super(_value, (v) => _then(v as ChapterInfoEventPageChanged));
 
   @override
-  ChapterInfoEventFetch get _value => super._value as ChapterInfoEventFetch;
+  ChapterInfoEventPageChanged get _value =>
+      super._value as ChapterInfoEventPageChanged;
 
   @override
   $Res call({
     Object? index = freezed,
   }) {
-    return _then(ChapterInfoEventFetch(
+    return _then(ChapterInfoEventPageChanged(
       index == freezed
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -238,24 +240,24 @@ class _$ChapterInfoEventFetchCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChapterInfoEventFetch
+class _$ChapterInfoEventPageChanged
     with DiagnosticableTreeMixin
-    implements ChapterInfoEventFetch {
-  const _$ChapterInfoEventFetch(this.index);
+    implements ChapterInfoEventPageChanged {
+  const _$ChapterInfoEventPageChanged(this.index);
 
   @override
   final int index;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChapterInfoEvent.fetch(index: $index)';
+    return 'ChapterInfoEvent.pageChanged(index: $index)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ChapterInfoEvent.fetch'))
+      ..add(DiagnosticsProperty('type', 'ChapterInfoEvent.pageChanged'))
       ..add(DiagnosticsProperty('index', index));
   }
 
@@ -263,7 +265,7 @@ class _$ChapterInfoEventFetch
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ChapterInfoEventFetch &&
+            other is ChapterInfoEventPageChanged &&
             const DeepCollectionEquality().equals(other.index, index));
   }
 
@@ -273,37 +275,37 @@ class _$ChapterInfoEventFetch
 
   @JsonKey(ignore: true)
   @override
-  $ChapterInfoEventFetchCopyWith<ChapterInfoEventFetch> get copyWith =>
-      _$ChapterInfoEventFetchCopyWithImpl<ChapterInfoEventFetch>(
-          this, _$identity);
+  $ChapterInfoEventPageChangedCopyWith<ChapterInfoEventPageChanged>
+      get copyWith => _$ChapterInfoEventPageChangedCopyWithImpl<
+          ChapterInfoEventPageChanged>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
-    required TResult Function(int index) fetch,
+    required TResult Function(int index) pageChanged,
   }) {
-    return fetch(index);
+    return pageChanged(index);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
   }) {
-    return fetch?.call(index);
+    return pageChanged?.call(index);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
-    TResult Function(int index)? fetch,
+    TResult Function(int index)? pageChanged,
     required TResult orElse(),
   }) {
-    if (fetch != null) {
-      return fetch(index);
+    if (pageChanged != null) {
+      return pageChanged(index);
     }
     return orElse();
   }
@@ -312,41 +314,42 @@ class _$ChapterInfoEventFetch
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ChapterInfoEventRefresh value) refresh,
-    required TResult Function(ChapterInfoEventFetch value) fetch,
+    required TResult Function(ChapterInfoEventPageChanged value) pageChanged,
   }) {
-    return fetch(this);
+    return pageChanged(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
   }) {
-    return fetch?.call(this);
+    return pageChanged?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterInfoEventRefresh value)? refresh,
-    TResult Function(ChapterInfoEventFetch value)? fetch,
+    TResult Function(ChapterInfoEventPageChanged value)? pageChanged,
     required TResult orElse(),
   }) {
-    if (fetch != null) {
-      return fetch(this);
+    if (pageChanged != null) {
+      return pageChanged(this);
     }
     return orElse();
   }
 }
 
-abstract class ChapterInfoEventFetch implements ChapterInfoEvent {
-  const factory ChapterInfoEventFetch(int index) = _$ChapterInfoEventFetch;
+abstract class ChapterInfoEventPageChanged implements ChapterInfoEvent {
+  const factory ChapterInfoEventPageChanged(int index) =
+      _$ChapterInfoEventPageChanged;
 
   int get index;
   @JsonKey(ignore: true)
-  $ChapterInfoEventFetchCopyWith<ChapterInfoEventFetch> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ChapterInfoEventPageChangedCopyWith<ChapterInfoEventPageChanged>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

@@ -10,7 +10,7 @@ import 'package:fomic/repository/source/http_source.dart';
 import 'package:intl/intl.dart';
 
 class MangaInfoView extends HookConsumerWidget {
-  final StateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
 
   MangaInfoView({Key? key, required MangaInfo manga})
       : provider = MangaInfoBLoC.family(manga),
@@ -38,7 +38,7 @@ class MangaInfoView extends HookConsumerWidget {
 }
 
 class _AppBar extends HookConsumerWidget {
-  final StateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
 
   const _AppBar({Key? key, required this.provider}) : super(key: key);
 
@@ -47,6 +47,7 @@ class _AppBar extends HookConsumerWidget {
     final mediaQueryData = MediaQuery.of(context);
     final expandedHeight = mediaQueryData.size.height / 3;
     final manga = ref.watch(provider.select((value) => value.manga));
+    final theme = Theme.of(context);
     return SliverAppBar(
       title: InkWell(
         child: Text(manga.title),
@@ -63,7 +64,37 @@ class _AppBar extends HookConsumerWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: _AppBarFlexibleSpaceBackground(manga: manga),
       ),
-      bottom: _AppBarBottom(),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                ref.read(provider.notifier).add(const MangaInfoEvent.swapList());
+              },
+              color: theme.colorScheme.onPrimary,
+              icon: const Icon(
+                Icons.swap_vert,
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              color: theme.colorScheme.onPrimary,
+              icon: const Icon(
+                Icons.favorite_border,
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              color: theme.colorScheme.onPrimary,
+              icon: const Icon(
+                Icons.open_in_browser,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -112,10 +143,13 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                CachedNetworkImage(
-                  imageUrl: manga.cover,
-                  httpHeaders: ref.read(HttpSource.provider).headers,
-                  fit: BoxFit.cover,
+                Hero(
+                  tag: manga.key,
+                  child: CachedNetworkImage(
+                    imageUrl: manga.cover,
+                    httpHeaders: ref.read(HttpSource.provider).headers,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(
                   width: 16,
@@ -202,37 +236,8 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
   }
 }
 
-class _AppBarBottom extends HookConsumerWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        IconButton(
-          onPressed: () {},
-          color: theme.colorScheme.onPrimary,
-          icon: const Icon(
-            Icons.favorite_border,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          color: theme.colorScheme.onPrimary,
-          icon: const Icon(
-            Icons.open_in_browser,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _ChapterInfoList extends HookConsumerWidget {
-  final StateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
 
   const _ChapterInfoList({Key? key, required this.provider}) : super(key: key);
 

@@ -61,69 +61,60 @@ class _Cell extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const radius = 8.0;
     final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.cardColor,
+    return Card(
+      elevation: radius,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
-        boxShadow: [
-          BoxShadow(
-            color: theme.backgroundColor.withOpacity(0.5),
-            blurRadius: 2,
-            offset: const Offset(1, 1),
-          ),
-        ],
       ),
-      child: InkWell(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(radius)),
-              child: Consumer(
-                builder: (context, ref, child) {
-                  return CachedNetworkImage(
-                    imageUrl: manga.cover,
-                    httpHeaders: ref.read(HttpSource.provider).headers,
-                    fit: BoxFit.cover,
-                  );
-                },
+      clipBehavior: Clip.hardEdge,
+      child: Hero(
+        tag: manga.key,
+        child: InkWell(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              CachedNetworkImage(
+                imageUrl: manga.cover,
+                httpHeaders: ref.read(HttpSource.provider).headers,
+                fit: BoxFit.cover,
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(radius),
-                gradient: const LinearGradient(
-                  begin: FractionalOffset.topCenter,
-                  end: FractionalOffset.bottomCenter,
-                  colors: [
-                    Color.fromARGB(0x00, 0xff, 0xff, 0xff),
-                    Color.fromARGB(0xaa, 0x00, 0x00, 0x00),
-                  ],
-                  stops: [
-                    0,
-                    0.9,
-                  ],
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(radius),
+                  gradient: LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      Color.fromARGB(0x00, 0xff, 0xff, 0xff),
+                      Color.fromARGB(0xaa, 0x00, 0x00, 0x00),
+                    ],
+                    stops: [
+                      0,
+                      0.8,
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              left: radius,
-              bottom: radius,
-              child: Text(
-                manga.title,
-                maxLines: 2,
-                textAlign: TextAlign.start,
-                style: theme.textTheme.titleMedium?.apply(
-                  color: theme.colorScheme.onBackground,
+              Positioned(
+                left: radius,
+                bottom: radius,
+                right: radius,
+                child: Text(
+                  manga.title,
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  style: theme.textTheme.titleMedium?.apply(
+                    color: theme.colorScheme.onBackground,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+          onTap: () {
+            if (didTap != null) didTap!(context, manga);
+          },
         ),
-        onTap: () {
-          if (didTap != null) didTap!(context, manga);
-        },
       ),
     );
   }

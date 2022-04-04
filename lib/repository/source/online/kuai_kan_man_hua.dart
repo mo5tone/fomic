@@ -127,11 +127,8 @@ class KuaiKanManHua extends HttpSource {
   MangasPage searchMangaParser(Response response) {
     final obj = response.data['data'];
     List arr = obj['hit'] ?? obj['topics'];
-    final mangas = <MangaInfo>[];
-    for (final obj in arr) {
-      mangas.add(MangaInfo("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
-    }
-    return MangasPage(0, mangas, false);
+    final mangas = arr.map((e) => MangaInfo("/web/topic/${e['id']}", e['title'], cover: e['vertical_image_url'])).toList(growable: false);
+    return MangasPage(0, mangas, mangas.length > 9 && obj['hit'] == null);
   }
 
   @override

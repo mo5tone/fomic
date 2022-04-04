@@ -22,6 +22,10 @@ class _$MangaInfoEventTearOff {
     return const MangaInfoEventRefresh();
   }
 
+  MangaInfoEventSwapList swapList() {
+    return const MangaInfoEventSwapList();
+  }
+
   MangaInfoEventFavorite favorite() {
     return const MangaInfoEventFavorite();
   }
@@ -35,18 +39,21 @@ mixin _$MangaInfoEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
+    required TResult Function() swapList,
     required TResult Function() favorite,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
     required TResult orElse(),
   }) =>
@@ -54,18 +61,21 @@ mixin _$MangaInfoEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MangaInfoEventRefresh value) refresh,
+    required TResult Function(MangaInfoEventSwapList value) swapList,
     required TResult Function(MangaInfoEventFavorite value) favorite,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
     required TResult orElse(),
   }) =>
@@ -139,6 +149,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
+    required TResult Function() swapList,
     required TResult Function() favorite,
   }) {
     return refresh();
@@ -148,6 +159,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
   }) {
     return refresh?.call();
@@ -157,6 +169,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
     required TResult orElse(),
   }) {
@@ -170,6 +183,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MangaInfoEventRefresh value) refresh,
+    required TResult Function(MangaInfoEventSwapList value) swapList,
     required TResult Function(MangaInfoEventFavorite value) favorite,
   }) {
     return refresh(this);
@@ -179,6 +193,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
   }) {
     return refresh?.call(this);
@@ -188,6 +203,7 @@ class _$MangaInfoEventRefresh
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
     required TResult orElse(),
   }) {
@@ -200,6 +216,125 @@ class _$MangaInfoEventRefresh
 
 abstract class MangaInfoEventRefresh implements MangaInfoEvent {
   const factory MangaInfoEventRefresh() = _$MangaInfoEventRefresh;
+}
+
+/// @nodoc
+abstract class $MangaInfoEventSwapListCopyWith<$Res> {
+  factory $MangaInfoEventSwapListCopyWith(MangaInfoEventSwapList value,
+          $Res Function(MangaInfoEventSwapList) then) =
+      _$MangaInfoEventSwapListCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$MangaInfoEventSwapListCopyWithImpl<$Res>
+    extends _$MangaInfoEventCopyWithImpl<$Res>
+    implements $MangaInfoEventSwapListCopyWith<$Res> {
+  _$MangaInfoEventSwapListCopyWithImpl(MangaInfoEventSwapList _value,
+      $Res Function(MangaInfoEventSwapList) _then)
+      : super(_value, (v) => _then(v as MangaInfoEventSwapList));
+
+  @override
+  MangaInfoEventSwapList get _value => super._value as MangaInfoEventSwapList;
+}
+
+/// @nodoc
+
+class _$MangaInfoEventSwapList
+    with DiagnosticableTreeMixin
+    implements MangaInfoEventSwapList {
+  const _$MangaInfoEventSwapList();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MangaInfoEvent.swapList()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'MangaInfoEvent.swapList'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is MangaInfoEventSwapList);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() refresh,
+    required TResult Function() swapList,
+    required TResult Function() favorite,
+  }) {
+    return swapList();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function()? swapList,
+    TResult Function()? favorite,
+  }) {
+    return swapList?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? refresh,
+    TResult Function()? swapList,
+    TResult Function()? favorite,
+    required TResult orElse(),
+  }) {
+    if (swapList != null) {
+      return swapList();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MangaInfoEventRefresh value) refresh,
+    required TResult Function(MangaInfoEventSwapList value) swapList,
+    required TResult Function(MangaInfoEventFavorite value) favorite,
+  }) {
+    return swapList(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
+    TResult Function(MangaInfoEventFavorite value)? favorite,
+  }) {
+    return swapList?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
+    TResult Function(MangaInfoEventFavorite value)? favorite,
+    required TResult orElse(),
+  }) {
+    if (swapList != null) {
+      return swapList(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MangaInfoEventSwapList implements MangaInfoEvent {
+  const factory MangaInfoEventSwapList() = _$MangaInfoEventSwapList;
 }
 
 /// @nodoc
@@ -252,6 +387,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() refresh,
+    required TResult Function() swapList,
     required TResult Function() favorite,
   }) {
     return favorite();
@@ -261,6 +397,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
   }) {
     return favorite?.call();
@@ -270,6 +407,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? refresh,
+    TResult Function()? swapList,
     TResult Function()? favorite,
     required TResult orElse(),
   }) {
@@ -283,6 +421,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MangaInfoEventRefresh value) refresh,
+    required TResult Function(MangaInfoEventSwapList value) swapList,
     required TResult Function(MangaInfoEventFavorite value) favorite,
   }) {
     return favorite(this);
@@ -292,6 +431,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
   }) {
     return favorite?.call(this);
@@ -301,6 +441,7 @@ class _$MangaInfoEventFavorite
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MangaInfoEventRefresh value)? refresh,
+    TResult Function(MangaInfoEventSwapList value)? swapList,
     TResult Function(MangaInfoEventFavorite value)? favorite,
     required TResult orElse(),
   }) {

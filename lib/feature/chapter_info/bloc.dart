@@ -11,7 +11,7 @@ part 'bloc.freezed.dart';
 @freezed
 class ChapterInfoEvent with _$ChapterInfoEvent {
   const factory ChapterInfoEvent.refresh() = ChapterInfoEventRefresh;
-  const factory ChapterInfoEvent.fetch(int index) = ChapterInfoEventFetch;
+  const factory ChapterInfoEvent.pageChanged(int index) = ChapterInfoEventPageChanged;
 }
 
 @freezed
@@ -25,7 +25,8 @@ class ChapterInfoState with _$ChapterInfoState {
 }
 
 class ChapterInfoBLoC extends BLoC<ChapterInfoEvent, ChapterInfoState> {
-  static final family = StateNotifierProvider.family<ChapterInfoBLoC, ChapterInfoState, ChapterInfo>((ref, chapter) => ChapterInfoBLoC._(ref, chapter));
+  static final family =
+      StateNotifierProvider.autoDispose.family<ChapterInfoBLoC, ChapterInfoState, ChapterInfo>((ref, chapter) => ChapterInfoBLoC._(ref, chapter));
 
   final HttpSource _source;
 
@@ -52,7 +53,11 @@ class ChapterInfoBLoC extends BLoC<ChapterInfoEvent, ChapterInfoState> {
         }).toList(growable: false);
         yield state.copyWith(pages: pages);
       },
-      fetch: (index) async* {},
+      pageChanged: (index) async* {
+        if (state.index != index) {
+          yield state.copyWith(index: index);
+        }
+      },
     );
   }
 }
