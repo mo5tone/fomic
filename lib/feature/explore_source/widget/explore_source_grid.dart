@@ -61,14 +61,14 @@ class _Cell extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const radius = 8.0;
     final theme = Theme.of(context);
-    return Card(
-      elevation: radius,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Hero(
-        tag: manga.key,
+    return Hero(
+      tag: manga.key,
+      child: Card(
+        elevation: radius,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        clipBehavior: Clip.hardEdge,
         child: InkWell(
           child: Stack(
             fit: StackFit.expand,

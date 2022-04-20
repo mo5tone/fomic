@@ -10,14 +10,13 @@ import 'package:fomic/repository/source/http_source.dart';
 import 'package:intl/intl.dart';
 
 class MangaInfoView extends HookConsumerWidget {
-  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final MangaInfo manga;
 
-  MangaInfoView({Key? key, required MangaInfo manga})
-      : provider = MangaInfoBLoC.family(manga),
-        super(key: key);
+  const MangaInfoView({Key? key, required this.manga}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = MangaInfoBLoC.family(manga);
     final bloc = ref.read(provider.notifier);
     useEffect(() {
       bloc.add(const MangaInfoEvent.refresh());
@@ -106,6 +105,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const radius = 8.0;
     final theme = Theme.of(context);
     return Stack(
       fit: StackFit.expand,
@@ -145,10 +145,17 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
               children: [
                 Hero(
                   tag: manga.key,
-                  child: CachedNetworkImage(
-                    imageUrl: manga.cover,
-                    httpHeaders: ref.read(HttpSource.provider).headers,
-                    fit: BoxFit.cover,
+                  child: Card(
+                    elevation: radius,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(radius),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: CachedNetworkImage(
+                      imageUrl: manga.cover,
+                      httpHeaders: ref.read(HttpSource.provider).headers,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(

@@ -11,14 +11,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class ChapterInfoView extends HookConsumerWidget {
-  final AutoDisposeStateNotifierProvider<ChapterInfoBLoC, ChapterInfoState> provider;
+  final ChapterInfo chapter;
 
-  ChapterInfoView({Key? key, required ChapterInfo chapter})
-      : provider = ChapterInfoBLoC.family(chapter),
-        super(key: key);
+  const ChapterInfoView({Key? key, required this.chapter}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = ChapterInfoBLoC.family(chapter);
     final bloc = ref.read(provider.notifier);
     useEffect(() {
       bloc.add(const ChapterInfoEvent.refresh());
@@ -42,18 +41,18 @@ class ChapterInfoView extends HookConsumerWidget {
         ],
       ),
       body: SafeArea(
-        child: Container(
-          child: Stack(
-            alignment: AlignmentDirectional.bottomCenter,
-            children: [
-              PageView.builder(
-                scrollDirection: Axis.values[ref.watch(provider.select((state) => state.axis)) % Axis.values.length],
-                controller: pageController,
-                itemCount: ref.watch(provider.select((state) => state.pages.length)),
-                onPageChanged: (index) => bloc.add(ChapterInfoEvent.pageChanged(index)),
-                itemBuilder: (context, index) {
-                  final page = ref.watch(provider.select((state) => state.pages[index]));
-                  final content = page.when(
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            PageView.builder(
+              scrollDirection: Axis.values[ref.watch(provider.select((state) => state.axis)) % Axis.values.length],
+              controller: pageController,
+              itemCount: ref.watch(provider.select((state) => state.pages.length)),
+              onPageChanged: (index) => bloc.add(ChapterInfoEvent.pageChanged(index)),
+              itemBuilder: (context, index) {
+                final page = ref.watch(provider.select((state) => state.pages[index]));
+                return Center(
+                  child: page.when(
                     url: (url) => CachedNetworkImage(
                       imageUrl: url,
                       httpHeaders: ref.read(HttpSource.provider).headers,
@@ -66,20 +65,39 @@ class ChapterInfoView extends HookConsumerWidget {
                     ),
                     imageBase64: (imageBase64) => Image.memory(base64.decode(imageBase64)),
                     text: (text) => Text(text),
-                  );
-                  return Center(
-                    child: content,
-                  );
-                },
-              ),
-              if (ref.watch(provider.select((state) => state.pages.isNotEmpty)))
-                Positioned(
-                  bottom: 8,
-                  child: Text(ref.watch(
-                      provider.select((state) => NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1) + '/${state.pages.length}'))),
+                  ),
+                );
+              },
+            ),
+            if (ref.watch(provider.select((state) => state.pages.isNotEmpty)))
+              Positioned(
+                left: 8,
+                right: 8,
+                bottom: 8,
+                child: Column(
+                  children: [
+                    if (ref.watch(provider.select((state) => state.pages.length > 1)))
+                      Container(
+                        margin: const EdgeInsets.only(
+                          bottom: 8,
+                        ),
+                        child: Slider(
+                          value: ref.watch(provider.select((state) => state.index + 1)),
+                          onChanged: (value) => pageController.jumpToPage(value.round()),
+                          label: '${ref.watch(provider.select((state) => state.index + 1))}',
+                          min: 1,
+                          max: ref.watch(provider.select((state) => state.pages.length.roundToDouble())),
+                          divisions: ref.watch(provider.select((state) => state.pages.length)),
+                        ),
+                      ),
+                    Text(
+                      ref.watch(
+                          provider.select((state) => NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1) + '/${state.pages.length}')),
+                    ),
+                  ],
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
