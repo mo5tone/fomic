@@ -11,8 +11,8 @@ part 'screen.freezed.dart';
 @freezed
 class Screen with _$Screen {
   Screen._();
-  factory Screen.mangaInfo(MangaInfo manga) = ScreenMangaDetail;
-  factory Screen.chapterInfo(ChapterInfo chapter) = ScreenReader;
+  factory Screen.mangaInfo(MangaInfo manga) = ScreenMangaInfo;
+  factory Screen.chapterInfo(ChapterInfo chapter) = ScreenChapterInfo;
 
   Future<T?> push<T extends Object>(BuildContext context) {
     final route = MaterialPageRoute<T>(

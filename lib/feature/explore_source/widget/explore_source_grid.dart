@@ -81,7 +81,6 @@ class _Cell extends HookConsumerWidget {
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  // borderRadius: BorderRadius.circular(radius),
                   gradient: LinearGradient(
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomCenter,
