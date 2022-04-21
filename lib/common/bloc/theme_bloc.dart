@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fomic/repository/service/theme_box.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -34,9 +35,13 @@ class ThemeState with _$ThemeState {
 }
 
 class ThemeBLoC extends BLoC<ThemeEvent, ThemeState> {
-  static final provider = StateNotifierProvider.autoDispose<ThemeBLoC, ThemeState>((ref) => ThemeBLoC._());
+  static final provider = StateNotifierProvider.autoDispose<ThemeBLoC, ThemeState>((ref) {
+    final brightness = ref.read(ThemeBox.provider).value?.brightness;
+    final primarySwatch = ref.read(ThemeBox.provider).value?.primarySwatch;
+    return ThemeBLoC._(ThemeState(primarySwatch ?? Colors.blue, brightness));
+  });
 
-  ThemeBLoC._() : super(const ThemeState(Colors.blue));
+  ThemeBLoC._(ThemeState state) : super(state);
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) {

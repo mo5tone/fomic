@@ -7,6 +7,7 @@ import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/model/manga_info.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc.dart';
 
@@ -84,7 +85,7 @@ class _FiltersBottomSheet extends HookConsumerWidget {
             Row(
               children: [
                 TextButton(
-                  child: const Text('Reset'),
+                  child: Text(AppLocalizations.of(context)!.reset),
                   onPressed: () {
                     ref.refresh(filters);
                     Navigator.of(context).pop(<Filter>[]);
@@ -92,7 +93,7 @@ class _FiltersBottomSheet extends HookConsumerWidget {
                 ),
                 const Spacer(),
                 ElevatedButton(
-                  child: const Text('Filter'),
+                  child: Text(AppLocalizations.of(context)!.filter),
                   onPressed: () {
                     Navigator.of(context).pop(ref.read(filters));
                   },

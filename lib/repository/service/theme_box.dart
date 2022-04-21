@@ -35,17 +35,15 @@ extension on _Key {
 }
 
 class ThemeBox {
-  static final provider = FutureProvider.autoDispose((ref) async {
-    return ThemeBox._(await Hive.openBox<int>('theme'));
-  });
+  static final provider = FutureProvider.autoDispose((ref) async => ThemeBox._(await Hive.openBox<int>('theme')));
 
   final Box<int> _box;
 
   ThemeBox._(this._box);
 
   Brightness get brightness {
-    final index = _box.get(_Key.brightness.rawValue, defaultValue: -1)!;
-    if (index > -1 && index < Brightness.values.length) {
+    final index = _box.get(_Key.brightness.rawValue, defaultValue: -1);
+    if (index != null && index > -1 && index < Brightness.values.length) {
       return Brightness.values[index];
     }
     return Brightness.light;
@@ -56,8 +54,8 @@ class ThemeBox {
   }
 
   MaterialColor get primarySwatch {
-    final index = _box.get(_Key.primarySwatch.rawValue, defaultValue: -1)!;
-    if (index > -1 && index < primarySwatches.length) {
+    final index = _box.get(_Key.primarySwatch.rawValue, defaultValue: -1);
+    if (index != null && index > -1 && index < primarySwatches.length) {
       return primarySwatches[index];
     }
     return Colors.blue;

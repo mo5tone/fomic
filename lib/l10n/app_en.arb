@@ -1,0 +1,39 @@
+{
+    "explore": "Explore",
+    "@explore": {
+        "description" : "Label of homepage's bottom navigation bar 'Explore' item"
+    },
+    "setting": "Setting",
+    "@setting": {
+        "description" : "Label of homepage's bottom navigation bar 'Setting' item"
+    },
+    "brightnessModes": "Brightness Modes",
+    "@brightnessModes": {
+        "description" : "'Brightness Modes' in setting page"
+    },
+    "primarySwatchColor": "Primary Swatch Color",
+    "@primarySwatchColor": {
+        "description" : "'Primary Swatch Color' in setting page"
+    },
+    "lightMode": "Light Mode",
+    "@lightMode": {
+        "description" : "'Light Mode' of 'Brightness Modes' in setting page"
+    },
+    "darkMode": "Dark Mode",
+    "@darkMode": {
+        "description" : "'Dark Mode' of 'Brightness Modes' in setting page"
+    },
+    "followSystem": "Follow System",
+    "@followSystem": {
+        "description" : "'Follow System' of 'Brightness Modes' in setting page"
+    },
+    "reset": "Reset",
+    "@reset": {
+        "description" : "'Reset' button of filter sheet"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description" : "'Filter' button of filter sheet"
+    },
+    "copiedToClipboard": "Copied To Clipboard"
+}

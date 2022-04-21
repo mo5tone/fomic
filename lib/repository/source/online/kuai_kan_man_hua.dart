@@ -17,12 +17,12 @@ class KuaiKanManHua extends HttpSource {
   static const _lockIcon = '\uD83D\uDD12';
   static const _topicIdSearchPrefix = 'topic:';
   static const _apiBaseUrl = 'https://api.kkmh.com';
-  static const _statusFilterOptions = [
+  static const _statusOptions = [
     MapEntry('全部', '1'),
     MapEntry('连载中', '2'),
     MapEntry('已完结', '3'),
   ];
-  static const _genreFilterOptions = [
+  static const _genreOptions = [
     MapEntry('全部', '0'),
     MapEntry('恋爱', '20'),
     MapEntry('古风', '46'),
@@ -46,9 +46,6 @@ class KuaiKanManHua extends HttpSource {
     MapEntry('投稿', '76'),
   ];
 
-  final _statusFilter = FilterSelect('类别', _statusFilterOptions.map((e) => e.key).toList(growable: false));
-  final _genreFilter = FilterSelect('题材', _genreFilterOptions.map((e) => e.key).toList(growable: false));
-
   KuaiKanManHua._(Ref ref) : super(ref);
 
   @override
@@ -68,8 +65,8 @@ class KuaiKanManHua extends HttpSource {
 
   @override
   List<Filter> get filters => [
-        _statusFilter,
-        _genreFilter,
+        Filter.select('类别', _statusOptions.map((e) => e.key).toList()),
+        Filter.select('题材', _genreOptions.map((e) => e.key).toList()),
       ];
 
   @override
@@ -111,9 +108,9 @@ class KuaiKanManHua extends HttpSource {
         filter.maybeWhen(
           select: (name, _, index) {
             if (name == '类别') {
-              status = _statusFilterOptions[index].value;
+              status = _statusOptions[index].value;
             } else if (name == '题材') {
-              genre = _genreFilterOptions[index].value;
+              genre = _genreOptions[index].value;
             }
           },
           orElse: () {},

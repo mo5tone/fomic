@@ -8,6 +8,7 @@ import 'package:fomic/feature/manga_info/bloc.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MangaInfoView extends HookConsumerWidget {
   final MangaInfo manga;
@@ -52,7 +53,7 @@ class _AppBar extends HookConsumerWidget {
         child: Text(manga.title),
         onLongPress: () async {
           await Clipboard.setData(ClipboardData(text: manga.title));
-          const snackBar = SnackBar(content: Text('Copied'));
+          final snackBar = SnackBar(content: Text(AppLocalizations.of(context)!.copiedToClipboard));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         },
       ),
@@ -73,23 +74,17 @@ class _AppBar extends HookConsumerWidget {
                 ref.read(provider.notifier).add(const MangaInfoEvent.swapList());
               },
               color: theme.colorScheme.onPrimary,
-              icon: const Icon(
-                Icons.swap_vert,
-              ),
+              icon: const Icon(Icons.swap_vert),
             ),
             IconButton(
               onPressed: () {},
               color: theme.colorScheme.onPrimary,
-              icon: const Icon(
-                Icons.favorite_border,
-              ),
+              icon: const Icon(Icons.favorite_border),
             ),
             IconButton(
               onPressed: () {},
               color: theme.colorScheme.onPrimary,
-              icon: const Icon(
-                Icons.open_in_browser,
-              ),
+              icon: const Icon(Icons.open_in_browser),
             ),
           ],
         ),
@@ -169,7 +164,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
                         Expanded(
                           child: Text(
                             manga.description,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.fade,
                             maxLines: 100,
                             style: theme.textTheme.bodySmall?.apply(color: theme.colorScheme.onPrimary),
                           ),
