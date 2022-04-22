@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
-import 'package:fomic/common/bloc/theme_bloc.dart';
+import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/feature/explore_source/view.dart';
 import 'package:fomic/feature/setting/view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

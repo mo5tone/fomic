@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:fomic/common/bloc/theme_bloc.dart';
+import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/repository/service/theme_box.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

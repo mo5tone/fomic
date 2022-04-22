@@ -36,18 +36,20 @@ class ThemeState with _$ThemeState {
 
 class ThemeBLoC extends BLoC<ThemeEvent, ThemeState> {
   static final provider = StateNotifierProvider.autoDispose<ThemeBLoC, ThemeState>((ref) {
-    final brightness = ref.read(ThemeBox.provider).value?.brightness;
-    final primarySwatch = ref.read(ThemeBox.provider).value?.primarySwatch;
-    return ThemeBLoC._(ThemeState(primarySwatch ?? Colors.blue, brightness));
+    return ThemeBLoC._(ref.watch(ThemeBox.provider).whenOrNull(data: (box) => box));
   });
 
-  ThemeBLoC._(ThemeState state) : super(state);
+  final ThemeBox? box;
+
+  ThemeBLoC._(this.box) : super(ThemeState(box?.primarySwatch ?? Colors.blue, box?.brightness));
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) {
     return event.when(primarySwatch: (primarySwatch) async* {
+      box?.primarySwatch = primarySwatch;
       yield state.copyWith(primarySwatch: primarySwatch);
     }, brightness: (brightness) async* {
+      box?.brightness = brightness;
       yield state.copyWith(brightness: brightness);
     });
   }

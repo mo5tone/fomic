@@ -41,16 +41,20 @@ class ThemeBox {
 
   ThemeBox._(this._box);
 
-  Brightness get brightness {
+  Brightness? get brightness {
     final index = _box.get(_Key.brightness.rawValue, defaultValue: -1);
     if (index != null && index > -1 && index < Brightness.values.length) {
       return Brightness.values[index];
     }
-    return Brightness.light;
+    return null;
   }
 
-  set brightness(Brightness value) {
-    _box.put(_Key.brightness.rawValue, Brightness.values.indexOf(value));
+  set brightness(Brightness? value) {
+    if (value == null) {
+      _box.delete(_Key.brightness.rawValue);
+    } else {
+      _box.put(_Key.brightness.rawValue, Brightness.values.indexOf(value));
+    }
   }
 
   MaterialColor get primarySwatch {
