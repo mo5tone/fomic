@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
 import 'package:fomic/repository/service/request.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,8 +35,8 @@ class Networker {
   }
 
   FutureOr<T> _onError<T>(dynamic error, StackTrace stackTrace) {
-    debugPrint('Networker.fetch.error => $error');
-    debugPrint('Networker.fetch.stackTrace => $stackTrace');
+    log('Networker.fetch.error => $error');
+    log('Networker.fetch.stackTrace => $stackTrace');
     throw error;
   }
 }

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExploreSourceGrid extends HookConsumerWidget {
   final List<MangaInfo> mangas;
@@ -22,6 +22,7 @@ class ExploreSourceGrid extends HookConsumerWidget {
     return Container(
       margin: const EdgeInsets.all(space),
       child: CustomScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         controller: scrollController,
         slivers: [
           SliverGrid(

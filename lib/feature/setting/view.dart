@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/repository/service/theme_box.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SettingView extends HookConsumerWidget {
   const SettingView({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class SettingView extends HookConsumerWidget {
         title: Text(AppLocalizations.of(context)!.setting),
       ),
       body: ListView.separated(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         itemBuilder: (context, index) {
           Widget item;
           if (index == 0) {
@@ -100,18 +101,14 @@ class _PrimarySwatchBottomSheet extends HookConsumerWidget {
       child: Container(
         height: containerHeight,
         margin: const EdgeInsets.all(spacing),
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: itemCount,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: column,
-            mainAxisSpacing: spacing,
-            crossAxisSpacing: spacing,
-          ),
-          itemBuilder: (ctx, idx) {
-            final color = primarySwatches[idx];
+        child: Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: primarySwatches.map((color) {
             return InkWell(
               child: Container(
+                width: itemWidth,
+                height: itemWidth,
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: BorderRadius.all(Radius.circular(itemWidth / 2)),
@@ -123,9 +120,9 @@ class _PrimarySwatchBottomSheet extends HookConsumerWidget {
                       )
                     : null,
               ),
-              onTap: () => Navigator.of(ctx).pop(color),
+              onTap: () => Navigator.of(context).pop(color),
             );
-          },
+          }).toList(),
         ),
       ),
     );

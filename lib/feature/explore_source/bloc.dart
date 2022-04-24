@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/common/bloc/bloc.dart';
+import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'bloc.freezed.dart';
 

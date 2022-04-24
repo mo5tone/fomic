@@ -1,8 +1,8 @@
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/page.dart';
-import 'package:fomic/model/mangas_page.dart';
-import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/model/chapter_info.dart';
+import 'package:fomic/model/filter.dart';
+import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/mangas_page.dart';
+import 'package:fomic/model/page.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

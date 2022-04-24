@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/repository/service/request.dart';
-import 'package:fomic/repository/source/online/kuai_kan_man_hua.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fomic/model/chapter_info.dart';
+import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/repository/service/network/networker.dart';
+import 'package:fomic/repository/service/request.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
+import 'package:fomic/repository/source/online/kuai_kan_man_hua.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class HttpSource extends CatalogueSource {
   static final provider = Provider<HttpSource>((ref) => ref.read(KuaiKanManHua.provider));

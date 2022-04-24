@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/repository/service/request.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:fomic/model/page.dart';
-import 'package:fomic/model/mangas_page.dart';
-import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/chapter_info.dart';
 import 'package:dio/dio.dart';
+import 'package:fomic/model/chapter_info.dart';
+import 'package:fomic/model/filter.dart';
+import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/mangas_page.dart';
+import 'package:fomic/model/page.dart';
+import 'package:fomic/repository/service/request.dart';
 import 'package:fomic/repository/source/http_source.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class KuaiKanManHua extends HttpSource {
