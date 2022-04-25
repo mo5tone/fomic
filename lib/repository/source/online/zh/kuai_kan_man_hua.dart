@@ -11,7 +11,7 @@ import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
-class KuaiKanManHua extends HttpSource {
+class KuaiKanManHua extends HTTPSource {
   static final provider = Provider.autoDispose((ref) => KuaiKanManHua._(ref));
 
   static const _lockIcon = '\uD83D\uDD12';

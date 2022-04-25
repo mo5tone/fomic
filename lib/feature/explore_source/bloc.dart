@@ -28,10 +28,10 @@ class ExploreSourceState with _$ExploreSourceState {
 class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
   static final provider = StateNotifierProvider.autoDispose<ExploreSourceBLoC, ExploreSourceState>((ref) => ExploreSourceBLoC._(ref));
 
-  final HttpSource _source;
+  final HTTPSource _source;
 
   ExploreSourceBLoC._(Ref ref)
-      : _source = ref.read(HttpSource.provider),
+      : _source = ref.read(HTTPSource.provider),
         super(const ExploreSourceState());
 
   @override

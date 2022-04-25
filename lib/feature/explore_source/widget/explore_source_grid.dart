@@ -76,7 +76,7 @@ class _Cell extends HookConsumerWidget {
             children: [
               CachedNetworkImage(
                 imageUrl: manga.cover,
-                httpHeaders: ref.read(HttpSource.provider).headers,
+                httpHeaders: ref.read(HTTPSource.provider).headers,
                 fit: BoxFit.cover,
               ),
               Container(

@@ -32,13 +32,22 @@ class ExploreSourceView extends HookConsumerWidget {
     }, [scrollController]);
     return Scaffold(
       appBar: AppBar(
-        title: Text(ref.watch(HttpSource.provider).name),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.extension),
+        ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(ref.watch(HTTPSource.provider).iconName),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(ref.watch(HTTPSource.provider).name),
+          ],
+        ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () => showSearch(context: context, delegate: ExploreSourceSearchDelegate(bloc: bloc)),
-          ),
-          if (ref.watch(HttpSource.provider).filters.isNotEmpty)
+          if (ref.watch(HTTPSource.provider).filters.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () async {
@@ -54,6 +63,10 @@ class ExploreSourceView extends HookConsumerWidget {
             ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.search),
+        onPressed: () => showSearch(context: context, delegate: ExploreSourceSearchDelegate(bloc: bloc)),
+      ),
       body: RefreshIndicator(
         child: ExploreSourceGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<MangaInfo>[], (result, page) => [...result, ...page.mangas]),
@@ -67,7 +80,7 @@ class ExploreSourceView extends HookConsumerWidget {
 }
 
 class _FiltersBottomSheet extends HookConsumerWidget {
-  static final filters = StateProvider((ref) => ref.read(HttpSource.provider).filters);
+  static final filters = StateProvider((ref) => ref.read(HTTPSource.provider).filters);
 
   const _FiltersBottomSheet({Key? key}) : super(key: key);
 

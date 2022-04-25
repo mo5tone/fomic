@@ -22,6 +22,7 @@ class SettingView extends HookConsumerWidget {
             item = ListTile(
               leading: const Icon(Icons.brightness_medium),
               title: Text(AppLocalizations.of(context)!.brightnessModes),
+              trailing: Icon(ref.watch(ThemeBLoC.provider).brightness?.iconData ?? Icons.brightness_auto),
               onTap: () => showModalBottomSheet<Brightness>(
                 context: context,
                 isDismissible: false,
@@ -34,6 +35,11 @@ class SettingView extends HookConsumerWidget {
             item = ListTile(
               leading: const Icon(Icons.color_lens),
               title: Text(AppLocalizations.of(context)!.primarySwatchColor),
+              trailing: Container(
+                width: 20,
+                height: 20,
+                color: ref.watch(ThemeBLoC.provider).primarySwatch,
+              ),
               onTap: () => showModalBottomSheet<MaterialColor>(
                 context: context,
                 builder: (context) => _PrimarySwatchBottomSheet(),
@@ -126,5 +132,16 @@ class _PrimarySwatchBottomSheet extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+extension on Brightness {
+  IconData get iconData {
+    switch (this) {
+      case Brightness.dark:
+        return Icons.brightness_4;
+      case Brightness.light:
+        return Icons.brightness_5;
+    }
   }
 }

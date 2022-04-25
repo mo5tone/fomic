@@ -28,10 +28,10 @@ class ChapterInfoBLoC extends BLoC<ChapterInfoEvent, ChapterInfoState> {
   static final family =
       StateNotifierProvider.autoDispose.family<ChapterInfoBLoC, ChapterInfoState, ChapterInfo>((ref, chapter) => ChapterInfoBLoC._(ref, chapter));
 
-  final HttpSource _source;
+  final HTTPSource _source;
 
   ChapterInfoBLoC._(Ref ref, ChapterInfo chapter)
-      : _source = ref.read(HttpSource.provider),
+      : _source = ref.read(HTTPSource.provider),
         super(ChapterInfoState(chapter: chapter));
 
   @override

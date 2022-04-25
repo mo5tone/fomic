@@ -10,11 +10,11 @@ import 'package:fomic/model/page.dart';
 import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/service/request.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
-import 'package:fomic/repository/source/online/kuai_kan_man_hua.dart';
+import 'package:fomic/repository/source/online/zh/kuai_kan_man_hua.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-abstract class HttpSource extends CatalogueSource {
-  static final provider = Provider<HttpSource>((ref) => ref.read(KuaiKanManHua.provider));
+abstract class HTTPSource extends CatalogueSource {
+  static final provider = Provider<HTTPSource>((ref) => ref.read(KuaiKanManHua.provider));
 
   @protected
   late Networker networker;
@@ -27,7 +27,9 @@ abstract class HttpSource extends CatalogueSource {
   @override
   int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
 
-  HttpSource(Ref ref) {
+  String get iconName => 'assets/images/ic_launcher_$runtimeType.png';
+
+  HTTPSource(Ref ref) {
     const userAgents = [
       'Mozilla/5.0',
       '(Windows NT 10.0; Win64; x64)',

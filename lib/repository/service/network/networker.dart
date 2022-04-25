@@ -35,8 +35,7 @@ class Networker {
   }
 
   FutureOr<T> _onError<T>(dynamic error, StackTrace stackTrace) {
-    log('Networker.fetch.error => $error');
-    log('Networker.fetch.stackTrace => $stackTrace');
+    log('Networker#fetch failed', error: error, stackTrace: stackTrace);
     throw error;
   }
 }
