@@ -40,7 +40,8 @@ class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
       load: () async* {
         if (state.pages.isNotEmpty && state.pages.last.hasNextPage) {
           if (state.query.isEmpty && state.filters.isEmpty) {
-            final mangasPage = await _source.fetchPopularManga(page: state.pages.length + 1);
+            final page = state.pages.length + 1;
+            final mangasPage = await (_source.supportsLatest ? _source.fetchLatestUpdates(page: page) : _source.fetchPopularManga(page: page));
             yield state.copyWith(pages: [...state.pages, mangasPage]);
           } else {
             final mangasPage = await _source.searchManga(page: state.pages.length + 1, query: state.query, filters: state.filters);
@@ -50,7 +51,7 @@ class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
       },
       refresh: () async* {
         if (state.query.isEmpty && state.filters.isEmpty) {
-          final mangasPage = await _source.fetchPopularManga(page: 1);
+          final mangasPage = await (_source.supportsLatest ? _source.fetchLatestUpdates(page: 1) : _source.fetchPopularManga(page: 1));
           yield state.copyWith(pages: [mangasPage]);
         } else {
           final mangasPage = await _source.searchManga(page: 1, query: state.query, filters: state.filters);

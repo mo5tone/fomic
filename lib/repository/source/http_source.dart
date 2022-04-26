@@ -8,18 +8,17 @@ import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/model/page.dart';
 import 'package:fomic/repository/service/network/networker.dart';
-import 'package:fomic/repository/service/request.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
-import 'package:fomic/repository/source/online/zh/kuai_kan_man_hua.dart';
+import 'package:fomic/repository/source/online/zh/zero_byw.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class HTTPSource extends CatalogueSource {
-  static final provider = Provider<HTTPSource>((ref) => ref.read(KuaiKanManHua.provider));
+  static final provider = Provider<HTTPSource>((ref) => ref.read(ZeroBYW.provider));
 
   @protected
   late Networker networker;
 
-  int get version;
+  String get version;
   String get baseUrl;
   Map<String, String> get headers;
   List<Filter> get filters;
@@ -45,8 +44,9 @@ abstract class HTTPSource extends CatalogueSource {
     });
     networker = ref.read(Networker.family(baseOptions));
   }
+
   @protected
-  Request popularMangaRequest({required int page});
+  RequestOptions popularMangaRequest({required int page});
   @protected
   MangasPage popularMangaParser(Response<dynamic> response);
 
@@ -56,7 +56,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request searchMangaRequest({required int page, required String query, required List<Filter> filters});
+  RequestOptions searchMangaRequest({required int page, required String query, required List<Filter> filters});
   @protected
   MangasPage searchMangaParser(Response<dynamic> response);
 
@@ -66,7 +66,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request latestUpdatesRequest({required int page});
+  RequestOptions latestUpdatesRequest({required int page});
   @protected
   MangasPage latestUpdatesParser(Response<dynamic> response);
 
@@ -76,7 +76,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request mangaDetailsRequest({required MangaInfo manga}) => Request(path: manga.key);
+  RequestOptions mangaDetailsRequest({required MangaInfo manga}) => RequestOptions(baseUrl: baseUrl, path: manga.key);
   @protected
   MangaInfo mangaDetailsParser(Response<dynamic> response);
 
@@ -86,7 +86,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request chapterListRequest({required MangaInfo manga}) => Request(path: manga.key);
+  RequestOptions chapterListRequest({required MangaInfo manga}) => RequestOptions(baseUrl: baseUrl, path: manga.key);
   @protected
   List<ChapterInfo> chapterListParser(Response<dynamic> response);
 
@@ -96,7 +96,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request pageListRequest({required ChapterInfo chapter}) => Request(path: chapter.key);
+  RequestOptions pageListRequest({required ChapterInfo chapter}) => RequestOptions(baseUrl: baseUrl, path: chapter.key);
   @protected
   List<Page> pageListParser(Response<dynamic> response);
 
@@ -106,11 +106,22 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request imageUrlRequest({required PageUrl page}) => Request(path: page.url);
+  RequestOptions imageUrlRequest({required PageUrl page}) => RequestOptions(baseUrl: baseUrl, path: page.url);
   @protected
   PageImageUrl imageUrlParser(Response<dynamic> response);
 
   Future<PageImageUrl> fetchPageImageUrl({required PageUrl page}) {
     return networker.fetch<PageImageUrl>(imageUrlRequest(page: page), parser: imageUrlParser);
   }
+}
+
+extension BaseURLExtension on String {
+  String addBaseURL(String baseURL) {
+    if (RegExp(r'^https?:\/{2}[\d\w][\d\w\.]+\/').firstMatch(this) != null) {
+      return this;
+    }
+    return baseURL.replaceFirstMapped(RegExp(r'\/+$'), (match) => '') + replaceFirstMapped(RegExp(r'^[^\/]*\/'), (match) => '/');
+  }
+
+  String get removedBaseURL => replaceFirstMapped(RegExp(r'^https?:\/{2}[\d\w][\d\w\.]+\/'), (match) => '/');
 }

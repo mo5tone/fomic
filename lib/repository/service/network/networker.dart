@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
-import 'package:fomic/repository/service/request.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Networker {
@@ -19,19 +18,8 @@ class Networker {
             ..sendTimeout = 3000,
         )..interceptors.add(ref.read(LoadingIndicator.provider));
 
-  Future<T> fetch<T>(Request req, {required T Function(Response<dynamic>) parser}) async {
-    return _dio
-        .request(
-          req.path,
-          data: req.data,
-          queryParameters: req.queryParameters,
-          cancelToken: req.cancelToken,
-          options: req.options,
-          onSendProgress: req.onSendProgress,
-          onReceiveProgress: req.onReceiveProgress,
-        )
-        .then(parser)
-        .catchError((error, stackTrace) => _onError<T>(error, stackTrace));
+  Future<T> fetch<T>(RequestOptions req, {required T Function(Response<dynamic>) parser}) {
+    return _dio.fetch(req).then(parser).catchError((error, stackTrace) => _onError<T>(error, stackTrace));
   }
 
   FutureOr<T> _onError<T>(dynamic error, StackTrace stackTrace) {

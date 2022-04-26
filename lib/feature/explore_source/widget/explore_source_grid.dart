@@ -78,6 +78,9 @@ class _Cell extends HookConsumerWidget {
                 imageUrl: manga.cover,
                 httpHeaders: ref.read(HTTPSource.provider).headers,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) => LayoutBuilder(
+                  builder: ((context, constraints) => Icon(Icons.error, color: theme.colorScheme.error, size: constraints.biggest.shortestSide)),
+                ),
               ),
               Container(
                 decoration: const BoxDecoration(

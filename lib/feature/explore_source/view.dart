@@ -39,7 +39,10 @@ class ExploreSourceView extends HookConsumerWidget {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(ref.watch(HTTPSource.provider).iconName),
+            Image.asset(
+              ref.watch(HTTPSource.provider).iconName,
+              height: kToolbarHeight / 2,
+            ),
             const SizedBox(
               width: 8,
             ),
