@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
@@ -19,11 +18,6 @@ class Networker {
         )..interceptors.add(ref.read(LoadingIndicator.provider));
 
   Future<T> fetch<T>(RequestOptions req, {required T Function(Response<dynamic>) parser}) {
-    return _dio.fetch(req).then(parser).catchError((error, stackTrace) => _onError<T>(error, stackTrace));
-  }
-
-  FutureOr<T> _onError<T>(dynamic error, StackTrace stackTrace) {
-    log('Networker#fetch failed', error: error, stackTrace: stackTrace);
-    throw error;
+    return _dio.fetch(req).then(parser);
   }
 }

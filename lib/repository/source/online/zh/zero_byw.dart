@@ -4,6 +4,7 @@ import 'package:fomic/model/filter.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/model/mangas_page.dart';
 import 'package:fomic/model/page.dart';
+import 'package:fomic/model/whoops.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
@@ -170,25 +171,76 @@ class ZeroBYW extends HTTPSource {
 
   @override
   MangaInfo mangaDetailsParser(Response response) {
-    // TODO: implement mangaDetailsParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    final title = document.querySelector('li > h3.uk-heading-line')!.text;
+    final cover = document.querySelector('div.uk-width-medium > img')!.attributes['src']!;
+    final author = document.querySelector('div.cl > a.uk-label')!.text.substring(3);
+    final artist = author;
+    final genres = document.querySelectorAll('div.cl > a.uk-label, div.cl > span.uk-label').map((e) => e.text);
+    final description = document.querySelector('li > div.uk-alert')!.innerHtml.replaceAll('<br>', '');
+    final statusRawValue = document.querySelectorAll('div.cl > span.uk-label').last.text;
+    MangaInfoStatus status;
+    switch (statusRawValue) {
+      case '连载中':
+        status = MangaInfoStatus.ongoing;
+        break;
+      case '已完结':
+        status = MangaInfoStatus.completed;
+        break;
+      default:
+        status = MangaInfoStatus.unknown;
+        break;
+    }
+    return MangaInfo(
+      '',
+      _shortTitleOf(title),
+      cover: cover.addBaseURL(baseUrl),
+      author: author,
+      artist: artist,
+      genres: genres.toList(),
+      description: description,
+      status: status,
+    );
   }
 
   @override
   List<ChapterInfo> chapterListParser(Response response) {
-    // TODO: implement chapterListParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    final chapterList = document
+        .querySelectorAll('div.uk-grid-collapse > div.muludiv')
+        .map((e) {
+          final key = e.querySelector('a.uk-button-default')?.attributes['href'];
+          final name = e.querySelector('a.uk-button-default')?.text;
+          if (key == null || name == null) {
+            return null;
+          }
+          return ChapterInfo(key.removedBaseURL, name);
+        })
+        .whereType<ChapterInfo>()
+        .toList();
+    return chapterList.reversed.toList();
   }
 
   @override
   List<Page> pageListParser(Response response) {
-    // TODO: implement pageListParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    var imageElements = document.querySelectorAll('div.uk-text-center > img');
+    if (imageElements.isEmpty) {
+      var message = document.querySelector('div#messagetext > p');
+      message ??= document.querySelector('div.uk-alert > p');
+      throw Whoops.toast(message?.text ?? 'Failed to parse pages');
+    }
+    return imageElements
+        .map((e) {
+          final src = e.attributes['src'];
+          return src == null ? null : Page.imageUrl(src);
+        })
+        .whereType<Page>()
+        .toList();
   }
 
   @override
   PageImageUrl imageUrlParser(Response response) {
-    // TODO: implement imageUrlParser
     throw UnimplementedError();
   }
 }

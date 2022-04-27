@@ -74,14 +74,18 @@ class _Cell extends HookConsumerWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              CachedNetworkImage(
-                imageUrl: manga.cover,
-                httpHeaders: ref.read(HTTPSource.provider).headers,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => LayoutBuilder(
-                  builder: ((context, constraints) => Icon(Icons.error, color: theme.colorScheme.error, size: constraints.biggest.shortestSide)),
-                ),
-              ),
+              LayoutBuilder(builder: (context, constraints) {
+                return CachedNetworkImage(
+                  imageUrl: manga.cover,
+                  httpHeaders: ref.read(HTTPSource.provider).headers,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                    color: theme.colorScheme.error,
+                    size: constraints.biggest.shortestSide,
+                  ),
+                );
+              }),
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,

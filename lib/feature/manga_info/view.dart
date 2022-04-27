@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
+import 'package:fomic/common/widget/marquee.dart';
 import 'package:fomic/feature/manga_info/bloc.dart';
 import 'package:fomic/model/manga_info.dart';
 import 'package:fomic/repository/source/http_source.dart';
@@ -51,7 +52,11 @@ class _AppBar extends HookConsumerWidget {
     final theme = Theme.of(context);
     return SliverAppBar(
       title: InkWell(
-        child: Text(manga.title),
+        child: Marquee(
+          child: Text(
+            manga.title,
+          ),
+        ),
         onLongPress: () async {
           await Clipboard.setData(ClipboardData(text: manga.title));
           final snackBar = SnackBar(content: Text(AppLocalizations.of(context)!.copiedToClipboard));
@@ -147,10 +152,13 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
                       borderRadius: BorderRadius.circular(radius),
                     ),
                     clipBehavior: Clip.hardEdge,
-                    child: CachedNetworkImage(
-                      imageUrl: manga.cover,
-                      httpHeaders: ref.read(HTTPSource.provider).headers,
-                      fit: BoxFit.cover,
+                    child: AspectRatio(
+                      aspectRatio: 3 / 4,
+                      child: CachedNetworkImage(
+                        imageUrl: manga.cover,
+                        httpHeaders: ref.read(HTTPSource.provider).headers,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fomic/model/whoops.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // BLoC stands for Business Logic Component.
@@ -23,6 +26,16 @@ abstract class BLoC<Event, State> extends StateNotifier<State> {
 
   @protected
   Stream<State> mapEventToState(Event event);
+
+  @override
+  ErrorListener? get onError {
+    return (error, stackTrace) {
+      log('$runtimeType#onError', error: error, stackTrace: stackTrace);
+      if (error is Exception && error is Whoops) {
+        error.when(toast: (message) => EasyLoading.showToast(message));
+      }
+    };
+  }
 
   @mustCallSuper
   @override
