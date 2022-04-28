@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/common/widget/marquee.dart';
+import 'package:fomic/l10n/app_localizations.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -60,7 +60,7 @@ class _AppBar extends HookConsumerWidget {
         ),
         onLongPress: () async {
           await Clipboard.setData(ClipboardData(text: manga.title));
-          final snackBar = SnackBar(content: Text(AppLocalizations.of(context)!.copiedToClipboard));
+          final snackBar = SnackBar(content: Text(AppLocalizations.of(context).copiedToClipboard));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         },
       ),

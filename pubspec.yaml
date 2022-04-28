@@ -35,7 +35,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   html: ^0.15.0
-  intl: ^0.17.0
+  intl: ^0.17.0 # flutter gen-l10n
   flutter_svg: ^1.0.3
 
 dev_dependencies:

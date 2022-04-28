@@ -19,12 +19,15 @@ abstract class HTTPSource extends CatalogueSource {
   late Networker networker;
 
   String get version;
+
   String get baseUrl;
-  Map<String, String> get headers;
-  List<SourceFilter> get filters;
 
   @override
   int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
+
+  Map<String, String> get headers => {};
+
+  List<SourceFilter> get filters => [];
 
   String get iconName => 'assets/images/ic_launcher_$runtimeType.png';
 
@@ -44,6 +47,9 @@ abstract class HTTPSource extends CatalogueSource {
     });
     networker = ref.read(Networker.family(baseOptions));
   }
+
+  @override
+  String toString() => '$name (${lang.toUpperCase()})';
 
   @protected
   RequestOptions popularMangaRequest({required int page});

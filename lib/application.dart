@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/bloc/hud_bloc.dart';
 import 'package:fomic/feature/explore_source/view.dart';
 import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/feature/setting/view.dart';
+import 'package:fomic/l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Fomic extends HookConsumerWidget {
@@ -74,12 +74,12 @@ class _Home extends HookConsumerWidget {
           BottomNavigationBarItem(
             icon: const Icon(Icons.explore_outlined),
             activeIcon: const Icon(Icons.explore),
-            label: AppLocalizations.of(context)!.explore,
+            label: AppLocalizations.of(context).explore,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings_outlined),
             activeIcon: const Icon(Icons.settings),
-            label: AppLocalizations.of(context)!.setting,
+            label: AppLocalizations.of(context).setting,
           ),
         ],
         onTap: (index) => ref.read(_currentIndex.notifier).update((state) => index),

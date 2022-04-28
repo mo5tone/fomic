@@ -45,3 +45,4 @@ app.*.map.json
 # Generated codes
 *.freezed.dart
 *.g.dart
+lib/l10n/*.dart
