@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -77,13 +77,13 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  SourceMangaList popularMangaParser(Response response) {
+  SourceMangasPage popularMangaParser(Response response) {
     List arr = response.data['data']['topics'];
     final mangas = <SourceManga>[];
     for (final obj in arr) {
       mangas.add(SourceManga("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
     }
-    return SourceMangaList(mangas, mangas.length > 9);
+    return SourceMangasPage(mangas, mangas.length > 9);
   }
 
   @override
@@ -92,7 +92,7 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  SourceMangaList latestUpdatesParser(Response response) {
+  SourceMangasPage latestUpdatesParser(Response response) {
     return popularMangaParser(response);
   }
 
@@ -120,20 +120,20 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  SourceMangaList searchMangaParser(Response response) {
+  SourceMangasPage searchMangaParser(Response response) {
     final obj = response.data['data'];
     List arr = obj['hit'] ?? obj['topics'];
     final mangas = arr.map((e) => SourceManga("/web/topic/${e['id']}", e['title'], cover: e['vertical_image_url'])).toList(growable: false);
-    return SourceMangaList(mangas, mangas.length > 9 && obj['hit'] == null);
+    return SourceMangasPage(mangas, mangas.length > 9 && obj['hit'] == null);
   }
 
   @override
-  Future<SourceMangaList> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
-      return networker.fetch<SourceMangaList>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
+      return networker.fetch<SourceMangasPage>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
         final manga = mangaDetailsParser(response).copyWith(key: '/web/topic/$newQuery');
-        return SourceMangaList([manga], false);
+        return SourceMangasPage([manga], false);
       });
     }
     return super.searchManga(page: page, query: query, filters: filters);

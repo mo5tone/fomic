@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
@@ -48,31 +48,31 @@ abstract class HTTPSource extends CatalogueSource {
   @protected
   RequestOptions popularMangaRequest({required int page});
   @protected
-  SourceMangaList popularMangaParser(Response<dynamic> response);
+  SourceMangasPage popularMangaParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangaList> fetchPopularManga({required int page}) {
-    return networker.fetch<SourceMangaList>(popularMangaRequest(page: page), parser: popularMangaParser);
+  Future<SourceMangasPage> fetchPopularManga({required int page}) {
+    return networker.fetch<SourceMangasPage>(popularMangaRequest(page: page), parser: popularMangaParser);
   }
 
   @protected
   RequestOptions searchMangaRequest({required int page, required String query, required List<SourceFilter> filters});
   @protected
-  SourceMangaList searchMangaParser(Response<dynamic> response);
+  SourceMangasPage searchMangaParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangaList> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
-    return networker.fetch<SourceMangaList>(searchMangaRequest(page: page, query: query, filters: filters), parser: searchMangaParser);
+  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+    return networker.fetch<SourceMangasPage>(searchMangaRequest(page: page, query: query, filters: filters), parser: searchMangaParser);
   }
 
   @protected
   RequestOptions latestUpdatesRequest({required int page});
   @protected
-  SourceMangaList latestUpdatesParser(Response<dynamic> response);
+  SourceMangasPage latestUpdatesParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangaList> fetchLatestUpdates({required int page}) {
-    return networker.fetch<SourceMangaList>(latestUpdatesRequest(page: page), parser: latestUpdatesParser);
+  Future<SourceMangasPage> fetchLatestUpdates({required int page}) {
+    return networker.fetch<SourceMangasPage>(latestUpdatesRequest(page: page), parser: latestUpdatesParser);
   }
 
   @protected

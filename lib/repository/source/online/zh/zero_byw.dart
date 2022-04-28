@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/model/whoops.dart';
 import 'package:fomic/repository/source/http_source.dart';
@@ -73,7 +73,7 @@ class ZeroBYW extends HTTPSource {
       ];
 
   @override
-  SourceMangaList popularMangaParser(Response response) {
+  SourceMangasPage popularMangaParser(Response response) {
     throw UnimplementedError();
   }
 
@@ -83,7 +83,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  SourceMangaList latestUpdatesParser(Response response) {
+  SourceMangasPage latestUpdatesParser(Response response) {
     final document = html.parse(response.data);
     final elements = document.querySelectorAll('div.uk-card');
     final mangas = elements.map((e) {
@@ -95,7 +95,7 @@ class ZeroBYW extends HTTPSource {
       }
       return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
-    return SourceMangaList(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
+    return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
 
   @override
@@ -113,7 +113,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  SourceMangaList searchMangaParser(Response response) {
+  SourceMangasPage searchMangaParser(Response response) {
     final document = html.parse(response.data);
     final mangas = document.querySelectorAll('a.uk-card, div.uk-card').map((e) {
       final title = e.querySelector('p.mt5')?.text;
@@ -124,7 +124,7 @@ class ZeroBYW extends HTTPSource {
       }
       return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
-    return SourceMangaList(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
+    return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
 
   @override
@@ -228,7 +228,10 @@ class ZeroBYW extends HTTPSource {
     if (imageElements.isEmpty) {
       var message = document.querySelector('div#messagetext > p');
       message ??= document.querySelector('div.uk-alert > p');
-      throw Whoops.toast(message?.text ?? 'Failed to parse pages');
+      if (message == null) {
+        throw const Whoops.toast('Failed to parse pages');
+      }
+      return [SourcePage.text(message.text)];
     }
     return imageElements
         .map((e) {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/feature/chapter_info/view.dart';
-import 'package:fomic/feature/manga_info/view.dart';
+import 'package:fomic/feature/manga_detail/view.dart';
+import 'package:fomic/feature/reader/view.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,18 +11,18 @@ part 'screen.freezed.dart';
 @freezed
 class Screen with _$Screen {
   Screen._();
-  factory Screen.mangaInfo(SourceManga manga) = ScreenMangaInfo;
-  factory Screen.chapterInfo(SourceChapter chapter) = ScreenChapterInfo;
+  factory Screen.mangaDetail(SourceManga manga) = ScreenMangaDetail;
+  factory Screen.reader(SourceChapter chapter) = ScreenReader;
 
   Future<T?> push<T extends Object>(BuildContext context) {
-    final route = MaterialPageRoute<T>(
-      builder: (context) {
-        return when(
-          mangaInfo: (manga) => MangaInfoView(manga: manga),
-          chapterInfo: (chapter) => ChapterInfoView(chapter: chapter),
-        );
-      },
-    );
+    final route = MaterialPageRoute<T>(builder: _builder);
     return Navigator.of(context).push(route);
+  }
+
+  Widget _builder(BuildContext context) {
+    return when(
+      mangaDetail: (manga) => MangaDetailView(manga: manga),
+      reader: (chapter) => ReaderView(chapter: chapter),
+    );
   }
 }

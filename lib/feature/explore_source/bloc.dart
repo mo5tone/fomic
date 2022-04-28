@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fomic/common/bloc/bloc.dart';
 import 'package:fomic/model/source_filter.dart';
-import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +21,7 @@ class ExploreSourceState with _$ExploreSourceState {
   const factory ExploreSourceState({
     @Default('') String query,
     @Default([]) List<SourceFilter> filters,
-    @Default([]) List<SourceMangaList> pages,
+    @Default([]) List<SourceMangasPage> pages,
   }) = _ExploreSourceState;
 }
 

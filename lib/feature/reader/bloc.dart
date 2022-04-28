@@ -9,33 +9,32 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 part 'bloc.freezed.dart';
 
 @freezed
-class ChapterInfoEvent with _$ChapterInfoEvent {
-  const factory ChapterInfoEvent.refresh() = ChapterInfoEventRefresh;
-  const factory ChapterInfoEvent.pageChanged(int index) = ChapterInfoEventPageChanged;
+class ReaderEvent with _$ReaderEvent {
+  const factory ReaderEvent.refresh() = ReaderEventRefresh;
+  const factory ReaderEvent.pageChanged(int index) = ReaderEventPageChanged;
 }
 
 @freezed
-class ChapterInfoState with _$ChapterInfoState {
-  const factory ChapterInfoState({
+class ReaderState with _$ReaderState {
+  const factory ReaderState({
     required SourceChapter chapter,
     @Default(0) int axis,
     @Default(0) int index,
     @Default([]) List<SourcePage> pages,
-  }) = _ChapterInfoState;
+  }) = _ReaderState;
 }
 
-class ChapterInfoBLoC extends BLoC<ChapterInfoEvent, ChapterInfoState> {
-  static final family =
-      StateNotifierProvider.autoDispose.family<ChapterInfoBLoC, ChapterInfoState, SourceChapter>((ref, chapter) => ChapterInfoBLoC._(ref, chapter));
+class ReaderBLoC extends BLoC<ReaderEvent, ReaderState> {
+  static final family = StateNotifierProvider.autoDispose.family<ReaderBLoC, ReaderState, SourceChapter>((ref, chapter) => ReaderBLoC._(ref, chapter));
 
   final HTTPSource _source;
 
-  ChapterInfoBLoC._(Ref ref, SourceChapter chapter)
+  ReaderBLoC._(Ref ref, SourceChapter chapter)
       : _source = ref.read(HTTPSource.provider),
-        super(ChapterInfoState(chapter: chapter));
+        super(ReaderState(chapter: chapter));
 
   @override
-  Stream<ChapterInfoState> mapEventToState(ChapterInfoEvent event) {
+  Stream<ReaderState> mapEventToState(ReaderEvent event) {
     return event.when(
       refresh: () async* {
         var pages = await _source.fetchPageList(chapter: state.chapter);

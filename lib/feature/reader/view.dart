@@ -4,23 +4,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/widget/marquee.dart';
-import 'package:fomic/feature/chapter_info/bloc.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class ChapterInfoView extends HookConsumerWidget {
+import 'bloc.dart';
+
+class ReaderView extends HookConsumerWidget {
   final SourceChapter chapter;
 
-  const ChapterInfoView({Key? key, required this.chapter}) : super(key: key);
+  const ReaderView({Key? key, required this.chapter}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = ChapterInfoBLoC.family(chapter);
+    final provider = ReaderBLoC.family(chapter);
     final bloc = ref.read(provider.notifier);
     useEffect(() {
-      bloc.add(const ChapterInfoEvent.refresh());
+      bloc.add(const ReaderEvent.refresh());
       return null;
     }, [bloc]);
     final pageController = usePageController();
@@ -48,7 +49,7 @@ class ChapterInfoView extends HookConsumerWidget {
               scrollDirection: Axis.values[ref.watch(provider.select((state) => state.axis)) % Axis.values.length],
               controller: pageController,
               itemCount: ref.watch(provider.select((state) => state.pages.length)),
-              onPageChanged: (index) => bloc.add(ChapterInfoEvent.pageChanged(index)),
+              onPageChanged: (index) => bloc.add(ReaderEvent.pageChanged(index)),
               itemBuilder: (context, index) {
                 final page = ref.watch(provider.select((state) => state.pages[index]));
                 return Center(
@@ -92,7 +93,7 @@ class ChapterInfoView extends HookConsumerWidget {
                       ),
                     Text(
                       ref.watch(
-                          provider.select((state) => NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1) + '/${state.pages.length}')),
+                          provider.select((state) => NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1) + ' / ${state.pages.length}')),
                     ),
                   ],
                 ),

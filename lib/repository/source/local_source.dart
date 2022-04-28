@@ -1,7 +1,7 @@
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,19 +24,19 @@ class LocalSource extends CatalogueSource {
   bool get supportsLatest => throw UnimplementedError();
 
   @override
-  Future<SourceMangaList> fetchLatestUpdates({required int page}) {
+  Future<SourceMangasPage> fetchLatestUpdates({required int page}) {
     // TODO: implement fetchLatestUpdates
     throw UnimplementedError();
   }
 
   @override
-  Future<SourceMangaList> fetchPopularManga({required int page}) {
+  Future<SourceMangasPage> fetchPopularManga({required int page}) {
     // TODO: implement fetchPopularManga
     throw UnimplementedError();
   }
 
   @override
-  Future<SourceMangaList> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     // TODO: implement fetchSearchManga
     throw UnimplementedError();
   }

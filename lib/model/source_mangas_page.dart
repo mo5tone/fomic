@@ -1,8 +1,8 @@
 import 'package:fomic/model/source_manga.dart';
 
-class SourceMangaList {
+class SourceMangasPage {
   final List<SourceManga> mangas;
   final bool hasNextPage;
 
-  SourceMangaList(this.mangas, this.hasNextPage);
+  SourceMangasPage(this.mangas, this.hasNextPage);
 }

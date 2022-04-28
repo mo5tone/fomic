@@ -57,7 +57,7 @@ class ExploreSourceSearchDelegate extends SearchDelegate<SourceManga?> {
         return ExploreSourceGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<SourceManga>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
-          didTap: (context, manga) => Screen.mangaInfo(manga).push(context),
+          didTap: (context, manga) => Screen.mangaDetail(manga).push(context),
         );
       },
     );

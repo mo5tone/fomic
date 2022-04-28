@@ -5,23 +5,24 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/common/widget/marquee.dart';
-import 'package:fomic/feature/manga_info/bloc.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class MangaInfoView extends HookConsumerWidget {
+import 'bloc.dart';
+
+class MangaDetailView extends HookConsumerWidget {
   final SourceManga manga;
 
-  const MangaInfoView({Key? key, required this.manga}) : super(key: key);
+  const MangaDetailView({Key? key, required this.manga}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = MangaInfoBLoC.family(manga);
+    final provider = MangaDetailBLoC.family(manga);
     final bloc = ref.read(provider.notifier);
     useEffect(() {
-      bloc.add(const MangaInfoEvent.refresh());
+      bloc.add(const MangaDetailEvent.refresh());
       return null;
     });
     return Scaffold(
@@ -33,14 +34,14 @@ class MangaInfoView extends HookConsumerWidget {
             _ChapterInfoList(provider: provider),
           ],
         ),
-        onRefresh: () => Future(() => bloc.add(const MangaInfoEvent.refresh())),
+        onRefresh: () => Future(() => bloc.add(const MangaDetailEvent.refresh())),
       ),
     );
   }
 }
 
 class _AppBar extends HookConsumerWidget {
-  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final AutoDisposeStateNotifierProvider<MangaDetailBLoC, MangaDetailState> provider;
 
   const _AppBar({Key? key, required this.provider}) : super(key: key);
 
@@ -77,7 +78,7 @@ class _AppBar extends HookConsumerWidget {
           children: [
             IconButton(
               onPressed: () {
-                ref.read(provider.notifier).add(const MangaInfoEvent.swapList());
+                ref.read(provider.notifier).add(const MangaDetailEvent.swapList());
               },
               color: theme.colorScheme.onPrimary,
               icon: const Icon(Icons.swap_vert),
@@ -248,7 +249,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
 }
 
 class _ChapterInfoList extends HookConsumerWidget {
-  final AutoDisposeStateNotifierProvider<MangaInfoBLoC, MangaInfoState> provider;
+  final AutoDisposeStateNotifierProvider<MangaDetailBLoC, MangaDetailState> provider;
 
   const _ChapterInfoList({Key? key, required this.provider}) : super(key: key);
 
@@ -267,7 +268,7 @@ class _ChapterInfoList extends HookConsumerWidget {
             return ListTile(
               title: Text(chapter.name),
               subtitle: chapter.dateUpload > 0 ? Text(formatter.format(updatedAt)) : null,
-              onTap: () => Screen.chapterInfo(chapter).push(context),
+              onTap: () => Screen.reader(chapter).push(context),
             );
           },
           childCount: chapters.length,

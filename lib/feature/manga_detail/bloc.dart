@@ -9,28 +9,28 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 part 'bloc.freezed.dart';
 
 @freezed
-class MangaInfoEvent with _$MangaInfoEvent {
-  const factory MangaInfoEvent.refresh() = MangaInfoEventRefresh;
-  const factory MangaInfoEvent.swapList() = MangaInfoEventSwapList;
-  const factory MangaInfoEvent.favorite() = MangaInfoEventFavorite;
+class MangaDetailEvent with _$MangaDetailEvent {
+  const factory MangaDetailEvent.refresh() = MangaDetailEventRefresh;
+  const factory MangaDetailEvent.swapList() = MangaDetailEventSwapList;
+  const factory MangaDetailEvent.favorite() = MangaDetailEventFavorite;
 }
 
 @freezed
-class MangaInfoState with _$MangaInfoState {
-  const factory MangaInfoState({required SourceManga manga, @Default([]) List<SourceChapter> chapters}) = _MangaInfoState;
+class MangaDetailState with _$MangaDetailState {
+  const factory MangaDetailState({required SourceManga manga, @Default([]) List<SourceChapter> chapters}) = _MangaDetailState;
 }
 
-class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
-  static final family = StateNotifierProvider.autoDispose.family<MangaInfoBLoC, MangaInfoState, SourceManga>((ref, manga) => MangaInfoBLoC._(ref, manga));
+class MangaDetailBLoC extends BLoC<MangaDetailEvent, MangaDetailState> {
+  static final family = StateNotifierProvider.autoDispose.family<MangaDetailBLoC, MangaDetailState, SourceManga>((ref, manga) => MangaDetailBLoC._(ref, manga));
 
   final HTTPSource _source;
 
-  MangaInfoBLoC._(Ref ref, SourceManga manga)
+  MangaDetailBLoC._(Ref ref, SourceManga manga)
       : _source = ref.read(HTTPSource.provider),
-        super(MangaInfoState(manga: manga));
+        super(MangaDetailState(manga: manga));
 
   @override
-  Stream<MangaInfoState> mapEventToState(MangaInfoEvent event) {
+  Stream<MangaDetailState> mapEventToState(MangaDetailEvent event) {
     return event.when(
       refresh: () async* {
         final manga = await _source.fetchMangaDetails(manga: state.manga);

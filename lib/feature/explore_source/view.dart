@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
-import 'package:fomic/feature/explore_source/widget/explore_source_grid.dart';
-import 'package:fomic/feature/explore_source/widget/explore_source_search_delegate.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'bloc.dart';
+import 'widget/explore_source_grid.dart';
+import 'widget/explore_source_search_delegate.dart';
 
 class ExploreSourceView extends HookConsumerWidget {
   const ExploreSourceView({Key? key}) : super(key: key);
@@ -74,7 +74,7 @@ class ExploreSourceView extends HookConsumerWidget {
         child: ExploreSourceGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<SourceManga>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
-          didTap: (context, manga) => Screen.mangaInfo(manga).push(context),
+          didTap: (context, manga) => Screen.mangaDetail(manga).push(context),
         ),
         onRefresh: () => Future(() => bloc.add(const ExploreSourceEvent.refresh())),
       ),
