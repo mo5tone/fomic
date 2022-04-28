@@ -2,31 +2,34 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/avd.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
 
-part 'manga_info.freezed.dart';
-part 'manga_info.g.dart';
+part 'source_manga.freezed.dart';
 
-@HiveType(typeId: 0)
-enum MangaInfoStatus {
-  @HiveField(0)
+enum SourceMangaStatus {
   unknown,
-  @HiveField(1)
   ongoing,
-  @HiveField(2)
   completed,
-  @HiveField(3)
   licensed,
-  @HiveField(4)
   publishingFinished,
-  @HiveField(5)
   cancelled,
-  @HiveField(6)
-  onHiatus,
 }
 
-extension MangaInfoStatusExtension on MangaInfoStatus {
-  Widget image({
+@freezed
+class SourceManga with _$SourceManga {
+  factory SourceManga(
+    String key,
+    String title, {
+    @Default('') String artist,
+    @Default('') String author,
+    @Default('') String description,
+    @Default([]) List<String> genres,
+    @Default(SourceMangaStatus.unknown) SourceMangaStatus status,
+    @Default('') String cover,
+  }) = _SourceManga;
+}
+
+extension SourceMangaInfoStatusExtension on SourceMangaStatus {
+  Widget icon({
     bool matchTextDirection = false,
     AssetBundle? bundle,
     String? package,
@@ -37,13 +40,13 @@ extension MangaInfoStatusExtension on MangaInfoStatus {
   }) {
     var assetName = 'assets/images/vector_drawable/';
     switch (this) {
-      case MangaInfoStatus.ongoing:
+      case SourceMangaStatus.ongoing:
         assetName += 'ic_status_ongoing.xml';
         break;
-      case MangaInfoStatus.completed:
+      case SourceMangaStatus.completed:
         assetName += 'ic_status_completed.xml';
         break;
-      case MangaInfoStatus.licensed:
+      case SourceMangaStatus.licensed:
         assetName += 'ic_status_licensed.xml';
         break;
       default:
@@ -61,18 +64,4 @@ extension MangaInfoStatusExtension on MangaInfoStatus {
       colorBlendMode: colorBlendMode,
     );
   }
-}
-
-@freezed
-class MangaInfo with _$MangaInfo {
-  factory MangaInfo(
-    String key,
-    String title, {
-    @Default('') String artist,
-    @Default('') String author,
-    @Default('') String description,
-    @Default([]) List<String> genres,
-    @Default(MangaInfoStatus.unknown) MangaInfoStatus status,
-    @Default('') String cover,
-  }) = _MangaInfo;
 }

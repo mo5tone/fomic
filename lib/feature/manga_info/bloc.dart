@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fomic/common/bloc/bloc.dart';
-import 'package:fomic/model/chapter_info.dart';
-import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,15 +17,15 @@ class MangaInfoEvent with _$MangaInfoEvent {
 
 @freezed
 class MangaInfoState with _$MangaInfoState {
-  const factory MangaInfoState({required MangaInfo manga, @Default([]) List<ChapterInfo> chapters}) = _MangaInfoState;
+  const factory MangaInfoState({required SourceManga manga, @Default([]) List<SourceChapter> chapters}) = _MangaInfoState;
 }
 
 class MangaInfoBLoC extends BLoC<MangaInfoEvent, MangaInfoState> {
-  static final family = StateNotifierProvider.autoDispose.family<MangaInfoBLoC, MangaInfoState, MangaInfo>((ref, manga) => MangaInfoBLoC._(ref, manga));
+  static final family = StateNotifierProvider.autoDispose.family<MangaInfoBLoC, MangaInfoState, SourceManga>((ref, manga) => MangaInfoBLoC._(ref, manga));
 
   final HTTPSource _source;
 
-  MangaInfoBLoC._(Ref ref, MangaInfo manga)
+  MangaInfoBLoC._(Ref ref, SourceManga manga)
       : _source = ref.read(HTTPSource.provider),
         super(MangaInfoState(manga: manga));
 

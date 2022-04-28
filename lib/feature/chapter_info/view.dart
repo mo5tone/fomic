@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/widget/marquee.dart';
 import 'package:fomic/feature/chapter_info/bloc.dart';
-import 'package:fomic/model/chapter_info.dart';
+import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class ChapterInfoView extends HookConsumerWidget {
-  final ChapterInfo chapter;
+  final SourceChapter chapter;
 
   const ChapterInfoView({Key? key, required this.chapter}) : super(key: key);
 

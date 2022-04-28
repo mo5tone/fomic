@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fomic/model/chapter_info.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/mangas_page.dart';
-import 'package:fomic/model/page.dart';
+import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_filter.dart';
+import 'package:fomic/model/source_manga.dart';
+import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
@@ -63,9 +63,9 @@ class KuaiKanManHua extends HTTPSource {
   Map<String, String> get headers => {};
 
   @override
-  List<Filter> get filters => [
-        Filter.select('类别', _statusOptions.map((e) => e.key).toList()),
-        Filter.select('题材', _genreOptions.map((e) => e.key).toList()),
+  List<SourceFilter> get filters => [
+        SourceFilter.select('类别', _statusOptions.map((e) => e.key).toList()),
+        SourceFilter.select('题材', _genreOptions.map((e) => e.key).toList()),
       ];
 
   @override
@@ -77,13 +77,13 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  MangasPage popularMangaParser(Response response) {
+  SourceMangaList popularMangaParser(Response response) {
     List arr = response.data['data']['topics'];
-    final mangas = <MangaInfo>[];
+    final mangas = <SourceManga>[];
     for (final obj in arr) {
-      mangas.add(MangaInfo("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
+      mangas.add(SourceManga("/web/topic/${obj['id']}", obj['title'], cover: obj['vertical_image_url']));
     }
-    return MangasPage(0, mangas, mangas.length > 9);
+    return SourceMangaList(mangas, mangas.length > 9);
   }
 
   @override
@@ -92,12 +92,12 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  MangasPage latestUpdatesParser(Response response) {
+  SourceMangaList latestUpdatesParser(Response response) {
     return popularMangaParser(response);
   }
 
   @override
-  RequestOptions searchMangaRequest({required int page, required String query, required List<Filter> filters}) {
+  RequestOptions searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.isNotEmpty) {
       return RequestOptions(path: '$_apiBaseUrl/v1/search/topic?q=$query&size=18');
     } else {
@@ -120,64 +120,64 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  MangasPage searchMangaParser(Response response) {
+  SourceMangaList searchMangaParser(Response response) {
     final obj = response.data['data'];
     List arr = obj['hit'] ?? obj['topics'];
-    final mangas = arr.map((e) => MangaInfo("/web/topic/${e['id']}", e['title'], cover: e['vertical_image_url'])).toList(growable: false);
-    return MangasPage(0, mangas, mangas.length > 9 && obj['hit'] == null);
+    final mangas = arr.map((e) => SourceManga("/web/topic/${e['id']}", e['title'], cover: e['vertical_image_url'])).toList(growable: false);
+    return SourceMangaList(mangas, mangas.length > 9 && obj['hit'] == null);
   }
 
   @override
-  Future<MangasPage> searchManga({required int page, required String query, required List<Filter> filters}) {
+  Future<SourceMangaList> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
-      return networker.fetch<MangasPage>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
+      return networker.fetch<SourceMangaList>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
         final manga = mangaDetailsParser(response).copyWith(key: '/web/topic/$newQuery');
-        return MangasPage(0, [manga], false);
+        return SourceMangaList([manga], false);
       });
     }
     return super.searchManga(page: page, query: query, filters: filters);
   }
 
   @override
-  RequestOptions mangaDetailsRequest({required MangaInfo manga}) {
+  RequestOptions mangaDetailsRequest({required SourceManga manga}) {
     return RequestOptions(path: '$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
   }
 
   @override
-  MangaInfo mangaDetailsParser(Response response) {
+  SourceManga mangaDetailsParser(Response response) {
     Map data = response.data['data'];
-    return MangaInfo(
+    return SourceManga(
       '',
       data['title'],
       cover: data['vertical_image_url'],
       author: data['user']['nickname'],
       description: data['description'],
-      status: MangaInfoStatus.values[data['update_status_code']],
+      status: SourceMangaStatus.values[data['update_status_code']],
     );
   }
 
   @override
-  RequestOptions chapterListRequest({required MangaInfo manga}) {
+  RequestOptions chapterListRequest({required SourceManga manga}) {
     return RequestOptions(path: '$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
   }
 
   @override
-  List<ChapterInfo> chapterListParser(Response response) {
-    final chapters = <ChapterInfo>[];
+  List<SourceChapter> chapterListParser(Response response) {
+    final chapters = <SourceChapter>[];
     Map data = response.data['data'];
     List chapterJSONArray = data['comics'];
     for (final obj in chapterJSONArray) {
       final key = '/web/comic/${obj['id']}';
       final name = obj['title'] + (obj['can_view'] ? '' : _lockIcon);
       final dateUpload = obj['created_at'] * 1000;
-      chapters.add(ChapterInfo(key, name, dateUpload: dateUpload));
+      chapters.add(SourceChapter(key, name, dateUpload: dateUpload));
     }
     return chapters;
   }
 
   @override
-  List<Page> pageListParser(Response response) {
+  List<SourcePage> pageListParser(Response response) {
     final document = html.parse(response.data);
     String script = document.getElementsByTagName('script').firstWhere((ele) => ele.innerHtml.contains('comicImages:')).innerHtml;
     var imagesStringRawValue = RegExp(r'comicImages:(.*)},nextComicInfo').firstMatch(script)?.group(1) ?? '[]';
@@ -198,11 +198,13 @@ class KuaiKanManHua extends HTTPSource {
     List images = jsonDecode(imagesStringRawValue);
     final variable = RegExp(r'\(function\((.*)\){').firstMatch(script)?.group(1)?.split(',') ?? [];
     final values = RegExp(r'}}\((.*)\)\);').firstMatch(script)?.group(1)?.split(',') ?? [];
-    return images.map((image) => Page.imageUrl(values[variable.indexOf(image['url'])].replaceAll('\\u002F', '/').replaceAll('"', ''))).toList(growable: false);
+    return images
+        .map((image) => SourcePage.imageUrl(values[variable.indexOf(image['url'])].replaceAll('\\u002F', '/').replaceAll('"', '')))
+        .toList(growable: false);
   }
 
   @override
-  PageImageUrl imageUrlParser(Response response) {
+  SourcePageImageUrl imageUrlParser(Response response) {
     throw UnimplementedError();
   }
 }

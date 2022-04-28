@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fomic/common/bloc/bloc.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/mangas_page.dart';
+import 'package:fomic/model/source_filter.dart';
+import 'package:fomic/model/source_manga_list.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,15 +13,15 @@ class ExploreSourceEvent with _$ExploreSourceEvent {
   const factory ExploreSourceEvent.load() = ExploreSourceEventLoad;
   const factory ExploreSourceEvent.refresh() = ExploreSourceEventRefresh;
   const factory ExploreSourceEvent.search(String query) = ExploreSourceEventSearch;
-  const factory ExploreSourceEvent.filter(List<Filter> filters) = ExploreSourceEventFilter;
+  const factory ExploreSourceEvent.filter(List<SourceFilter> filters) = ExploreSourceEventFilter;
 }
 
 @freezed
 class ExploreSourceState with _$ExploreSourceState {
   const factory ExploreSourceState({
     @Default('') String query,
-    @Default([]) List<Filter> filters,
-    @Default([]) List<MangasPage> pages,
+    @Default([]) List<SourceFilter> filters,
+    @Default([]) List<SourceMangaList> pages,
   }) = _ExploreSourceState;
 }
 

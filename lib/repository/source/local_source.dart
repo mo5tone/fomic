@@ -1,8 +1,8 @@
-import 'package:fomic/model/chapter_info.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/mangas_page.dart';
-import 'package:fomic/model/page.dart';
+import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_filter.dart';
+import 'package:fomic/model/source_manga.dart';
+import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,37 +24,37 @@ class LocalSource extends CatalogueSource {
   bool get supportsLatest => throw UnimplementedError();
 
   @override
-  Future<MangasPage> fetchLatestUpdates({required int page}) {
+  Future<SourceMangaList> fetchLatestUpdates({required int page}) {
     // TODO: implement fetchLatestUpdates
     throw UnimplementedError();
   }
 
   @override
-  Future<MangasPage> fetchPopularManga({required int page}) {
+  Future<SourceMangaList> fetchPopularManga({required int page}) {
     // TODO: implement fetchPopularManga
     throw UnimplementedError();
   }
 
   @override
-  Future<MangasPage> searchManga({required int page, required String query, required List<Filter> filters}) {
+  Future<SourceMangaList> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     // TODO: implement fetchSearchManga
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ChapterInfo>> fetchChapterList({required MangaInfo manga}) {
+  Future<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
     // TODO: implement getChapterList
     throw UnimplementedError();
   }
 
   @override
-  Future<MangaInfo> fetchMangaDetails({required MangaInfo manga}) {
+  Future<SourceManga> fetchMangaDetails({required SourceManga manga}) {
     // TODO: implement getMangaDetails
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Page>> fetchPageList({required ChapterInfo chapter}) {
+  Future<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
     // TODO: implement getPageList
     throw UnimplementedError();
   }

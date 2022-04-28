@@ -1,6 +1,6 @@
-import 'package:fomic/model/chapter_info.dart';
-import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/page.dart';
+import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_manga.dart';
+import 'package:fomic/model/source_page.dart';
 
 abstract class Source {
   int get id;
@@ -11,7 +11,7 @@ abstract class Source {
 
   const Source();
 
-  Future<MangaInfo> fetchMangaDetails({required MangaInfo manga});
-  Future<List<ChapterInfo>> fetchChapterList({required MangaInfo manga});
-  Future<List<Page>> fetchPageList({required ChapterInfo chapter});
+  Future<SourceManga> fetchMangaDetails({required SourceManga manga});
+  Future<List<SourceChapter>> fetchChapterList({required SourceManga manga});
+  Future<List<SourcePage>> fetchPageList({required SourceChapter chapter});
 }

@@ -4,8 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/feature/explore_source/widget/explore_source_grid.dart';
 import 'package:fomic/feature/explore_source/widget/explore_source_search_delegate.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/source_filter.dart';
+import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -54,7 +54,7 @@ class ExploreSourceView extends HookConsumerWidget {
             IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () async {
-                final filters = await showModalBottomSheet<List<Filter>>(
+                final filters = await showModalBottomSheet<List<SourceFilter>>(
                   context: context,
                   builder: (context) => const _FiltersBottomSheet(),
                   isScrollControlled: true,
@@ -72,7 +72,7 @@ class ExploreSourceView extends HookConsumerWidget {
       ),
       body: RefreshIndicator(
         child: ExploreSourceGrid(
-          mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<MangaInfo>[], (result, page) => [...result, ...page.mangas]),
+          mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<SourceManga>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
           didTap: (context, manga) => Screen.mangaInfo(manga).push(context),
         ),
@@ -104,7 +104,7 @@ class _FiltersBottomSheet extends HookConsumerWidget {
                   child: Text(AppLocalizations.of(context)!.reset),
                   onPressed: () {
                     ref.refresh(filters);
-                    Navigator.of(context).pop(<Filter>[]);
+                    Navigator.of(context).pop(<SourceFilter>[]);
                   },
                 ),
                 const Spacer(),
@@ -126,13 +126,13 @@ class _FiltersBottomSheet extends HookConsumerWidget {
 }
 
 class _FilterWidget extends HookConsumerWidget {
-  final Filter filter;
+  final SourceFilter filter;
 
   const _FilterWidget({Key? key, required this.filter}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void update({required Filter filter}) {
+    void update({required SourceFilter filter}) {
       ref.read(_FiltersBottomSheet.filters.notifier).update((state) => state.map((f) => f.name == filter.name ? filter : f).toList(growable: false));
     }
 
@@ -155,7 +155,7 @@ class _FilterWidget extends HookConsumerWidget {
                 .toList(growable: false),
             onChanged: (newValue) {
               if (newValue != null) {
-                update(filter: (filter as FilterSelect).copyWith(state: options.indexOf(newValue)));
+                update(filter: (filter as SourceFilterSelect).copyWith(state: options.indexOf(newValue)));
               }
             },
           ),
@@ -176,7 +176,7 @@ class _FilterWidget extends HookConsumerWidget {
                   controller: textEditingController,
                   textInputAction: TextInputAction.done,
                   onSubmitted: (newValue) {
-                    update(filter: (filter as FilterText).copyWith(state: newValue));
+                    update(filter: (filter as SourceFilterText).copyWith(state: newValue));
                   },
                 ),
               ),
@@ -191,7 +191,7 @@ class _FilterWidget extends HookConsumerWidget {
           Switch(
             value: value,
             onChanged: (newValue) {
-              update(filter: (filter as FilterCheck).copyWith(state: newValue));
+              update(filter: (filter as SourceFilterCheck).copyWith(state: newValue));
             },
           ),
         ],
@@ -212,7 +212,7 @@ class _FilterWidget extends HookConsumerWidget {
                 .toList(growable: false),
             onChanged: (newValue) {
               if (newValue != null) {
-                update(filter: (filter as FilterSort).copyWith(state: options.indexOf(newValue)));
+                update(filter: (filter as SourceFilterSort).copyWith(state: options.indexOf(newValue)));
               }
             },
           ),
@@ -220,7 +220,7 @@ class _FilterWidget extends HookConsumerWidget {
           Switch(
             value: ascending,
             onChanged: (newValue) {
-              update(filter: (filter as FilterSort).copyWith(ascending: newValue));
+              update(filter: (filter as SourceFilterSort).copyWith(ascending: newValue));
             },
           ),
         ],

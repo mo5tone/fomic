@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:fomic/model/chapter_info.dart';
-import 'package:fomic/model/filter.dart';
-import 'package:fomic/model/manga_info.dart';
-import 'package:fomic/model/mangas_page.dart';
-import 'package:fomic/model/page.dart';
+import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_filter.dart';
+import 'package:fomic/model/source_manga.dart';
+import 'package:fomic/model/source_manga_list.dart';
+import 'package:fomic/model/source_page.dart';
 import 'package:fomic/model/whoops.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -65,15 +65,15 @@ class ZeroBYW extends HTTPSource {
   String get version => '1e0473d8bd91be4711a11db2919446e22d7913d6';
 
   @override
-  List<Filter> get filters => [
-        const Filter.header('如果使用文本搜索, 过滤器将被忽略'),
-        Filter.select('分类', _categoryOptions.map((e) => e.value).toList()),
-        Filter.select('进度', _statusOptions.map((e) => e.value).toList()),
-        Filter.select('性质', _langOptions.map((e) => e.value).toList()),
+  List<SourceFilter> get filters => [
+        const SourceFilter.header('如果使用文本搜索, 过滤器将被忽略'),
+        SourceFilter.select('分类', _categoryOptions.map((e) => e.value).toList()),
+        SourceFilter.select('进度', _statusOptions.map((e) => e.value).toList()),
+        SourceFilter.select('性质', _langOptions.map((e) => e.value).toList()),
       ];
 
   @override
-  MangasPage popularMangaParser(Response response) {
+  SourceMangaList popularMangaParser(Response response) {
     throw UnimplementedError();
   }
 
@@ -83,7 +83,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  MangasPage latestUpdatesParser(Response response) {
+  SourceMangaList latestUpdatesParser(Response response) {
     final document = html.parse(response.data);
     final elements = document.querySelectorAll('div.uk-card');
     final mangas = elements.map((e) {
@@ -93,9 +93,9 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return MangaInfo(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
+      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
-    return MangasPage(0, mangas.whereType<MangaInfo>().toList(), document.querySelector('div.pg > a.nxt') != null);
+    return SourceMangaList(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
 
   @override
@@ -113,7 +113,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  MangasPage searchMangaParser(Response response) {
+  SourceMangaList searchMangaParser(Response response) {
     final document = html.parse(response.data);
     final mangas = document.querySelectorAll('a.uk-card, div.uk-card').map((e) {
       final title = e.querySelector('p.mt5')?.text;
@@ -122,13 +122,13 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return MangaInfo(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
+      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
-    return MangasPage(0, mangas.whereType<MangaInfo>().toList(), document.querySelector('div.pg > a.nxt') != null);
+    return SourceMangaList(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
 
   @override
-  RequestOptions searchMangaRequest({required int page, required String query, required List<Filter> filters}) {
+  RequestOptions searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.isEmpty) {
       final queryParameters = <String, dynamic>{'id': 'jameson_manhua', 'a': 'ku', 'c': 'index', 'page': '$page'};
       for (final filter in filters) {
@@ -170,7 +170,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  MangaInfo mangaDetailsParser(Response response) {
+  SourceManga mangaDetailsParser(Response response) {
     final document = html.parse(response.data);
     final title = document.querySelector('li > h3.uk-heading-line')!.text;
     final cover = document.querySelector('div.uk-width-medium > img')!.attributes['src']!;
@@ -179,19 +179,19 @@ class ZeroBYW extends HTTPSource {
     final genres = document.querySelectorAll('div.cl > a.uk-label, div.cl > span.uk-label').map((e) => e.text);
     final description = document.querySelector('li > div.uk-alert')!.innerHtml.replaceAll('<br>', '');
     final statusRawValue = document.querySelectorAll('div.cl > span.uk-label').last.text;
-    MangaInfoStatus status;
+    SourceMangaStatus status;
     switch (statusRawValue) {
       case '连载中':
-        status = MangaInfoStatus.ongoing;
+        status = SourceMangaStatus.ongoing;
         break;
       case '已完结':
-        status = MangaInfoStatus.completed;
+        status = SourceMangaStatus.completed;
         break;
       default:
-        status = MangaInfoStatus.unknown;
+        status = SourceMangaStatus.unknown;
         break;
     }
-    return MangaInfo(
+    return SourceManga(
       '',
       _shortTitleOf(title),
       cover: cover.addBaseURL(baseUrl),
@@ -204,7 +204,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  List<ChapterInfo> chapterListParser(Response response) {
+  List<SourceChapter> chapterListParser(Response response) {
     final document = html.parse(response.data);
     final chapterList = document
         .querySelectorAll('div.uk-grid-collapse > div.muludiv')
@@ -214,15 +214,15 @@ class ZeroBYW extends HTTPSource {
           if (key == null || name == null) {
             return null;
           }
-          return ChapterInfo(key.removedBaseURL, name);
+          return SourceChapter(key.removedBaseURL, name);
         })
-        .whereType<ChapterInfo>()
+        .whereType<SourceChapter>()
         .toList();
     return chapterList.reversed.toList();
   }
 
   @override
-  List<Page> pageListParser(Response response) {
+  List<SourcePage> pageListParser(Response response) {
     final document = html.parse(response.data);
     var imageElements = document.querySelectorAll('div.uk-text-center > img');
     if (imageElements.isEmpty) {
@@ -233,14 +233,14 @@ class ZeroBYW extends HTTPSource {
     return imageElements
         .map((e) {
           final src = e.attributes['src'];
-          return src == null ? null : Page.imageUrl(src);
+          return src == null ? null : SourcePage.imageUrl(src);
         })
-        .whereType<Page>()
+        .whereType<SourcePage>()
         .toList();
   }
 
   @override
-  PageImageUrl imageUrlParser(Response response) {
+  SourcePageImageUrl imageUrlParser(Response response) {
     throw UnimplementedError();
   }
 }

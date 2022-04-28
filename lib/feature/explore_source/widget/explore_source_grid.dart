@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExploreSourceGrid extends HookConsumerWidget {
-  final List<MangaInfo> mangas;
+  final List<SourceManga> mangas;
   final ScrollController? scrollController;
-  final void Function(BuildContext context, MangaInfo manga)? didTap;
+  final void Function(BuildContext context, SourceManga manga)? didTap;
 
   const ExploreSourceGrid({
     Key? key,
@@ -49,8 +49,8 @@ class ExploreSourceGrid extends HookConsumerWidget {
 }
 
 class _Cell extends HookConsumerWidget {
-  final MangaInfo manga;
-  final void Function(BuildContext context, MangaInfo manga)? didTap;
+  final SourceManga manga;
+  final void Function(BuildContext context, SourceManga manga)? didTap;
 
   const _Cell({
     Key? key,

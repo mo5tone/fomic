@@ -6,13 +6,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/common/widget/marquee.dart';
 import 'package:fomic/feature/manga_info/bloc.dart';
-import 'package:fomic/model/manga_info.dart';
+import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class MangaInfoView extends HookConsumerWidget {
-  final MangaInfo manga;
+  final SourceManga manga;
 
   const MangaInfoView({Key? key, required this.manga}) : super(key: key);
 
@@ -100,7 +100,7 @@ class _AppBar extends HookConsumerWidget {
 }
 
 class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
-  final MangaInfo manga;
+  final SourceManga manga;
 
   const _AppBarFlexibleSpaceBackground({Key? key, required this.manga}) : super(key: key);
 
@@ -207,7 +207,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
                           children: [
                             SizedBox(
                               height: theme.textTheme.bodyText1?.height,
-                              child: manga.status.image(
+                              child: manga.status.icon(
                                 color: theme.colorScheme.onBackground,
                               ),
                             ),
