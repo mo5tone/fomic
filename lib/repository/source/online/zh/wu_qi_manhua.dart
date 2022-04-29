@@ -10,6 +10,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class WuQiManHua extends HTTPSource {
+  static final provider = Provider.autoDispose((ref) => WuQiManHua._(ref));
+
   @override
   String get name => '57漫画';
 
@@ -98,20 +100,41 @@ class WuQiManHua extends HTTPSource {
 
   @override
   SourceManga mangaDetailsParser(Response response) {
+    var manga = response.requestOptions.extra['manga'] as SourceManga;
     final document = html.parse(response.data);
-    final title = document.querySelector('.book-title h1')!.text;
-    throw UnimplementedError();
+    final title = document.querySelector('.book-title h1')?.text;
+    final cover = document.querySelector('.hcover img')?.attributes['src'];
+    String? author;
+    for (final e in document.querySelectorAll('ul.detail-list li span')) {
+      if (e.querySelector('strong')?.text.contains('漫画作者') ?? false) {
+        author = e.querySelector('a')?.text;
+      }
+    }
+    if (title != null) {
+      manga = manga.copyWith(title: title);
+    }
+    if (cover != null) {
+      manga = manga.copyWith(cover: cover);
+    }
+    if (author != null) {
+      manga = manga.copyWith(author: author);
+    }
+    return manga;
   }
 
   @override
   List<SourceChapter> chapterListParser(Response response) {
-    // TODO: implement chapterListParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    final elements = document.querySelectorAll('div.chapter div.chapter-list>ul').reversed;
+    return elements
+        .map((element) => element.querySelectorAll('li a').map((e) => SourceChapter(e.attributes['href']!, e.attributes['title']!)))
+        .expand((e) => e)
+        .toList();
   }
 
   @override
   List<SourcePage> pageListParser(Response response) {
-    // TODO: implement pageListParser
+    final document = html.parse(response.data);
     throw UnimplementedError();
   }
 

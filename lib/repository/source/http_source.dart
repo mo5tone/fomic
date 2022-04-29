@@ -12,6 +12,7 @@ import 'package:fomic/repository/service/network/request.dart';
 import 'package:fomic/repository/service/source_box.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
 import 'package:fomic/repository/source/online/zh/kuai_kan_man_hua.dart';
+import 'package:fomic/repository/source/online/zh/wu_qi_manhua.dart';
 import 'package:fomic/repository/source/online/zh/zero_byw.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -20,6 +21,7 @@ abstract class HTTPSource extends CatalogueSource {
     return [
       ref.read(KuaiKanManHua.provider),
       ref.read(ZeroBYW.provider),
+      ref.read(WuQiManHua.provider),
     ];
   });
 
@@ -98,7 +100,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request mangaDetailsRequest({required SourceManga manga}) => Request(manga.key);
+  Request mangaDetailsRequest({required SourceManga manga}) => Request(manga.key, options: Options(extra: {'manga': manga}));
   @protected
   SourceManga mangaDetailsParser(Response<dynamic> response);
 
@@ -108,7 +110,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request chapterListRequest({required SourceManga manga}) => Request(manga.key);
+  Request chapterListRequest({required SourceManga manga}) => Request(manga.key, options: Options(extra: {'manga': manga}));
   @protected
   List<SourceChapter> chapterListParser(Response<dynamic> response);
 
@@ -118,7 +120,7 @@ abstract class HTTPSource extends CatalogueSource {
   }
 
   @protected
-  Request pageListRequest({required SourceChapter chapter}) => Request(chapter.key);
+  Request pageListRequest({required SourceChapter chapter}) => Request(chapter.key, options: Options(extra: {'chapter': chapter}));
   @protected
   List<SourcePage> pageListParser(Response<dynamic> response);
 
@@ -147,12 +149,4 @@ extension BaseURLExtension on String {
 
   String get removedBaseURL =>
       replaceFirstMapped(RegExp(r'^https?:\/{2}[\d\w][\d\w\.]+\/'), (match) => '/').replaceFirstMapped(RegExp(r'^[^\/]*\/'), (match) => '/');
-}
-
-extension Extra on Request {
-  SourceManga? get manga => options?.extra?['manga'];
-
-  // set manga(SourceManga? value) {
-  //   options ??= Options();
-  // }
 }
