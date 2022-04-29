@@ -5,6 +5,7 @@ import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/model/whoops.dart';
+import 'package:fomic/repository/service/network/request.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
@@ -53,16 +54,13 @@ class ZeroBYW extends HTTPSource {
   String get lang => 'zh';
 
   @override
+  String get version => '8';
+
+  @override
   bool get supportsLatest => true;
 
   @override
   String get baseUrl => 'http://www.zerobywtxt.com';
-
-  @override
-  Map<String, String> get headers => {};
-
-  @override
-  String get version => '1e0473d8bd91be4711a11db2919446e22d7913d6';
 
   @override
   List<SourceFilter> get filters => [
@@ -78,7 +76,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  RequestOptions popularMangaRequest({required int page}) {
+  Request popularMangaRequest({required int page}) {
     throw UnimplementedError();
   }
 
@@ -99,10 +97,9 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  RequestOptions latestUpdatesRequest({required int page}) {
-    return RequestOptions(
-      baseUrl: baseUrl,
-      path: '/plugin.php',
+  Request latestUpdatesRequest({required int page}) {
+    return Request(
+      '/plugin.php',
       queryParameters: {
         'id': 'jameson_manhua',
         'a': 'ku',
@@ -128,7 +125,7 @@ class ZeroBYW extends HTTPSource {
   }
 
   @override
-  RequestOptions searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
+  Request searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.isEmpty) {
       final queryParameters = <String, dynamic>{'id': 'jameson_manhua', 'a': 'ku', 'c': 'index', 'page': '$page'};
       for (final filter in filters) {
@@ -149,15 +146,13 @@ class ZeroBYW extends HTTPSource {
           orElse: () {},
         );
       }
-      return RequestOptions(
-        baseUrl: baseUrl,
-        path: '/plugin.php',
+      return Request(
+        '/plugin.php',
         queryParameters: queryParameters,
       );
     } else {
-      return RequestOptions(
-        baseUrl: baseUrl,
-        path: '/plugin.php',
+      return Request(
+        '/plugin.php',
         queryParameters: {
           'id': 'jameson_manhua',
           'a': 'search',

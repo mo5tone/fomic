@@ -28,7 +28,7 @@ class Fomic extends HookConsumerWidget {
       supportedLocales: L10N.supportedLocales,
       theme: themeState.theme,
       darkTheme: themeState.darkTheme,
-      home: _Home(),
+      home: const _Home(),
       builder: (context, child) {
         return FlutterEasyLoading(
           child: child,
@@ -39,13 +39,13 @@ class Fomic extends HookConsumerWidget {
 }
 
 class _Home extends HookConsumerWidget {
-  final _currentIndex = StateProvider((_) => 0);
+  static final _currentIndex = StateProvider((_) => 0);
 
-  _Home({Key? key}) : super(key: key);
+  const _Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageController = usePageController();
+    final pageController = usePageController(initialPage: ref.read(_currentIndex));
     ref.listen<int>(
       _currentIndex,
       (previous, next) {

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'interceptor/loading_indicator.dart';
+import 'request.dart';
 
 class Networker {
   static final family = Provider.autoDispose.family<Networker, BaseOptions>((ref, options) => Networker._(ref, options));
@@ -17,7 +19,17 @@ class Networker {
             ..sendTimeout = 3000,
         )..interceptors.add(ref.read(LoadingIndicator.provider));
 
-  Future<T> fetch<T>(RequestOptions req, {required T Function(Response<dynamic>) parser}) {
-    return _dio.fetch(req).then(parser);
+  Future<T> fetch<T>(Request req, {required T Function(Response<dynamic>) parser}) {
+    return _dio
+        .request(
+          req.path,
+          data: req.data,
+          queryParameters: req.queryParameters,
+          cancelToken: req.cancelToken,
+          options: req.options,
+          onSendProgress: req.onSendProgress,
+          onReceiveProgress: req.onReceiveProgress,
+        )
+        .then(parser);
   }
 }

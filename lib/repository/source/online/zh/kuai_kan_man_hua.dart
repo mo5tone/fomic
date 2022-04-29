@@ -6,6 +6,7 @@ import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
+import 'package:fomic/repository/service/network/request.dart';
 import 'package:fomic/repository/source/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
@@ -54,13 +55,13 @@ class KuaiKanManHua extends HTTPSource {
   String get lang => 'zh';
 
   @override
-  String get version => '9dd19d66e6e99c041799593237a5e259ef22a63f';
+  String get version => '8';
+
+  @override
+  bool get supportsLatest => true;
 
   @override
   String get baseUrl => 'https://www.kuaikanmanhua.com';
-
-  @override
-  Map<String, String> get headers => {};
 
   @override
   List<SourceFilter> get filters => [
@@ -69,11 +70,8 @@ class KuaiKanManHua extends HTTPSource {
       ];
 
   @override
-  bool get supportsLatest => true;
-
-  @override
-  RequestOptions popularMangaRequest({required int page}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=0&since=${(page - 1) * 10}');
+  Request popularMangaRequest({required int page}) {
+    return Request('$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=0&since=${(page - 1) * 10}');
   }
 
   @override
@@ -87,8 +85,8 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  RequestOptions latestUpdatesRequest({required int page}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=19&since=${(page - 1) * 10}');
+  Request latestUpdatesRequest({required int page}) {
+    return Request('$_apiBaseUrl/v1/topic_new/lists/get_by_tag?tag=19&since=${(page - 1) * 10}');
   }
 
   @override
@@ -97,9 +95,9 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  RequestOptions searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
+  Request searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.isNotEmpty) {
-      return RequestOptions(path: '$_apiBaseUrl/v1/search/topic?q=$query&size=18');
+      return Request('$_apiBaseUrl/v1/search/topic?q=$query&size=18');
     } else {
       var status = '';
       var genre = '';
@@ -115,7 +113,7 @@ class KuaiKanManHua extends HTTPSource {
           orElse: () {},
         );
       }
-      return RequestOptions(path: '$_apiBaseUrl/v1/search/by_tag?since=${(page - 1) * 10}&tag=$genre&sort=1&query_category=%7B%22update_status%22:$status%7D');
+      return Request('$_apiBaseUrl/v1/search/by_tag?since=${(page - 1) * 10}&tag=$genre&sort=1&query_category=%7B%22update_status%22:$status%7D');
     }
   }
 
@@ -131,7 +129,7 @@ class KuaiKanManHua extends HTTPSource {
   Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
-      return networker.fetch<SourceMangasPage>(RequestOptions(path: '$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
+      return networker.fetch<SourceMangasPage>(Request('$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
         final manga = mangaDetailsParser(response).copyWith(key: '/web/topic/$newQuery');
         return SourceMangasPage([manga], false);
       });
@@ -140,8 +138,8 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  RequestOptions mangaDetailsRequest({required SourceManga manga}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
+  Request mangaDetailsRequest({required SourceManga manga}) {
+    return Request('$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
   }
 
   @override
@@ -158,8 +156,8 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  RequestOptions chapterListRequest({required SourceManga manga}) {
-    return RequestOptions(path: '$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
+  Request chapterListRequest({required SourceManga manga}) {
+    return Request('$_apiBaseUrl/v1/topics/${manga.key.split('/').last}');
   }
 
   @override
