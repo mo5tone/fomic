@@ -31,7 +31,7 @@ class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
   final HTTPSource _source;
 
   ExploreSourceBLoC._(Ref ref)
-      : _source = ref.read(HTTPSource.provider),
+      : _source = ref.watch(HTTPSource.provider),
         super(const ExploreSourceState());
 
   @override

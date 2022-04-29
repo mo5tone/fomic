@@ -30,7 +30,7 @@ class ReaderBLoC extends BLoC<ReaderEvent, ReaderState> {
   final HTTPSource _source;
 
   ReaderBLoC._(Ref ref, SourceChapter chapter)
-      : _source = ref.read(HTTPSource.provider),
+      : _source = ref.watch(HTTPSource.provider),
         super(ReaderState(chapter: chapter));
 
   @override

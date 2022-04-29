@@ -8,12 +8,27 @@ import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/service/network/networker.dart';
+import 'package:fomic/repository/service/source_box.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
+import 'package:fomic/repository/source/online/zh/kuai_kan_man_hua.dart';
 import 'package:fomic/repository/source/online/zh/zero_byw.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class HTTPSource extends CatalogueSource {
-  static final provider = Provider<HTTPSource>((ref) => ref.read(ZeroBYW.provider));
+  static final all = Provider.autoDispose<List<HTTPSource>>((ref) {
+    return [
+      ref.read(KuaiKanManHua.provider),
+      ref.read(ZeroBYW.provider),
+    ];
+  });
+
+  static final provider = StateProvider<HTTPSource>((ref) {
+    final sources = ref.read(all);
+    return sources.firstWhere(
+      (source) => ref.watch(SourceBox.provider).whenOrNull(data: (box) => box)?.id == source.id,
+      orElse: () => sources.first,
+    );
+  });
 
   @protected
   late Networker networker;

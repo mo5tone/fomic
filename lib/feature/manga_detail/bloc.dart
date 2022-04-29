@@ -26,7 +26,7 @@ class MangaDetailBLoC extends BLoC<MangaDetailEvent, MangaDetailState> {
   final HTTPSource _source;
 
   MangaDetailBLoC._(Ref ref, SourceManga manga)
-      : _source = ref.read(HTTPSource.provider),
+      : _source = ref.watch(HTTPSource.provider),
         super(MangaDetailState(manga: manga));
 
   @override

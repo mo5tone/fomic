@@ -114,7 +114,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
       children: [
         CachedNetworkImage(
           imageUrl: manga.cover,
-          httpHeaders: ref.read(HTTPSource.provider).headers,
+          httpHeaders: ref.watch(HTTPSource.provider).headers,
           fit: BoxFit.cover,
           color: const Color.fromRGBO(255, 255, 255, 0.2),
           colorBlendMode: BlendMode.modulate,
@@ -157,7 +157,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
                       aspectRatio: 3 / 4,
                       child: CachedNetworkImage(
                         imageUrl: manga.cover,
-                        httpHeaders: ref.read(HTTPSource.provider).headers,
+                        httpHeaders: ref.watch(HTTPSource.provider).headers,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -230,7 +230,7 @@ class _AppBarFlexibleSpaceBackground extends HookConsumerWidget {
                               width: 4,
                             ),
                             Text(
-                              ref.read(HTTPSource.provider).name,
+                              ref.watch(HTTPSource.provider).name,
                               style: theme.textTheme.bodyText1?.apply(color: theme.colorScheme.onPrimary),
                             ),
                           ],

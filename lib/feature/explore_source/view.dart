@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
+import 'package:fomic/feature/explore_source/widget/source_picker_dialog.dart';
 import 'package:fomic/l10n/l10n.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
@@ -33,7 +34,11 @@ class ExploreSourceView extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => showDialog<void>(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) => const SourcePickerDialog(),
+          ),
           icon: const Icon(Icons.extension),
         ),
         title: Row(
@@ -41,7 +46,6 @@ class ExploreSourceView extends HookConsumerWidget {
           children: [
             Image.asset(
               ref.watch(HTTPSource.provider).iconName,
-              height: kToolbarHeight / 2,
             ),
             const SizedBox(
               width: 8,
@@ -83,7 +87,7 @@ class ExploreSourceView extends HookConsumerWidget {
 }
 
 class _FiltersBottomSheet extends HookConsumerWidget {
-  static final filters = StateProvider((ref) => ref.read(HTTPSource.provider).filters);
+  static final filters = StateProvider((ref) => ref.watch(HTTPSource.provider).filters);
 
   const _FiltersBottomSheet({Key? key}) : super(key: key);
 
