@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
-import 'package:fomic/l10n/app_localizations.dart';
+import 'package:fomic/l10n/l10n.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/repository/source/http_source.dart';
@@ -101,7 +101,7 @@ class _FiltersBottomSheet extends HookConsumerWidget {
             Row(
               children: [
                 TextButton(
-                  child: Text(AppLocalizations.of(context).reset),
+                  child: Text(L10N.of(context).reset),
                   onPressed: () {
                     ref.refresh(filters);
                     Navigator.of(context).pop(<SourceFilter>[]);
@@ -109,7 +109,7 @@ class _FiltersBottomSheet extends HookConsumerWidget {
                 ),
                 const Spacer(),
                 ElevatedButton(
-                  child: Text(AppLocalizations.of(context).filter),
+                  child: Text(L10N.of(context).filter),
                   onPressed: () {
                     Navigator.of(context).pop(ref.read(filters));
                   },

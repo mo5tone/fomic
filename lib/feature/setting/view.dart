@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/feature/setting/theme_bloc.dart';
-import 'package:fomic/l10n/app_localizations.dart';
+import 'package:fomic/l10n/l10n.dart';
 import 'package:fomic/repository/service/theme_box.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -12,7 +12,7 @@ class SettingView extends HookConsumerWidget {
     final themeBLoC = ref.read(ThemeBLoC.provider.notifier);
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).setting),
+        title: Text(L10N.of(context).setting),
       ),
       body: ListView.separated(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -21,7 +21,7 @@ class SettingView extends HookConsumerWidget {
           if (index == 0) {
             item = ListTile(
               leading: const Icon(Icons.brightness_medium),
-              title: Text(AppLocalizations.of(context).brightnessModes),
+              title: Text(L10N.of(context).brightnessModes),
               trailing: Icon(ref.watch(ThemeBLoC.provider).brightness?.iconData ?? Icons.brightness_auto),
               onTap: () => showModalBottomSheet<Brightness>(
                 context: context,
@@ -34,7 +34,7 @@ class SettingView extends HookConsumerWidget {
           } else {
             item = ListTile(
               leading: const Icon(Icons.color_lens),
-              title: Text(AppLocalizations.of(context).primarySwatchColor),
+              title: Text(L10N.of(context).primarySwatchColor),
               trailing: Container(
                 width: 20,
                 height: 20,
@@ -69,21 +69,21 @@ class _BrightnessBottomSheet extends HookConsumerWidget {
           ListTile(
             leading: const Icon(Icons.brightness_5),
             trailing: brightness == Brightness.light ? const Icon(Icons.check) : null,
-            title: Text(AppLocalizations.of(context).lightMode),
+            title: Text(L10N.of(context).lightMode),
             onTap: () => Navigator.of(context).pop(Brightness.light),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.brightness_4),
             trailing: brightness == Brightness.dark ? const Icon(Icons.check) : null,
-            title: Text(AppLocalizations.of(context).darkMode),
+            title: Text(L10N.of(context).darkMode),
             onTap: () => Navigator.of(context).pop(Brightness.dark),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.brightness_auto),
             trailing: brightness == null ? const Icon(Icons.check) : null,
-            title: Text(AppLocalizations.of(context).followSystem),
+            title: Text(L10N.of(context).followSystem),
             onTap: () => Navigator.of(context).pop(),
           ),
         ],

@@ -32,7 +32,7 @@ abstract class BLoC<Event, State> extends StateNotifier<State> {
     return (error, stackTrace) {
       log('$runtimeType#onError', error: error, stackTrace: stackTrace);
       if (error is Exception && error is Whoops) {
-        error.when(toast: (message) => EasyLoading.showToast(message));
+        error.when(toast: (message, duration) => EasyLoading.showToast(message, duration: duration));
       }
     };
   }

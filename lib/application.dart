@@ -5,7 +5,7 @@ import 'package:fomic/common/bloc/hud_bloc.dart';
 import 'package:fomic/feature/explore_source/view.dart';
 import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/feature/setting/view.dart';
-import 'package:fomic/l10n/app_localizations.dart';
+import 'package:fomic/l10n/l10n.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Fomic extends HookConsumerWidget {
@@ -24,8 +24,8 @@ class Fomic extends HookConsumerWidget {
     });
     return MaterialApp(
       title: 'Fomic',
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: L10N.localizationsDelegates,
+      supportedLocales: L10N.supportedLocales,
       theme: themeState.theme,
       darkTheme: themeState.darkTheme,
       home: _Home(),
@@ -74,12 +74,12 @@ class _Home extends HookConsumerWidget {
           BottomNavigationBarItem(
             icon: const Icon(Icons.explore_outlined),
             activeIcon: const Icon(Icons.explore),
-            label: AppLocalizations.of(context).explore,
+            label: L10N.of(context).explore,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings_outlined),
             activeIcon: const Icon(Icons.settings),
-            label: AppLocalizations.of(context).setting,
+            label: L10N.of(context).setting,
           ),
         ],
         onTap: (index) => ref.read(_currentIndex.notifier).update((state) => index),
