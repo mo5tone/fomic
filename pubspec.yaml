@@ -37,6 +37,7 @@ dependencies:
   html: ^0.15.0
   intl: ^0.17.0 # flutter gen-l10n
   flutter_svg: ^1.0.3
+  flutter_js: ^0.5.0+6
 
 dev_dependencies:
   flutter_test:
