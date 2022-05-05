@@ -27,10 +27,8 @@ abstract class HTTPSource extends CatalogueSource {
 
   static final provider = StateProvider<HTTPSource>((ref) {
     final sources = ref.read(all);
-    return sources.firstWhere(
-      (source) => ref.watch(SourceBox.provider).whenOrNull(data: (box) => box)?.id == source.id,
-      orElse: () => sources.first,
-    );
+    final id = ref.watch(SourceBox.provider).whenOrNull(data: (box) => box)?.id;
+    return sources.firstWhere((source) => id == source.id, orElse: () => sources.first);
   });
 
   @protected

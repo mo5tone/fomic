@@ -26,13 +26,12 @@ class ExploreSourceState with _$ExploreSourceState {
 }
 
 class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
-  static final provider = StateNotifierProvider.autoDispose<ExploreSourceBLoC, ExploreSourceState>((ref) => ExploreSourceBLoC._(ref));
+  static final provider =
+      StateNotifierProvider.autoDispose<ExploreSourceBLoC, ExploreSourceState>((ref) => ExploreSourceBLoC._(ref.watch(HTTPSource.provider)));
 
-  final HTTPSource _source;
+  final HTTPSource source;
 
-  ExploreSourceBLoC._(Ref ref)
-      : _source = ref.watch(HTTPSource.provider),
-        super(const ExploreSourceState());
+  ExploreSourceBLoC._(this.source) : super(const ExploreSourceState());
 
   @override
   Stream<ExploreSourceState> mapEventToState(ExploreSourceEvent event) {
@@ -41,20 +40,20 @@ class ExploreSourceBLoC extends BLoC<ExploreSourceEvent, ExploreSourceState> {
         if (state.pages.isNotEmpty && state.pages.last.hasNextPage) {
           if (state.query.isEmpty && state.filters.isEmpty) {
             final page = state.pages.length + 1;
-            final mangasPage = await (_source.supportsLatest ? _source.fetchLatestUpdates(page: page) : _source.fetchPopularManga(page: page));
+            final mangasPage = await (source.supportsLatest ? source.fetchLatestUpdates(page: page) : source.fetchPopularManga(page: page));
             yield state.copyWith(pages: [...state.pages, mangasPage]);
           } else {
-            final mangasPage = await _source.searchManga(page: state.pages.length + 1, query: state.query, filters: state.filters);
+            final mangasPage = await source.searchManga(page: state.pages.length + 1, query: state.query, filters: state.filters);
             yield state.copyWith(pages: [...state.pages, mangasPage]);
           }
         }
       },
       refresh: () async* {
         if (state.query.isEmpty && state.filters.isEmpty) {
-          final mangasPage = await (_source.supportsLatest ? _source.fetchLatestUpdates(page: 1) : _source.fetchPopularManga(page: 1));
+          final mangasPage = await (source.supportsLatest ? source.fetchLatestUpdates(page: 1) : source.fetchPopularManga(page: 1));
           yield state.copyWith(pages: [mangasPage]);
         } else {
-          final mangasPage = await _source.searchManga(page: 1, query: state.query, filters: state.filters);
+          final mangasPage = await source.searchManga(page: 1, query: state.query, filters: state.filters);
           yield state.copyWith(pages: [mangasPage]);
         }
       },

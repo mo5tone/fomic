@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_js/flutter_js.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
@@ -11,6 +14,7 @@ import 'package:html/parser.dart' as html;
 
 class WuQiManHua extends HTTPSource {
   static final provider = Provider.autoDispose((ref) => WuQiManHua._(ref));
+  static const _imageBaseURL = 'http://images.lancaier.com';
 
   @override
   String get name => '57漫画';
@@ -25,7 +29,7 @@ class WuQiManHua extends HTTPSource {
   bool get supportsLatest => false;
 
   @override
-  String get baseUrl => 'http://www.wuqimh.com';
+  String get baseUrl => 'http://www.wuqimh.net';
 
   @override
   get headers => {'Referer': '$baseUrl/'};
@@ -135,12 +139,17 @@ class WuQiManHua extends HTTPSource {
   @override
   List<SourcePage> pageListParser(Response response) {
     final document = html.parse(response.data);
-    throw UnimplementedError();
+    final code = RegExp(r'eval(.*?)\n').firstMatch(document.outerHtml)?.group(1);
+    if (code == null) return [];
+    final result = getJavascriptRuntime().evaluate(code).stringResult;
+    final imageJSONString = RegExp(r'\{.*\}').firstMatch(result)?.group(0)?.replaceAll("'", '"');
+    if (imageJSONString == null) return [];
+    List urls = json.decode(imageJSONString)['fs'];
+    return urls.whereType<String>().map((url) => SourcePage.imageUrl('$_imageBaseURL${url.removedBaseURL}')).toList();
   }
 
   @override
   SourcePageImageUrl imageUrlParser(Response response) {
-    // TODO: implement imageUrlParser
     throw UnimplementedError();
   }
 }

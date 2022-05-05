@@ -25,24 +25,23 @@ class ReaderState with _$ReaderState {
 }
 
 class ReaderBLoC extends BLoC<ReaderEvent, ReaderState> {
-  static final family = StateNotifierProvider.autoDispose.family<ReaderBLoC, ReaderState, SourceChapter>((ref, chapter) => ReaderBLoC._(ref, chapter));
+  static final family =
+      StateNotifierProvider.autoDispose.family<ReaderBLoC, ReaderState, SourceChapter>((ref, chapter) => ReaderBLoC._(ref.watch(HTTPSource.provider), chapter));
 
-  final HTTPSource _source;
+  final HTTPSource source;
 
-  ReaderBLoC._(Ref ref, SourceChapter chapter)
-      : _source = ref.watch(HTTPSource.provider),
-        super(ReaderState(chapter: chapter));
+  ReaderBLoC._(this.source, SourceChapter chapter) : super(ReaderState(chapter: chapter));
 
   @override
   Stream<ReaderState> mapEventToState(ReaderEvent event) {
     return event.when(
       refresh: () async* {
-        var pages = await _source.fetchPageList(chapter: state.chapter);
+        var pages = await source.fetchPageList(chapter: state.chapter);
         pages = pages.map((p) {
           return p.maybeMap(
             url: (pageUrl) async {
               try {
-                return await _source.fetchPageImageUrl(page: pageUrl);
+                return await source.fetchPageImageUrl(page: pageUrl);
               } catch (e) {
                 return pageUrl;
               }
