@@ -7,6 +7,7 @@ import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
+import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
 import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/service/network/request.dart';
 import 'package:fomic/repository/service/source_box.dart';
@@ -16,7 +17,7 @@ import 'package:fomic/repository/source/online/zh/wu_qi_manhua.dart';
 import 'package:fomic/repository/source/online/zh/zero_byw.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-abstract class HTTPSource extends CatalogueSource {
+abstract class HTTPSource extends CatalogueSource with Networker {
   static final all = Provider.autoDispose<List<HTTPSource>>((ref) {
     return [
       ref.read(KuaiKanManHua.provider),
@@ -32,16 +33,19 @@ abstract class HTTPSource extends CatalogueSource {
   });
 
   @protected
-  late Networker networker;
+  @override
+  late Dio dio;
 
   String get version;
-
-  String get baseURL;
 
   @override
   int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
 
+  String get baseURL;
+
   Map<String, String> get headers => {};
+
+  Iterable<Interceptor> get interceptors => const Iterable.empty();
 
   List<SourceFilter> get filters => [];
 
@@ -57,11 +61,19 @@ abstract class HTTPSource extends CatalogueSource {
       'Safari/537.36',
       'Edg/88.0.705.63',
     ];
-    final baseOptions = BaseOptions(baseUrl: baseURL, headers: {
-      'User-Agent': userAgents.join(' '),
-      ...headers,
-    });
-    networker = ref.read(Networker.family(baseOptions));
+    final baseOptions = BaseOptions(
+      baseUrl: baseURL,
+      headers: {
+        'User-Agent': userAgents.join(' '),
+        ...headers,
+      },
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+      sendTimeout: 3000,
+    );
+    dio = Dio(baseOptions)
+      ..interceptors.addAll(interceptors)
+      ..interceptors.add(ref.read(LoadingIndicator.provider));
   }
 
   @override
@@ -74,7 +86,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<SourceMangasPage> fetchPopularManga({required int page}) {
-    return networker.fetch<SourceMangasPage>(popularMangaRequest(page: page), parser: popularMangaParser);
+    return fetch<SourceMangasPage>(popularMangaRequest(page: page), parser: popularMangaParser);
   }
 
   @protected
@@ -84,7 +96,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
-    return networker.fetch<SourceMangasPage>(searchMangaRequest(page: page, query: query, filters: filters), parser: searchMangaParser);
+    return fetch<SourceMangasPage>(searchMangaRequest(page: page, query: query, filters: filters), parser: searchMangaParser);
   }
 
   @protected
@@ -94,7 +106,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<SourceMangasPage> fetchLatestUpdates({required int page}) {
-    return networker.fetch<SourceMangasPage>(latestUpdatesRequest(page: page), parser: latestUpdatesParser);
+    return fetch<SourceMangasPage>(latestUpdatesRequest(page: page), parser: latestUpdatesParser);
   }
 
   @protected
@@ -104,7 +116,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<SourceManga> fetchMangaDetails({required SourceManga manga}) {
-    return networker.fetch<SourceManga>(mangaDetailsRequest(manga: manga), parser: mangaDetailsParser).then((value) => value.copyWith(key: manga.key));
+    return fetch<SourceManga>(mangaDetailsRequest(manga: manga), parser: mangaDetailsParser).then((value) => value.copyWith(key: manga.key));
   }
 
   @protected
@@ -114,7 +126,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
-    return networker.fetch<List<SourceChapter>>(chapterListRequest(manga: manga), parser: chapterListParser);
+    return fetch<List<SourceChapter>>(chapterListRequest(manga: manga), parser: chapterListParser);
   }
 
   @protected
@@ -124,7 +136,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   @override
   Future<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
-    return networker.fetch<List<SourcePage>>(pageListRequest(chapter: chapter), parser: pageListParser);
+    return fetch<List<SourcePage>>(pageListRequest(chapter: chapter), parser: pageListParser);
   }
 
   @protected
@@ -133,7 +145,7 @@ abstract class HTTPSource extends CatalogueSource {
   SourcePageImageUrl imageUrlParser(Response<dynamic> response);
 
   Future<SourcePageImageUrl> fetchPageImageUrl({required SourcePageUrl page}) {
-    return networker.fetch<SourcePageImageUrl>(imageUrlRequest(page: page), parser: imageUrlParser);
+    return fetch<SourcePageImageUrl>(imageUrlRequest(page: page), parser: imageUrlParser);
   }
 }
 

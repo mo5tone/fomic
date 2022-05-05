@@ -129,7 +129,7 @@ class KuaiKanManHua extends HTTPSource {
   Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
-      return networker.fetch<SourceMangasPage>(Request('$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
+      return fetch<SourceMangasPage>(Request('$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
         final manga = mangaDetailsParser(response).copyWith(key: '/web/topic/$newQuery');
         return SourceMangasPage([manga], false);
       });
