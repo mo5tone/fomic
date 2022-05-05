@@ -13,9 +13,6 @@ import 'package:html/parser.dart' as html;
 class BaiManGu extends HTTPSource {
   static final provider = Provider.autoDispose((ref) => BaiManGu._(ref));
 
-  // static const invalidCoverImageDomains = ['serial-online', 'res.cocomanga.com'];
-  static const invalidCoverImageDomains = [];
-
   static const channelFilterOptions = [
     MapEntry('最新漫画', '1'),
     MapEntry('漫画更新', '2'),
@@ -71,7 +68,7 @@ class BaiManGu extends HTTPSource {
           final key = pics?.attributes['href'];
           final title = element.querySelector('a.fed-list-title')?.text;
           final cover = pics?.attributes['data-original'];
-          if (key == null || title == null || cover == null || invalidCoverImageDomains.any((e) => cover.contains(e))) {
+          if (key == null || title == null || cover == null) {
             return null;
           }
           return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
@@ -106,7 +103,7 @@ class BaiManGu extends HTTPSource {
             final key = pics?.attributes['href'];
             final title = element.querySelector('a.fed-list-title')?.text;
             final cover = pics?.attributes['data-original'];
-            if (key == null || title == null || cover == null || invalidCoverImageDomains.any((e) => cover.contains(e))) {
+            if (key == null || title == null || cover == null) {
               return null;
             }
             return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
@@ -115,7 +112,7 @@ class BaiManGu extends HTTPSource {
             final key = pics?.attributes['href'];
             final title = element.querySelector('dd.fed-deta-content a:first-child')?.text;
             final cover = pics?.attributes['data-original'];
-            if (key == null || title == null || cover == null || invalidCoverImageDomains.any((e) => cover.contains(e))) {
+            if (key == null || title == null || cover == null) {
               return null;
             }
             return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
