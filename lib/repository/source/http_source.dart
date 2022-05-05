@@ -36,7 +36,7 @@ abstract class HTTPSource extends CatalogueSource {
 
   String get version;
 
-  String get baseUrl;
+  String get baseURL;
 
   @override
   int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
@@ -57,7 +57,7 @@ abstract class HTTPSource extends CatalogueSource {
       'Safari/537.36',
       'Edg/88.0.705.63',
     ];
-    final baseOptions = BaseOptions(baseUrl: baseUrl, headers: {
+    final baseOptions = BaseOptions(baseUrl: baseURL, headers: {
       'User-Agent': userAgents.join(' '),
       ...headers,
     });

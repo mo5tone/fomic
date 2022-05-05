@@ -61,7 +61,7 @@ class KuaiKanManHua extends HTTPSource {
   bool get supportsLatest => true;
 
   @override
-  String get baseUrl => 'https://www.kuaikanmanhua.com';
+  String get baseURL => 'https://www.kuaikanmanhua.com';
 
   @override
   List<SourceFilter> get filters => [
