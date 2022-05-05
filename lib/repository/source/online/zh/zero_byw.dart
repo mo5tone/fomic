@@ -60,7 +60,7 @@ class ZeroBYW extends HTTPSource {
   bool get supportsLatest => true;
 
   @override
-  String get baseURL => 'http://www.zerobywtxt.com';
+  String get baseUrl => 'http://www.zerobywtxt.com';
 
   @override
   List<SourceFilter> get filters => [
@@ -91,7 +91,7 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseURL));
+      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
     return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
@@ -119,7 +119,7 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseURL));
+      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
     });
     return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
@@ -189,7 +189,7 @@ class ZeroBYW extends HTTPSource {
     return SourceManga(
       '',
       _shortTitleOf(title),
-      cover: cover.addBaseURL(baseURL),
+      cover: cover.addBaseURL(baseUrl),
       author: author,
       artist: artist,
       genres: genres.toList(),

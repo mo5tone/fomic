@@ -29,10 +29,10 @@ class WuQiManHua extends HTTPSource {
   bool get supportsLatest => false;
 
   @override
-  String get baseURL => 'http://www.wuqimh.net';
+  String get baseUrl => 'http://www.wuqimh.net';
 
   @override
-  get headers => {'Referer': '$baseURL/'};
+  get headers => {'Referer': '$baseUrl/'};
 
   WuQiManHua._(Ref ref) : super(ref);
 
@@ -59,7 +59,7 @@ class WuQiManHua extends HTTPSource {
           if (key == null || title == null || cover == null) {
             return null;
           }
-          return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseURL));
+          return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
         })
         .whereType<SourceManga>()
         .toList();

@@ -41,7 +41,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   @override
   int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
 
-  String get baseURL;
+  String get baseUrl;
 
   Map<String, String> get headers => {};
 
@@ -62,7 +62,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
       'Edg/88.0.705.63',
     ];
     final baseOptions = BaseOptions(
-      baseUrl: baseURL,
+      baseUrl: baseUrl,
       headers: {
         'User-Agent': userAgents.join(' '),
         ...headers,
