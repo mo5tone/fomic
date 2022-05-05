@@ -12,6 +12,7 @@ import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/service/network/request.dart';
 import 'package:fomic/repository/service/source_box.dart';
 import 'package:fomic/repository/source/catalogue_source.dart';
+import 'package:fomic/repository/source/online/zh/bai_man_gu.dart';
 import 'package:fomic/repository/source/online/zh/kuai_kan_man_hua.dart';
 import 'package:fomic/repository/source/online/zh/wu_qi_manhua.dart';
 import 'package:fomic/repository/source/online/zh/zero_byw.dart';
@@ -23,6 +24,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
       ref.read(KuaiKanManHua.provider),
       ref.read(ZeroBYW.provider),
       ref.read(WuQiManHua.provider),
+      ref.read(BaiManGu.provider),
     ];
   });
 

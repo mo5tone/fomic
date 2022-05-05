@@ -80,7 +80,7 @@ class _Cell extends HookConsumerWidget {
                   httpHeaders: ref.watch(HTTPSource.provider).headers,
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) => Icon(
-                    Icons.error,
+                    Icons.broken_image,
                     color: theme.colorScheme.error,
                     size: constraints.biggest.shortestSide,
                   ),
