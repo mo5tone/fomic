@@ -99,8 +99,8 @@ class KuaiKanManHua extends HTTPSource {
     if (query.isNotEmpty) {
       return Request('$_apiBaseUrl/v1/search/topic?q=$query&size=18');
     } else {
-      var status = '';
-      var genre = '';
+      var status = _statusOptions.first.value;
+      var genre = _genreOptions.first.value;
       for (final filter in filters) {
         filter.maybeWhen(
           select: (name, _, index) {

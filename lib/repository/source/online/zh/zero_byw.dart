@@ -91,7 +91,7 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
+      return SourceManga(key.removedBaseUrl, _shortTitleOf(title), cover: cover.addBaseUrl(baseUrl));
     });
     return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
@@ -119,7 +119,7 @@ class ZeroBYW extends HTTPSource {
       if (title == null || key == null || cover == null) {
         return null;
       }
-      return SourceManga(key.removedBaseURL, _shortTitleOf(title), cover: cover.addBaseURL(baseUrl));
+      return SourceManga(key.removedBaseUrl, _shortTitleOf(title), cover: cover.addBaseUrl(baseUrl));
     });
     return SourceMangasPage(mangas.whereType<SourceManga>().toList(), document.querySelector('div.pg > a.nxt') != null);
   }
@@ -136,10 +136,10 @@ class ZeroBYW extends HTTPSource {
                 queryParameters['category_id'] = _categoryOptions[index].key;
                 break;
               case '进度':
-                queryParameters['jindu'] = _categoryOptions[index].key;
+                queryParameters['jindu'] = _statusOptions[index].key;
                 break;
               case '性质':
-                queryParameters['shuxing'] = _categoryOptions[index].key;
+                queryParameters['shuxing'] = _langOptions[index].key;
                 break;
             }
           },
@@ -189,7 +189,7 @@ class ZeroBYW extends HTTPSource {
     return SourceManga(
       '',
       _shortTitleOf(title),
-      cover: cover.addBaseURL(baseUrl),
+      cover: cover.addBaseUrl(baseUrl),
       author: author,
       artist: artist,
       genres: genres.toList(),
@@ -209,7 +209,7 @@ class ZeroBYW extends HTTPSource {
           if (key == null || name == null) {
             return null;
           }
-          return SourceChapter(key.removedBaseURL, name);
+          return SourceChapter(key.removedBaseUrl, name);
         })
         .whereType<SourceChapter>()
         .toList();

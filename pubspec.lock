@@ -362,9 +362,11 @@ packages:
   html:
     dependency: "direct main"
     description:
-      name: html
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: fix-query-selector-bug
+      resolved-ref: d3f2ba2c90c1ab9f4098b67d0d89ae01f4905c94
+      url: "https://github.com/ronjb/html.git"
+    source: git
     version: "0.15.0"
   http:
     dependency: transitive

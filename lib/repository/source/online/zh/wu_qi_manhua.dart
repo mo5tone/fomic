@@ -59,7 +59,7 @@ class WuQiManHua extends HTTPSource {
           if (key == null || title == null || cover == null) {
             return null;
           }
-          return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
+          return SourceManga(key.removedBaseUrl, title, cover: cover.addBaseUrl(baseUrl));
         })
         .whereType<SourceManga>()
         .toList();
@@ -145,7 +145,7 @@ class WuQiManHua extends HTTPSource {
     final imageJSONString = RegExp(r'\{.*\}').firstMatch(result)?.group(0)?.replaceAll("'", '"');
     if (imageJSONString == null) return [];
     List urls = json.decode(imageJSONString)['fs'];
-    return urls.whereType<String>().map((url) => SourcePage.imageUrl('$_imageBaseURL${url.removedBaseURL}')).toList();
+    return urls.whereType<String>().map((url) => SourcePage.imageUrl('$_imageBaseURL${url.removedBaseUrl}')).toList();
   }
 
   @override

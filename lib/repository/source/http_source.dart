@@ -112,7 +112,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   }
 
   @protected
-  Request mangaDetailsRequest({required SourceManga manga}) => Request(manga.key, options: Options(extra: {'manga': manga}));
+  Request mangaDetailsRequest({required SourceManga manga}) => Request(manga.key).copyWithManga(manga);
   @protected
   SourceManga mangaDetailsParser(Response<dynamic> response);
 
@@ -122,7 +122,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   }
 
   @protected
-  Request chapterListRequest({required SourceManga manga}) => Request(manga.key, options: Options(extra: {'manga': manga}));
+  Request chapterListRequest({required SourceManga manga}) => Request(manga.key).copyWithManga(manga);
   @protected
   List<SourceChapter> chapterListParser(Response<dynamic> response);
 
@@ -132,7 +132,7 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   }
 
   @protected
-  Request pageListRequest({required SourceChapter chapter}) => Request(chapter.key, options: Options(extra: {'chapter': chapter}));
+  Request pageListRequest({required SourceChapter chapter}) => Request(chapter.key).copyWithChapter(chapter);
   @protected
   List<SourcePage> pageListParser(Response<dynamic> response);
 
@@ -151,14 +151,38 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   }
 }
 
-extension BaseURLExtension on String {
-  String addBaseURL(String baseURL) {
+extension BaseUrlExtension on String {
+  String addBaseUrl(String baseURL) {
     if (RegExp(r'^https?:\/{2}[\d\w][\d\w\.]+\/').firstMatch(this) != null) {
       return this;
     }
     return baseURL.replaceFirstMapped(RegExp(r'\/+$'), (match) => '') + replaceFirstMapped(RegExp(r'^[^\/]*\/'), (match) => '/');
   }
 
-  String get removedBaseURL =>
+  String get removedBaseUrl =>
       replaceFirstMapped(RegExp(r'^https?:\/{2}[\d\w][\d\w\.]+\/'), (match) => '/').replaceFirstMapped(RegExp(r'^[^\/]*\/'), (match) => '/');
+}
+
+extension RequestSourceModelGetters on Request {
+  SourceManga? get manga => options?.extra?['manga'];
+  SourceChapter? get chapter => options?.extra?['chapter'];
+
+  Request copyWithManga(SourceManga? value) {
+    final opt = options ?? Options();
+    opt.extra ??= <String, dynamic>{};
+    opt.extra?['manga'] = value;
+    return copyWith(options: opt);
+  }
+
+  Request copyWithChapter(SourceChapter? value) {
+    final opt = options ?? Options();
+    opt.extra ??= <String, dynamic>{};
+    opt.extra?['chapter'] = value;
+    return copyWith(options: opt);
+  }
+}
+
+extension ResponseSourceModelGetters on Response {
+  SourceManga? get manga => requestOptions.extra['manga'];
+  SourceChapter? get chapter => requestOptions.extra['chapter'];
 }
