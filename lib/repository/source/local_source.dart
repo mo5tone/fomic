@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
@@ -24,37 +26,37 @@ class LocalSource extends CatalogueSource {
   bool get supportsLatest => throw UnimplementedError();
 
   @override
-  Future<SourceMangasPage> fetchLatestUpdates({required int page}) {
+  FutureOr<SourceMangasPage> fetchLatestUpdates({required int page}) {
     // TODO: implement fetchLatestUpdates
     throw UnimplementedError();
   }
 
   @override
-  Future<SourceMangasPage> fetchPopularManga({required int page}) {
+  FutureOr<SourceMangasPage> fetchPopularManga({required int page}) {
     // TODO: implement fetchPopularManga
     throw UnimplementedError();
   }
 
   @override
-  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+  FutureOr<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     // TODO: implement fetchSearchManga
     throw UnimplementedError();
   }
 
   @override
-  Future<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
+  FutureOr<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
     // TODO: implement getChapterList
     throw UnimplementedError();
   }
 
   @override
-  Future<SourceManga> fetchMangaDetails({required SourceManga manga}) {
+  FutureOr<SourceManga> fetchMangaDetails({required SourceManga manga}) {
     // TODO: implement getMangaDetails
     throw UnimplementedError();
   }
 
   @override
-  Future<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
+  FutureOr<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
     // TODO: implement getPageList
     throw UnimplementedError();
   }

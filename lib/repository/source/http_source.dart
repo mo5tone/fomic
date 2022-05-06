@@ -84,69 +84,69 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   @protected
   Request popularMangaRequest({required int page});
   @protected
-  SourceMangasPage popularMangaParser(Response<dynamic> response);
+  FutureOr<SourceMangasPage> popularMangaParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangasPage> fetchPopularManga({required int page}) {
+  FutureOr<SourceMangasPage> fetchPopularManga({required int page}) {
     return fetch<SourceMangasPage>(popularMangaRequest(page: page), parser: popularMangaParser);
   }
 
   @protected
   Request searchMangaRequest({required int page, required String query, required List<SourceFilter> filters});
   @protected
-  SourceMangasPage searchMangaParser(Response<dynamic> response);
+  FutureOr<SourceMangasPage> searchMangaParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+  FutureOr<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     return fetch<SourceMangasPage>(searchMangaRequest(page: page, query: query, filters: filters), parser: searchMangaParser);
   }
 
   @protected
   Request latestUpdatesRequest({required int page});
   @protected
-  SourceMangasPage latestUpdatesParser(Response<dynamic> response);
+  FutureOr<SourceMangasPage> latestUpdatesParser(Response<dynamic> response);
 
   @override
-  Future<SourceMangasPage> fetchLatestUpdates({required int page}) {
+  FutureOr<SourceMangasPage> fetchLatestUpdates({required int page}) {
     return fetch<SourceMangasPage>(latestUpdatesRequest(page: page), parser: latestUpdatesParser);
   }
 
   @protected
   Request mangaDetailsRequest({required SourceManga manga}) => Request(manga.key).copyWithManga(manga);
   @protected
-  SourceManga mangaDetailsParser(Response<dynamic> response);
+  FutureOr<SourceManga> mangaDetailsParser(Response<dynamic> response);
 
   @override
-  Future<SourceManga> fetchMangaDetails({required SourceManga manga}) {
+  FutureOr<SourceManga> fetchMangaDetails({required SourceManga manga}) {
     return fetch<SourceManga>(mangaDetailsRequest(manga: manga), parser: mangaDetailsParser).then((value) => value.copyWith(key: manga.key));
   }
 
   @protected
   Request chapterListRequest({required SourceManga manga}) => Request(manga.key).copyWithManga(manga);
   @protected
-  List<SourceChapter> chapterListParser(Response<dynamic> response);
+  FutureOr<List<SourceChapter>> chapterListParser(Response<dynamic> response);
 
   @override
-  Future<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
+  FutureOr<List<SourceChapter>> fetchChapterList({required SourceManga manga}) {
     return fetch<List<SourceChapter>>(chapterListRequest(manga: manga), parser: chapterListParser);
   }
 
   @protected
   Request pageListRequest({required SourceChapter chapter}) => Request(chapter.key).copyWithChapter(chapter);
   @protected
-  List<SourcePage> pageListParser(Response<dynamic> response);
+  FutureOr<List<SourcePage>> pageListParser(Response<dynamic> response);
 
   @override
-  Future<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
+  FutureOr<List<SourcePage>> fetchPageList({required SourceChapter chapter}) {
     return fetch<List<SourcePage>>(pageListRequest(chapter: chapter), parser: pageListParser);
   }
 
   @protected
   Request imageUrlRequest({required SourcePageUrl page}) => Request(page.url);
   @protected
-  SourcePageImageUrl imageUrlParser(Response<dynamic> response);
+  FutureOr<SourcePageImageUrl> imageUrlParser(Response<dynamic> response);
 
-  Future<SourcePageImageUrl> fetchPageImageUrl({required SourcePageUrl page}) {
+  FutureOr<SourcePageImageUrl> fetchPageImageUrl({required SourcePageUrl page}) {
     return fetch<SourcePageImageUrl>(imageUrlRequest(page: page), parser: imageUrlParser);
   }
 }

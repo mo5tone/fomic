@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_page.dart';
@@ -11,7 +13,7 @@ abstract class Source {
 
   const Source();
 
-  Future<SourceManga> fetchMangaDetails({required SourceManga manga});
-  Future<List<SourceChapter>> fetchChapterList({required SourceManga manga});
-  Future<List<SourcePage>> fetchPageList({required SourceChapter chapter});
+  FutureOr<SourceManga> fetchMangaDetails({required SourceManga manga});
+  FutureOr<List<SourceChapter>> fetchChapterList({required SourceManga manga});
+  FutureOr<List<SourcePage>> fetchPageList({required SourceChapter chapter});
 }

@@ -6,7 +6,7 @@ import 'package:fomic/repository/service/network/request.dart';
 mixin Networker {
   Dio get dio;
 
-  Future<T> fetch<T>(Request req, {required T Function(Response<dynamic>) parser}) {
+  Future<T> fetch<T>(Request req, {required FutureOr<T> Function(Response<dynamic>) parser}) {
     return dio
         .request(
           req.path,

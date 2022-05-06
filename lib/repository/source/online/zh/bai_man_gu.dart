@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
@@ -14,10 +16,10 @@ class BaiManGu extends HTTPSource {
   static final provider = Provider.autoDispose((ref) => BaiManGu._(ref));
 
   static const channelFilterOptions = [
+    MapEntry('漫画大全', '4'),
     MapEntry('最新漫画', '1'),
     MapEntry('漫画更新', '2'),
     MapEntry('更多漫画', '3'),
-    MapEntry('漫画大全', '4'),
   ];
 
   static const sortFilterOptions = [
@@ -71,7 +73,7 @@ class BaiManGu extends HTTPSource {
           if (key == null || title == null || cover == null) {
             return null;
           }
-          return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
+          return SourceManga(key.removedBaseUrl, title, cover: cover.addBaseUrl(baseUrl));
         })
         .whereType<SourceManga>()
         .toList();
@@ -98,7 +100,7 @@ class BaiManGu extends HTTPSource {
     final mangas = document
         .querySelectorAll('dl.fed-deta-info, li.fed-list-item')
         .map((element) {
-          if (element.outerHtml.startsWith('<li')) {
+          if (element.localName == 'li') {
             final pics = element.querySelector('a.fed-list-pics');
             final key = pics?.attributes['href'];
             final title = element.querySelector('a.fed-list-title')?.text;
@@ -106,7 +108,7 @@ class BaiManGu extends HTTPSource {
             if (key == null || title == null || cover == null) {
               return null;
             }
-            return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
+            return SourceManga(key.removedBaseUrl, title, cover: cover.addBaseUrl(baseUrl));
           } else {
             final pics = element.querySelector('a.fed-list-pics');
             final key = pics?.attributes['href'];
@@ -115,7 +117,7 @@ class BaiManGu extends HTTPSource {
             if (key == null || title == null || cover == null) {
               return null;
             }
-            return SourceManga(key.removedBaseURL, title, cover: cover.addBaseURL(baseUrl));
+            return SourceManga(key.removedBaseUrl, title, cover: cover.addBaseUrl(baseUrl));
           }
         })
         .whereType<SourceManga>()
@@ -126,8 +128,8 @@ class BaiManGu extends HTTPSource {
   @override
   Request searchMangaRequest({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.isEmpty) {
-      var channel = '4';
-      var sort = 'time';
+      var channel = channelFilterOptions.first.value;
+      var sort = sortFilterOptions.first.value;
       for (var filter in filters) {
         filter.maybeWhen(
           select: (name, options, state) {
@@ -151,25 +153,58 @@ class BaiManGu extends HTTPSource {
 
   @override
   SourceManga mangaDetailsParser(Response response) {
-    // TODO: implement mangaDetailsParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    final title = document.querySelector('h1.fed-part-eone')?.text.trim();
+    final detailsElment = document.querySelector('.fed-deta-content ul.fed-part-rows');
+    final author = detailsElment?.querySelector('li:nth-child(1)')?.querySelectorAll('a').map((e) => e.text).join(', ');
+    final description = detailsElment?.querySelectorAll('li.fed-show-md-block').last.text.replaceAllMapped(RegExp(r'简介：?'), (match) => '').trim();
+    final genres =
+        detailsElment?.querySelectorAll('li.fed-show-md-block').first.querySelectorAll('a').map((e) => e.text.trim()).where((e) => e.isNotEmpty).toList();
+    final cover = document.querySelector('a.fed-list-pics')?.attributes['data-original'];
+    return response.manga?.copyWith(title: title!, author: author!, description: description!, genres: genres!, cover: cover!) ??
+        SourceManga('', title!, author: author!, description: description!, genres: genres!, cover: cover!);
   }
 
   @override
   List<SourceChapter> chapterListParser(Response response) {
-    // TODO: implement chapterListParser
-    throw UnimplementedError();
+    final document = html.parse(response.data);
+    return document
+        .querySelectorAll('div.fed-play-item ul.fed-part-rows:last-child a')
+        .map((element) {
+          final key = element.attributes['href'];
+          final name = element.text.trim();
+          if (key == null) return null;
+          return SourceChapter(key, name);
+        })
+        .whereType<SourceChapter>()
+        .toList();
   }
 
   @override
-  List<SourcePage> pageListParser(Response response) {
-    // TODO: implement pageListParser
-    throw UnimplementedError();
+  FutureOr<List<SourcePage>> pageListParser(Response response) {
+    final script = RegExp(r'<script>(((?!<script>)[\s\S])*oScript.src((?!<\/script>)[\s\S])*)<\/script>').firstMatch(response.data)?.group(1);
+    if (script == null) return [];
+    final url = RegExp(r'src(\s*)=(\s*)"(.+)";').firstMatch(script)?.group(3);
+    if (url == null) return [];
+    return fetch(Request(url), parser: (resp) {
+      final String content = resp.data;
+      if (content.contains('show(') && content.contains('<img')) {
+        return RegExp(r'src="([^>]+)"')
+            .allMatches(content)
+            .map((m) {
+              final imageUrl = m.group(1);
+              if (imageUrl == null) return null;
+              return SourcePage.imageUrl(imageUrl);
+            })
+            .whereType<SourcePage>()
+            .toList();
+      }
+      return [];
+    });
   }
 
   @override
   SourcePageImageUrl imageUrlParser(Response response) {
-    // TODO: implement imageUrlParser
     throw UnimplementedError();
   }
 }

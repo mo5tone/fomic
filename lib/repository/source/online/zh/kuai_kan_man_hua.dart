@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -126,7 +127,7 @@ class KuaiKanManHua extends HTTPSource {
   }
 
   @override
-  Future<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
+  FutureOr<SourceMangasPage> searchManga({required int page, required String query, required List<SourceFilter> filters}) {
     if (query.startsWith(_topicIdSearchPrefix)) {
       final newQuery = query.substring(_topicIdSearchPrefix.length);
       return fetch<SourceMangasPage>(Request('$_apiBaseUrl/v1/topics/$newQuery'), parser: (response) {
