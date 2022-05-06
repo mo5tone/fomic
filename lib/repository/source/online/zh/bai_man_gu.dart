@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
@@ -36,6 +37,16 @@ class BaiManGu extends HTTPSource {
 
   @override
   String get version => '1';
+
+  @override
+  int get settingItemCount => 3;
+
+  @override
+  Widget Function(BuildContext, int)? get settingItemBuilder => (context, index) {
+        return ListTile(
+          title: Text('$name setting $index'),
+        );
+      };
 
   @override
   bool get supportsLatest => true;

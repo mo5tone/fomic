@@ -17,6 +17,7 @@ class ExploreSourceView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final source = ref.watch(HTTPSource.provider);
     final bloc = ref.read(ExploreSourceBLoC.provider.notifier);
     useEffect(() {
       bloc.add(const ExploreSourceEvent.refresh());
@@ -45,16 +46,16 @@ class ExploreSourceView extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              ref.watch(HTTPSource.provider).iconName,
+              source.iconName,
             ),
             const SizedBox(
               width: 8,
             ),
-            Text(ref.watch(HTTPSource.provider).name),
+            Text(source.name),
           ],
         ),
         actions: <Widget>[
-          if (ref.watch(HTTPSource.provider).filters.isNotEmpty)
+          if (source.filters.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () async {
@@ -67,6 +68,11 @@ class ExploreSourceView extends HookConsumerWidget {
                   bloc.add(ExploreSourceEvent.filter(filters));
                 }
               },
+            ),
+          if (source.settingItemCount > 0 && source.settingItemBuilder != null)
+            IconButton(
+              icon: const Icon(Icons.build),
+              onPressed: () => Screen.sourceSetting().push(context),
             ),
         ],
       ),
