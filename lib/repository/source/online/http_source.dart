@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fomic/model/source_chapter.dart';
@@ -18,7 +20,7 @@ import 'package:fomic/repository/source/online/zh/wu_qi_manhua.dart';
 import 'package:fomic/repository/source/online/zh/zero_byw.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-abstract class HTTPSource extends CatalogueSource with Networker {
+abstract class HTTPSource with Networker implements CatalogueSource {
   static final all = Provider.autoDispose<List<HTTPSource>>((ref) {
     return [
       ref.read(KuaiKanManHua.provider),
@@ -38,10 +40,17 @@ abstract class HTTPSource extends CatalogueSource with Networker {
   @override
   late Dio dio;
 
-  String get version;
+  int get version => 1;
+
+  String get commit;
 
   @override
-  int get id => '${name.toLowerCase()}/$lang/$version'.hashCode;
+  int get id {
+    final input = '${name.toLowerCase()}/$lang/$version';
+    final digest = md5.convert(utf8.encode(input));
+    final bytes = digest.bytes;
+    return List.generate(8, (i) => i).map((i) => (bytes[i % bytes.length] & 0xff) << (8 * (7 - i))).reduce((v, e) => v | e) & ((1 << 63) - 1);
+  }
 
   String get baseUrl;
 
