@@ -8,7 +8,7 @@ import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/service/network/request.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
@@ -23,7 +23,7 @@ class WuQiManHua extends HTTPSource {
   String get lang => 'zh';
 
   @override
-  String get version => '2';
+  String get commit => 'f94099b8e80f18671956948827df52b9c3715a7f';
 
   @override
   bool get supportsLatest => false;

@@ -6,7 +6,7 @@ import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/common/widget/marquee.dart';
 import 'package:fomic/l10n/l10n.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 

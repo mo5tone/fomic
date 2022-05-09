@@ -9,11 +9,12 @@ import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/repository/service/network/interceptor/rate_limit_interceptor.dart';
 import 'package:fomic/repository/service/network/request.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/configurable_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
-class BaiManGu extends HTTPSource {
+class BaiManGu extends HTTPSource implements ConfigurableSource {
   static final provider = Provider.autoDispose((ref) => BaiManGu._(ref));
 
   static const channelFilterOptions = [
@@ -36,17 +37,17 @@ class BaiManGu extends HTTPSource {
   String get lang => 'zh';
 
   @override
-  String get version => '1';
+  String get commit => '9340d2df64407c1a6693ccbe0f95bbfbca2c29d5';
 
   @override
-  int get settingItemCount => 3;
-
-  @override
-  Widget Function(BuildContext, int)? get settingItemBuilder => (context, index) {
-        return ListTile(
-          title: Text('$name setting $index'),
-        );
-      };
+  SourceConfiguration get configuration => SourceConfiguration(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('$name setting $index'),
+          );
+        },
+      );
 
   @override
   bool get supportsLatest => true;

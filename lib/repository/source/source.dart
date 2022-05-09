@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_page.dart';
@@ -11,10 +10,6 @@ abstract class Source {
 
   /// An ISO 639-1 compliant language code (two letters in lower case).
   String get lang;
-
-  int get settingItemCount => 0;
-
-  Widget Function(BuildContext, int)? get settingItemBuilder => null;
 
   const Source();
 

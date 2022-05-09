@@ -41,6 +41,7 @@ dependencies:
   intl: ^0.17.0 # flutter gen-l10n
   flutter_svg: ^1.0.3
   flutter_js: ^0.5.0+6
+  crypto: ^3.0.2
 
 dev_dependencies:
   flutter_test:

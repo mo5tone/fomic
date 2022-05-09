@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ExploreSourceGrid extends HookConsumerWidget {
+class SourceMangaGrid extends HookConsumerWidget {
   final List<SourceManga> mangas;
   final ScrollController? scrollController;
   final void Function(BuildContext context, SourceManga manga)? didTap;
 
-  const ExploreSourceGrid({
+  const SourceMangaGrid({
     Key? key,
     required this.mangas,
     this.scrollController,

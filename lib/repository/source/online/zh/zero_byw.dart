@@ -6,7 +6,7 @@ import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
 import 'package:fomic/model/whoops.dart';
 import 'package:fomic/repository/service/network/request.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
@@ -54,7 +54,7 @@ class ZeroBYW extends HTTPSource {
   String get lang => 'zh';
 
   @override
-  String get version => '8';
+  String get commit => '1e0473d8bd91be4711a11db2919446e22d7913d6';
 
   @override
   bool get supportsLatest => true;

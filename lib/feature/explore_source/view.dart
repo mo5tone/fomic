@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
-import 'package:fomic/feature/explore_source/widget/source_picker_dialog.dart';
-import 'package:fomic/l10n/l10n.dart';
+import 'package:fomic/feature/widget/source_filter_sheet.dart';
+import 'package:fomic/feature/widget/source_manager_sheet.dart';
+import 'package:fomic/feature/widget/source_manga_grid.dart';
+import 'package:fomic/feature/widget/source_search_delegate.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'bloc.dart';
-import 'widget/explore_source_grid.dart';
-import 'widget/explore_source_search_delegate.dart';
 
 class ExploreSourceView extends HookConsumerWidget {
   const ExploreSourceView({Key? key}) : super(key: key);
@@ -35,12 +35,12 @@ class ExploreSourceView extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => showDialog<void>(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) => const SourcePickerDialog(),
-          ),
           icon: const Icon(Icons.extension),
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => SourceManagerSheet(),
+            isScrollControlled: true,
+          ),
         ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -61,7 +61,7 @@ class ExploreSourceView extends HookConsumerWidget {
               onPressed: () async {
                 final filters = await showModalBottomSheet<List<SourceFilter>>(
                   context: context,
-                  builder: (context) => const _FiltersBottomSheet(),
+                  builder: (context) => const SourceFilterSheet(),
                   isScrollControlled: true,
                 );
                 if (filters != null) {
@@ -69,171 +69,19 @@ class ExploreSourceView extends HookConsumerWidget {
                 }
               },
             ),
-          if (source.settingItemCount > 0 && source.settingItemBuilder != null)
-            IconButton(
-              icon: const Icon(Icons.build),
-              onPressed: () => Screen.sourceSetting().push(context),
-            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.search),
-        onPressed: () => showSearch(context: context, delegate: ExploreSourceSearchDelegate(bloc: bloc)),
+        onPressed: () => showSearch(context: context, delegate: SourceSearchDelegate(bloc: bloc)),
       ),
       body: RefreshIndicator(
-        child: ExploreSourceGrid(
+        child: SourceMangaGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<SourceManga>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
           didTap: (context, manga) => Screen.mangaDetail(manga).push(context),
         ),
         onRefresh: () => Future(() => bloc.add(const ExploreSourceEvent.refresh())),
-      ),
-    );
-  }
-}
-
-class _FiltersBottomSheet extends HookConsumerWidget {
-  static final filters = StateProvider((ref) => ref.watch(HTTPSource.provider).filters);
-
-  const _FiltersBottomSheet({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 8,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                TextButton(
-                  child: Text(L10N.of(context).reset),
-                  onPressed: () {
-                    ref.refresh(filters);
-                    Navigator.of(context).pop(<SourceFilter>[]);
-                  },
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  child: Text(L10N.of(context).filter),
-                  onPressed: () {
-                    Navigator.of(context).pop(ref.read(filters));
-                  },
-                ),
-              ],
-            ),
-            const Divider(),
-            ...ref.watch(filters).map((f) => _FilterWidget(filter: f)).toList(growable: false),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _FilterWidget extends HookConsumerWidget {
-  final SourceFilter filter;
-
-  const _FilterWidget({Key? key, required this.filter}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    void update({required SourceFilter filter}) {
-      ref.read(_FiltersBottomSheet.filters.notifier).update((state) => state.map((f) => f.name == filter.name ? filter : f).toList(growable: false));
-    }
-
-    return filter.when(
-      header: (name) => Text(name),
-      separator: (_) => const Divider(),
-      select: (name, options, state) => Row(
-        children: [
-          Text(name),
-          const Spacer(),
-          DropdownButton<String>(
-            value: options[state],
-            items: options
-                .map(
-                  (o) => DropdownMenuItem(
-                    value: o,
-                    child: Text(o),
-                  ),
-                )
-                .toList(growable: false),
-            onChanged: (newValue) {
-              if (newValue != null) {
-                update(filter: (filter as SourceFilterSelect).copyWith(state: options.indexOf(newValue)));
-              }
-            },
-          ),
-        ],
-      ),
-      text: (name, state) {
-        final textEditingController = useTextEditingController(text: state);
-        return Row(
-          children: [
-            Text(name),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: 8,
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: TextField(
-                  controller: textEditingController,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (newValue) {
-                    update(filter: (filter as SourceFilterText).copyWith(state: newValue));
-                  },
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-      check: (name, value) => Row(
-        children: [
-          Text(name),
-          const Spacer(),
-          Switch(
-            value: value,
-            onChanged: (newValue) {
-              update(filter: (filter as SourceFilterCheck).copyWith(state: newValue));
-            },
-          ),
-        ],
-      ),
-      sort: (name, options, state, ascending) => Row(
-        children: [
-          Text(name),
-          const Spacer(),
-          DropdownButton<String>(
-            value: options[state],
-            items: options
-                .map(
-                  (o) => DropdownMenuItem(
-                    value: o,
-                    child: Text(o),
-                  ),
-                )
-                .toList(growable: false),
-            onChanged: (newValue) {
-              if (newValue != null) {
-                update(filter: (filter as SourceFilterSort).copyWith(state: options.indexOf(newValue)));
-              }
-            },
-          ),
-          const Spacer(),
-          Switch(
-            value: ascending,
-            onChanged: (newValue) {
-              update(filter: (filter as SourceFilterSort).copyWith(ascending: newValue));
-            },
-          ),
-        ],
       ),
     );
   }

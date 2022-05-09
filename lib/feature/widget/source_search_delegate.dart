@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fomic/common/route/screen.dart';
 import 'package:fomic/feature/explore_source/bloc.dart';
-import 'package:fomic/feature/explore_source/widget/explore_source_grid.dart';
+import 'package:fomic/feature/widget/source_manga_grid.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ExploreSourceSearchDelegate extends SearchDelegate<SourceManga?> {
+class SourceSearchDelegate extends SearchDelegate<SourceManga?> {
   final ExploreSourceBLoC bloc;
 
-  ExploreSourceSearchDelegate({Key? key, required this.bloc});
+  SourceSearchDelegate({Key? key, required this.bloc});
 
   @override
   void close(BuildContext context, SourceManga? result) {
@@ -54,7 +54,7 @@ class ExploreSourceSearchDelegate extends SearchDelegate<SourceManga?> {
           });
           return null;
         }, [scrollController]);
-        return ExploreSourceGrid(
+        return SourceMangaGrid(
           mangas: ref.watch(ExploreSourceBLoC.provider.select((value) => value.pages)).fold(<SourceManga>[], (result, page) => [...result, ...page.mangas]),
           scrollController: scrollController,
           didTap: (context, manga) => Screen.mangaDetail(manga).push(context),

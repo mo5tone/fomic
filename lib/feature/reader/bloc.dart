@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fomic/common/bloc/bloc.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_page.dart';
-import 'package:fomic/repository/source/http_source.dart';
+import 'package:fomic/repository/source/online/http_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
