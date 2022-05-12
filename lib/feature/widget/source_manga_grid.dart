@@ -77,7 +77,7 @@ class _Cell extends HookConsumerWidget {
               LayoutBuilder(builder: (context, constraints) {
                 return CachedNetworkImage(
                   imageUrl: manga.cover,
-                  httpHeaders: ref.watch(HTTPSource.provider).headers,
+                  cacheManager: ref.watch(HTTPSource.provider).cacheManager,
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) => Icon(
                     Icons.broken_image,

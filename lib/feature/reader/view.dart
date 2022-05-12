@@ -56,12 +56,12 @@ class ReaderView extends HookConsumerWidget {
                   child: page.when(
                     url: (url) => CachedNetworkImage(
                       imageUrl: url,
-                      httpHeaders: ref.watch(HTTPSource.provider).headers,
+                      cacheManager: ref.watch(HTTPSource.provider).cacheManager,
                       fit: BoxFit.contain,
                     ),
                     imageUrl: (imageUrl) => CachedNetworkImage(
                       imageUrl: imageUrl,
-                      httpHeaders: ref.watch(HTTPSource.provider).headers,
+                      cacheManager: ref.watch(HTTPSource.provider).cacheManager,
                       fit: BoxFit.contain,
                     ),
                     imageBase64: (imageBase64) => Image.memory(base64.decode(imageBase64)),

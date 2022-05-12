@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class RateLimitInterceptor extends QueuedInterceptor {
@@ -27,6 +29,7 @@ class RateLimitInterceptor extends QueuedInterceptor {
       times.removeAt(0);
     }
     if (delay > Duration.zero) {
+      log('$options delay $delay');
       times.add(DateTime.now().add(delay));
       Future.delayed(delay).then((_) => handler.next(options));
     } else {

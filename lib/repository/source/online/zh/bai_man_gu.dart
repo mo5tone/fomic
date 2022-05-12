@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:fomic/model/source_chapter.dart';
+import 'package:fomic/model/source_configuration.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
@@ -40,14 +40,11 @@ class BaiManGu extends HTTPSource implements ConfigurableSource {
   String get commit => '9340d2df64407c1a6693ccbe0f95bbfbca2c29d5';
 
   @override
-  SourceConfiguration get configuration => SourceConfiguration(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('$name setting $index'),
-          );
-        },
-      );
+  List<SourceConfiguration> get configurations => [
+        const SourceConfiguration.text('主站URL', state: 'https://www.darpou.com'),
+        SourceConfiguration.select('最大连接数', List.generate(10, (i) => i + 1).map((e) => '$e').toList(), state: 5),
+        SourceConfiguration.select('限制单位时间', List.generate(12, (i) => (i + 1) * 500).map((e) => '$e 毫秒').toList(), state: 11),
+      ];
 
   @override
   bool get supportsLatest => true;
@@ -60,7 +57,7 @@ class BaiManGu extends HTTPSource implements ConfigurableSource {
 
   @override
   Iterable<Interceptor> get interceptors => [
-        RateLimitInterceptor(permits: 6, period: const Duration(seconds: 1), host: Uri.parse(baseUrl).host),
+        RateLimitInterceptor(permits: 6, period: const Duration(seconds: 1)), // host: Uri.parse(baseUrl).host),
       ];
 
   @override

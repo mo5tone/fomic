@@ -6,7 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fomic/model/whoops.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// BLoC stands for Business Logic Component.
+/// BLoC stands for Business Logic Component.
 abstract class BLoC<Event, State> extends StateNotifier<State> {
   final _eventStreamController = StreamController<Event>.broadcast();
   late StreamSubscription<State> _stateStreamSubscription;

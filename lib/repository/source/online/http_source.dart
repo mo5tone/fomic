@@ -4,11 +4,13 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
 import 'package:fomic/model/source_mangas_page.dart';
 import 'package:fomic/model/source_page.dart';
+import 'package:fomic/repository/service/network/cache/dio_file_service.dart';
 import 'package:fomic/repository/service/network/interceptor/loading_indicator.dart';
 import 'package:fomic/repository/service/network/networker.dart';
 import 'package:fomic/repository/service/network/request.dart';
@@ -57,6 +59,8 @@ abstract class HTTPSource with Networker implements CatalogueSource {
   Map<String, String> get headers => {};
 
   Iterable<Interceptor> get interceptors => const Iterable.empty();
+
+  BaseCacheManager get cacheManager => CacheManager(Config('HTTPSource_$id', fileService: DioFileService(dio)));
 
   List<SourceFilter> get filters => [];
 
