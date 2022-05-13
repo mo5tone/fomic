@@ -20,6 +20,7 @@ class ThemeState with _$ThemeState {
 
   ThemeData get theme {
     return ThemeData(
+      useMaterial3: true,
       brightness: brightness,
       primarySwatch: primarySwatch,
     );
@@ -28,6 +29,7 @@ class ThemeState with _$ThemeState {
   ThemeData? get darkTheme {
     if (brightness != null) return null;
     return ThemeData(
+      useMaterial3: true,
       brightness: Brightness.dark,
       primarySwatch: primarySwatch,
     );

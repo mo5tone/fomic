@@ -26,7 +26,7 @@ class ExploreSourceView extends HookConsumerWidget {
     final scrollController = useScrollController(keys: [bloc]);
     useEffect(() {
       scrollController.addListener(() {
-        if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        if (scrollController.position.extentAfter == 0) {
           bloc.add(const ExploreSourceEvent.load());
         }
       });
