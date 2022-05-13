@@ -12,7 +12,7 @@ abstract class BLoC<Event, State> extends StateNotifier<State> {
   late StreamSubscription<State> _stateStreamSubscription;
 
   BLoC(State state) : super(state) {
-    _stateStreamSubscription = _eventStreamController.stream.asyncExpand<State>(mapEventToState).listen(_onData, onError: onError);
+    _stateStreamSubscription = _eventStreamController.stream.distinct(equals).asyncExpand<State>(mapEventToState).listen(_onData, onError: onError);
   }
 
   void _onData(State s) {
@@ -23,6 +23,9 @@ abstract class BLoC<Event, State> extends StateNotifier<State> {
     if (_eventStreamController.isClosed) return;
     _eventStreamController.add(event);
   }
+
+  @protected
+  bool equals(Event previous, Event next) => false;
 
   @protected
   Stream<State> mapEventToState(Event event);

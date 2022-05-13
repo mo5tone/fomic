@@ -19,12 +19,12 @@ class ReaderView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = ReaderBLoC.family(chapter);
-    final bloc = ref.read(provider.notifier);
+    final bloc = ref.watch(provider.notifier);
     useEffect(() {
       bloc.add(const ReaderEvent.refresh());
       return null;
     }, [bloc]);
-    final pageController = usePageController();
+    final pageController = usePageController(keys: [bloc]);
     useEffect(() {
       pageController.addListener(() {});
       return null;
@@ -93,7 +93,7 @@ class ReaderView extends HookConsumerWidget {
                       ),
                     Text(
                       ref.watch(
-                          provider.select((state) => NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1) + ' / ${state.pages.length}')),
+                          provider.select((state) => '${NumberFormat('0' * '${state.pages.length}'.length).format(state.index + 1)} / ${state.pages.length}')),
                     ),
                   ],
                 ),

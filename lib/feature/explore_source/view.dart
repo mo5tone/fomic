@@ -18,12 +18,12 @@ class ExploreSourceView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final source = ref.watch(HTTPSource.provider);
-    final bloc = ref.read(ExploreSourceBLoC.provider.notifier);
+    final bloc = ref.watch(ExploreSourceBLoC.provider.notifier);
     useEffect(() {
       bloc.add(const ExploreSourceEvent.refresh());
       return null;
     }, [bloc]);
-    final scrollController = useScrollController();
+    final scrollController = useScrollController(keys: [bloc]);
     useEffect(() {
       scrollController.addListener(() {
         if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {

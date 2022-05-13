@@ -24,7 +24,7 @@ class MangaDetailView extends HookConsumerWidget {
     useEffect(() {
       bloc.add(const MangaDetailEvent.refresh());
       return null;
-    });
+    }, [bloc]);
     return Scaffold(
       body: RefreshIndicator(
         child: CustomScrollView(
@@ -78,7 +78,7 @@ class _AppBar extends HookConsumerWidget {
           children: [
             IconButton(
               onPressed: () {
-                ref.read(provider.notifier).add(const MangaDetailEvent.swapList());
+                ref.watch(provider.notifier).add(const MangaDetailEvent.swapList());
               },
               color: theme.colorScheme.onPrimary,
               icon: const Icon(Icons.swap_vert),

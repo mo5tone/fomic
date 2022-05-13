@@ -45,7 +45,7 @@ class SourceSearchDelegate extends SearchDelegate<SourceManga?> {
     bloc.add(ExploreSourceEvent.search(query));
     return HookConsumer(
       builder: (context, ref, child) {
-        final scrollController = useScrollController();
+        final scrollController = useScrollController(keys: [bloc]);
         useEffect(() {
           scrollController.addListener(() {
             if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {

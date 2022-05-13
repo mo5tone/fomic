@@ -36,9 +36,9 @@ class Marquee extends HookConsumerWidget {
       return () => timer?.cancel();
     }, [scrollController]);
     return SingleChildScrollView(
-      child: child,
       scrollDirection: direction,
       controller: scrollController,
+      child: child,
     );
   }
 }

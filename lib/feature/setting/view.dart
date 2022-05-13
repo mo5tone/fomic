@@ -9,7 +9,7 @@ class SettingView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeBLoC = ref.read(ThemeBLoC.provider.notifier);
+    final themeBLoC = ref.watch(ThemeBLoC.provider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(L10N.of(context).setting),

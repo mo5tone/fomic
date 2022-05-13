@@ -48,7 +48,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   build_runner: ^2.1.2 # flutter pub run build_runner build --delete-conflicting-outputs
   freezed: ^2.0.2
   hive_generator: ^1.1.1
