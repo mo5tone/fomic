@@ -185,14 +185,14 @@ class KuaiKanManHua extends HTTPSource {
       if (value.isEmpty) {
         return value;
       }
-      return value[0] + '"' + value.substring(1, value.length - 1) + '"' + value[value.length - 1];
+      return '${value[0]}"${value.substring(1, value.length - 1)}"${value[value.length - 1]}';
     });
     imagesStringRawValue = imagesStringRawValue.replaceAllMapped(RegExp(r'([,{]([^\[\{\"]+?)[\}:])'), (match) {
       final value = match.group(1) ?? '';
       if (value.isEmpty) {
         return value;
       }
-      return value[0] + '"' + value.substring(1, value.length - 1) + '"' + value[value.length - 1];
+      return '${value[0]}"${value.substring(1, value.length - 1)}"${value[value.length - 1]}';
     });
     List images = jsonDecode(imagesStringRawValue);
     final variable = RegExp(r'\(function\((.*)\){').firstMatch(script)?.group(1)?.split(',') ?? [];

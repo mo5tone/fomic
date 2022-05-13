@@ -58,11 +58,10 @@ class _AppBar extends HookConsumerWidget {
             manga.title,
           ),
         ),
-        onLongPress: () async {
-          await Clipboard.setData(ClipboardData(text: manga.title));
+        onLongPress: () => Clipboard.setData(ClipboardData(text: manga.title)).then((_) {
           final snackBar = SnackBar(content: Text(L10N.of(context).copiedToClipboard));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
+        }),
       ),
       pinned: true,
       forceElevated: true,
