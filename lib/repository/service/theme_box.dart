@@ -1,48 +1,38 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fomic/model/primary_swatch.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-const primarySwatches = [
-  Colors.red,
-  Colors.pink,
-  Colors.purple,
-  Colors.deepPurple,
-  Colors.indigo,
-  Colors.blue,
-  Colors.lightBlue,
-  Colors.cyan,
-  Colors.teal,
-  Colors.green,
-  Colors.lightGreen,
-  Colors.lime,
-  Colors.yellow,
-  Colors.amber,
-  Colors.orange,
-  Colors.deepOrange,
-  Colors.brown,
-  Colors.grey,
-  Colors.blueGrey,
-];
-
 enum _Key {
+  useMaterial3,
   brightness,
-  primarySwatch,
-}
+  primarySwatch;
 
-extension on _Key {
-  String get rawValue => describeEnum(this);
+  @override
+  String toString() => describeEnum(this);
 }
 
 class ThemeBox {
-  static final provider = FutureProvider.autoDispose((ref) async => ThemeBox._(await Hive.openBox<int>('theme')));
+  static final provider = FutureProvider.autoDispose((ref) async => ThemeBox._(await Hive.openBox('theme')));
 
-  final Box<int> _box;
+  final Box _box;
 
   ThemeBox._(this._box);
 
+  bool get useMaterial3 {
+    final key = '${_Key.useMaterial3}';
+    return _box.get(key, defaultValue: true);
+  }
+
+  set useMaterial3(bool value) {
+    final key = '${_Key.useMaterial3}';
+    _box.put(key, value);
+  }
+
   Brightness? get brightness {
-    final index = _box.get(_Key.brightness.rawValue, defaultValue: -1);
+    final key = '${_Key.brightness}';
+    int? index = _box.get(key);
     if (index != null && index > -1 && index < Brightness.values.length) {
       return Brightness.values[index];
     }
@@ -50,22 +40,26 @@ class ThemeBox {
   }
 
   set brightness(Brightness? value) {
+    final key = '${_Key.brightness}';
     if (value == null) {
-      _box.delete(_Key.brightness.rawValue);
+      _box.delete(key);
     } else {
-      _box.put(_Key.brightness.rawValue, Brightness.values.indexOf(value));
+      _box.put(key, Brightness.values.indexOf(value));
     }
   }
 
   MaterialColor get primarySwatch {
-    final index = _box.get(_Key.primarySwatch.rawValue, defaultValue: -1);
-    if (index != null && index > -1 && index < primarySwatches.length) {
-      return primarySwatches[index];
-    }
-    return Colors.blue;
+    final key = '${_Key.primarySwatch}';
+    PrimarySwatch swatch = _box.get(key, defaultValue: PrimarySwatch.blue);
+    return swatch.color;
   }
 
   set primarySwatch(MaterialColor value) {
-    _box.put(_Key.primarySwatch.rawValue, primarySwatches.indexOf(value));
+    final key = '${_Key.primarySwatch}';
+    final swatch = PrimarySwatch.values.firstWhere(
+      (e) => e.color == value,
+      orElse: () => PrimarySwatch.blue,
+    );
+    _box.put(key, swatch);
   }
 }

@@ -9,6 +9,7 @@ part 'theme_bloc.freezed.dart';
 
 @freezed
 class ThemeEvent with _$ThemeEvent {
+  const factory ThemeEvent.useMaterial3(bool useMaterial3) = ThemeEventUseMaterial3;
   const factory ThemeEvent.primarySwatch(MaterialColor primarySwatch) = ThemeEventPrimarySwatch;
   const factory ThemeEvent.brightness([Brightness? brightness]) = ThemeEventBrightness;
 }
@@ -16,11 +17,15 @@ class ThemeEvent with _$ThemeEvent {
 @freezed
 class ThemeState with _$ThemeState {
   const ThemeState._();
-  const factory ThemeState(MaterialColor primarySwatch, [Brightness? brightness]) = _ThemeState;
+  const factory ThemeState(
+    MaterialColor primarySwatch, [
+    Brightness? brightness,
+    @Default(true) bool useMaterial3,
+  ]) = _ThemeState;
 
   ThemeData get theme {
     return ThemeData(
-      useMaterial3: true,
+      useMaterial3: useMaterial3,
       brightness: brightness,
       primarySwatch: primarySwatch,
     );
@@ -29,7 +34,7 @@ class ThemeState with _$ThemeState {
   ThemeData? get darkTheme {
     if (brightness != null) return null;
     return ThemeData(
-      useMaterial3: true,
+      useMaterial3: useMaterial3,
       brightness: Brightness.dark,
       primarySwatch: primarySwatch,
     );
@@ -47,12 +52,19 @@ class ThemeBLoC extends BLoC<ThemeEvent, ThemeState> {
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) {
-    return event.when(primarySwatch: (primarySwatch) async* {
-      box?.primarySwatch = primarySwatch;
-      yield state.copyWith(primarySwatch: primarySwatch);
-    }, brightness: (brightness) async* {
-      box?.brightness = brightness;
-      yield state.copyWith(brightness: brightness);
-    });
+    return event.when(
+      primarySwatch: (primarySwatch) async* {
+        box?.primarySwatch = primarySwatch;
+        yield state.copyWith(primarySwatch: primarySwatch);
+      },
+      brightness: (brightness) async* {
+        box?.brightness = brightness;
+        yield state.copyWith(brightness: brightness);
+      },
+      useMaterial3: (useMaterial3) async* {
+        box?.useMaterial3 = useMaterial3;
+        yield state.copyWith(useMaterial3: useMaterial3);
+      },
+    );
   }
 }

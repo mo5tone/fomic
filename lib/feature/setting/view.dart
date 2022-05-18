@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fomic/feature/setting/theme_bloc.dart';
 import 'package:fomic/l10n/l10n.dart';
-import 'package:fomic/repository/service/theme_box.dart';
+import 'package:fomic/model/primary_swatch.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SettingView extends HookConsumerWidget {
@@ -15,45 +15,61 @@ class SettingView extends HookConsumerWidget {
         title: Text(L10N.of(context).setting),
       ),
       body: ListView.separated(
+        separatorBuilder: (_, __) => const Divider(),
+        itemCount: 3,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         itemBuilder: (context, index) {
           Widget item;
-          if (index == 0) {
-            item = ListTile(
-              leading: const Icon(Icons.brightness_medium),
-              title: Text(L10N.of(context).brightnessModes),
-              trailing: Icon(ref.watch(ThemeBLoC.provider).brightness?.iconData ?? Icons.brightness_auto),
-              onTap: () => showModalBottomSheet<Brightness>(
-                context: context,
-                isDismissible: false,
-                builder: (context) => _BrightnessBottomSheet(),
-              ).then((value) {
-                themeBLoC.add(ThemeEvent.brightness(value));
-              }),
-            );
-          } else {
-            item = ListTile(
-              leading: const Icon(Icons.color_lens),
-              title: Text(L10N.of(context).primarySwatchColor),
-              trailing: Container(
-                width: 20,
-                height: 20,
-                color: ref.watch(ThemeBLoC.provider).primarySwatch,
-              ),
-              onTap: () => showModalBottomSheet<MaterialColor>(
-                context: context,
-                builder: (context) => _PrimarySwatchBottomSheet(),
-              ).then((value) {
-                if (value != null) {
-                  themeBLoC.add(ThemeEvent.primarySwatch(value));
-                }
-              }),
-            );
+          switch (index) {
+            case 0:
+              item = ListTile(
+                leading: const Icon(Icons.flutter_dash),
+                title: Text(L10N.of(context).brightnessModes),
+                trailing: Switch(
+                  value: ref.watch(ThemeBLoC.provider).useMaterial3,
+                  onChanged: (value) => themeBLoC.add(ThemeEvent.useMaterial3(value)),
+                ),
+              );
+              break;
+            case 1:
+              item = ListTile(
+                leading: const Icon(Icons.brightness_medium),
+                title: Text(L10N.of(context).brightnessModes),
+                trailing: Icon(ref.watch(ThemeBLoC.provider).brightness?.iconData ?? Icons.brightness_auto),
+                onTap: () => showModalBottomSheet<Brightness>(
+                  context: context,
+                  isDismissible: false,
+                  builder: (context) => _BrightnessBottomSheet(),
+                ).then((value) {
+                  themeBLoC.add(ThemeEvent.brightness(value));
+                }),
+              );
+              break;
+            case 2:
+              item = ListTile(
+                leading: const Icon(Icons.color_lens),
+                title: Text(L10N.of(context).primarySwatchColor),
+                trailing: Container(
+                  width: 20,
+                  height: 20,
+                  color: ref.watch(ThemeBLoC.provider).primarySwatch,
+                ),
+                onTap: () => showModalBottomSheet<MaterialColor>(
+                  context: context,
+                  builder: (context) => _PrimarySwatchBottomSheet(),
+                ).then((value) {
+                  if (value != null) {
+                    themeBLoC.add(ThemeEvent.primarySwatch(value));
+                  }
+                }),
+              );
+              break;
+            default:
+              item = Container();
+              break;
           }
           return item;
         },
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: 2,
       ),
     );
   }
@@ -96,7 +112,7 @@ class _PrimarySwatchBottomSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final primarySwatch = ref.watch(ThemeBLoC.provider.select((value) => value.primarySwatch));
-    final itemCount = primarySwatches.length;
+    final itemCount = PrimarySwatch.values.length;
     const column = 5;
     final row = (itemCount.toDouble() / column).ceil();
     const spacing = 8.0;
@@ -110,7 +126,8 @@ class _PrimarySwatchBottomSheet extends HookConsumerWidget {
         child: Wrap(
           spacing: spacing,
           runSpacing: spacing,
-          children: primarySwatches.map((color) {
+          children: PrimarySwatch.values.map((swatch) {
+            final color = swatch.color;
             return InkWell(
               child: Container(
                 width: itemWidth,
