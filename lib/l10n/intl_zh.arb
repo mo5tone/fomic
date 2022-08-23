@@ -1,6 +1,7 @@
 {
     "explore": "浏览",
     "setting": "设置",
+    "useMaterial3": "使用Material 3",
     "brightnessModes": "明暗模式",
     "primarySwatchColor": "主题颜色",
     "lightMode": "浅色模式",

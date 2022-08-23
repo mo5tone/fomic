@@ -15,7 +15,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class BaiManGu extends HTTPSource implements ConfigurableSource {
-  static final provider = Provider.autoDispose((ref) => BaiManGu._(ref));
+  static final provider = Provider.autoDispose((ref) => BaiManGu._(ref.read));
 
   static const channelFilterOptions = [
     MapEntry('漫画大全', '4'),
@@ -66,7 +66,7 @@ class BaiManGu extends HTTPSource implements ConfigurableSource {
         SourceFilter.select('排序', sortFilterOptions.map((e) => e.key).toList()),
       ];
 
-  BaiManGu._(Ref ref) : super(ref);
+  BaiManGu._(Reader read) : super(read);
 
   @override
   SourceMangasPage latestUpdatesParser(Response response) {

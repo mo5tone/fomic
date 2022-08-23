@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class ZeroBYW extends HTTPSource {
-  static final provider = Provider.autoDispose((ref) => ZeroBYW._(ref));
+  static final provider = Provider.autoDispose((ref) => ZeroBYW._(ref.read));
   static const _categoryOptions = [
     MapEntry("", "全部"),
     MapEntry("1", "卖肉"),
@@ -41,7 +41,7 @@ class ZeroBYW extends HTTPSource {
     MapEntry("全中文", "全中文"),
   ];
 
-  ZeroBYW._(Ref ref) : super(ref);
+  ZeroBYW._(Reader read) : super(read);
 
   String _shortTitleOf(String title) {
     return title.replaceFirstMapped(RegExp(r'【.*'), (match) => '');

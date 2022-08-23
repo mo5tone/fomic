@@ -13,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class KuaiKanManHua extends HTTPSource {
-  static final provider = Provider.autoDispose((ref) => KuaiKanManHua._(ref));
+  static final provider = Provider.autoDispose((ref) => KuaiKanManHua._(ref.read));
 
   static const _lockIcon = '\uD83D\uDD12';
   static const _topicIdSearchPrefix = 'topic:';
@@ -47,7 +47,7 @@ class KuaiKanManHua extends HTTPSource {
     MapEntry('投稿', '76'),
   ];
 
-  KuaiKanManHua._(Ref ref) : super(ref);
+  KuaiKanManHua._(Reader read) : super(read);
 
   @override
   String get name => '快看漫画';

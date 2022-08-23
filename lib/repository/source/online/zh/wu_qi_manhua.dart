@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_js/flutter_js.dart';
+import 'package:fomic/common/util/javascript_io.dart';
 import 'package:fomic/model/source_chapter.dart';
 import 'package:fomic/model/source_filter.dart';
 import 'package:fomic/model/source_manga.dart';
@@ -13,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart' as html;
 
 class WuQiManHua extends HTTPSource {
-  static final provider = Provider.autoDispose((ref) => WuQiManHua._(ref));
+  static final provider = Provider.autoDispose((ref) => WuQiManHua._(ref.read));
   static const _imageBaseURL = 'http://images.lancaier.com';
 
   @override
@@ -34,7 +34,7 @@ class WuQiManHua extends HTTPSource {
   @override
   get headers => {'Referer': '$baseUrl/'};
 
-  WuQiManHua._(Ref ref) : super(ref);
+  WuQiManHua._(Reader read) : super(read);
 
   @override
   SourceMangasPage latestUpdatesParser(Response response) {
@@ -141,7 +141,7 @@ class WuQiManHua extends HTTPSource {
     final document = html.parse(response.data);
     final code = RegExp(r'eval(.*?)\n').firstMatch(document.outerHtml)?.group(1);
     if (code == null) return [];
-    final result = getJavascriptRuntime().evaluate(code).stringResult;
+    String result = eval(code);
     final imageJSONString = RegExp(r'\{.*\}').firstMatch(result)?.group(0)?.replaceAll("'", '"');
     if (imageJSONString == null) return [];
     List urls = json.decode(imageJSONString)['fs'];

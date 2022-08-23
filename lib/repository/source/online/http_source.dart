@@ -66,7 +66,7 @@ abstract class HTTPSource with Networker implements CatalogueSource {
 
   String get iconName => 'assets/images/ic_launcher_$runtimeType.png';
 
-  HTTPSource(Ref ref) {
+  HTTPSource(Reader read) {
     const userAgents = [
       'Mozilla/5.0',
       '(Windows NT 10.0; Win64; x64)',
@@ -88,7 +88,7 @@ abstract class HTTPSource with Networker implements CatalogueSource {
     );
     dio = Dio(baseOptions)
       ..interceptors.addAll(interceptors)
-      ..interceptors.add(ref.read(LoadingIndicator.provider));
+      ..interceptors.add(read(LoadingIndicator.provider));
   }
 
   @override

@@ -9,10 +9,10 @@ extension ShowLoadingIndicator on RequestOptions {
 }
 
 class LoadingIndicator extends Interceptor {
-  static final provider = Provider.autoDispose((ref) => LoadingIndicator._(ref));
+  static final provider = Provider.autoDispose((ref) => LoadingIndicator._(ref.read));
   final HUDBLoC _hudBLoC;
 
-  LoadingIndicator._(Ref ref) : _hudBLoC = ref.read(HUDBLoC.provider.notifier);
+  LoadingIndicator._(Reader read) : _hudBLoC = read(HUDBLoC.provider.notifier);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {

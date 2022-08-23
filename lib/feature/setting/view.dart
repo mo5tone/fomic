@@ -23,8 +23,7 @@ class SettingView extends HookConsumerWidget {
           switch (index) {
             case 0:
               item = ListTile(
-                leading: const Icon(Icons.flutter_dash),
-                title: Text(L10N.of(context).brightnessModes),
+                title: Text(L10N.of(context).useMaterial3),
                 trailing: Switch(
                   value: ref.watch(ThemeBLoC.provider).useMaterial3,
                   onChanged: (value) => themeBLoC.add(ThemeEvent.useMaterial3(value)),
@@ -33,7 +32,6 @@ class SettingView extends HookConsumerWidget {
               break;
             case 1:
               item = ListTile(
-                leading: const Icon(Icons.brightness_medium),
                 title: Text(L10N.of(context).brightnessModes),
                 trailing: Icon(ref.watch(ThemeBLoC.provider).brightness?.iconData ?? Icons.brightness_auto),
                 onTap: () => showModalBottomSheet<Brightness>(
@@ -47,7 +45,6 @@ class SettingView extends HookConsumerWidget {
               break;
             case 2:
               item = ListTile(
-                leading: const Icon(Icons.color_lens),
                 title: Text(L10N.of(context).primarySwatchColor),
                 trailing: Container(
                   width: 20,
